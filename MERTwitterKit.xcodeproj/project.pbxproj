@@ -26,12 +26,21 @@
 		79FCBF5318E4A2780005959A /* MERAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF5218E4A2780005959A /* MERAppDelegate.m */; };
 		79FCBF5618E4A2780005959A /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF5418E4A2780005959A /* Main_iPhone.storyboard */; };
 		79FCBF5918E4A2780005959A /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF5718E4A2780005959A /* Main_iPad.storyboard */; };
-		79FCBF5C18E4A2780005959A /* MERViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF5B18E4A2780005959A /* MERViewController.m */; };
+		79FCBF5C18E4A2780005959A /* MERRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF5B18E4A2780005959A /* MERRootViewController.m */; };
 		79FCBF5E18E4A2780005959A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF5D18E4A2780005959A /* Images.xcassets */; };
 		79FCBF7D18E4A2B00005959A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF7C18E4A2B00005959A /* CoreFoundation.framework */; };
 		79FCBF8318E4A2B00005959A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF8118E4A2B00005959A /* InfoPlist.strings */; };
-		79FCBF8C18E4A2E20005959A /* libMERTwitterKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF0D18E49E6E0005959A /* libMERTwitterKit.a */; };
 		79FCBF8D18E4A2EC0005959A /* MERTwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF7B18E4A2B00005959A /* MERTwitterKitResources.bundle */; };
+		79FCBF8E18E4AC510005959A /* libMERTwitterKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF0D18E49E6E0005959A /* libMERTwitterKit.a */; };
+		79FCBF9118E4D0BE0005959A /* MERTwitterKit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF8F18E4D0BE0005959A /* MERTwitterKit.xcdatamodeld */; };
+		79FCBF9A18E4D2560005959A /* _MERTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF9718E4D2560005959A /* _MERTweet.m */; };
+		79FCBF9B18E4D2560005959A /* MERTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF9918E4D2560005959A /* MERTweet.m */; };
+		79FCBF9F18E4D2C80005959A /* MERTweetViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF9E18E4D2C80005959A /* MERTweetViewModel.m */; };
+		79FCBFA218E4D9C60005959A /* MERTweetTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBFA118E4D9C60005959A /* MERTweetTableViewCell.m */; };
+		79FCBFA318E4DA2E0005959A /* _MERTweet.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF9618E4D2560005959A /* _MERTweet.h */; };
+		79FCBFA418E4DA2E0005959A /* MERTweet.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF9818E4D2560005959A /* MERTweet.h */; };
+		79FCBFA518E4DA2E0005959A /* MERTweetViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF9D18E4D2C80005959A /* MERTweetViewModel.h */; };
+		79FCBFA718E4DABA0005959A /* MERTweetTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBFA618E4DABA0005959A /* MERTweetTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +76,9 @@
 			files = (
 				79FCBF3D18E49EF10005959A /* MERTwitterKit.h in CopyFiles */,
 				79FCBF3E18E49EF30005959A /* MERTwitterClient.h in CopyFiles */,
+				79FCBFA318E4DA2E0005959A /* _MERTweet.h in CopyFiles */,
+				79FCBFA418E4DA2E0005959A /* MERTweet.h in CopyFiles */,
+				79FCBFA518E4DA2E0005959A /* MERTweetViewModel.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,14 +108,24 @@
 		79FCBF5218E4A2780005959A /* MERAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MERAppDelegate.m; sourceTree = "<group>"; };
 		79FCBF5518E4A2780005959A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		79FCBF5818E4A2780005959A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		79FCBF5A18E4A2780005959A /* MERViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MERViewController.h; sourceTree = "<group>"; };
-		79FCBF5B18E4A2780005959A /* MERViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MERViewController.m; sourceTree = "<group>"; };
+		79FCBF5A18E4A2780005959A /* MERRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MERRootViewController.h; sourceTree = "<group>"; };
+		79FCBF5B18E4A2780005959A /* MERRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MERRootViewController.m; sourceTree = "<group>"; };
 		79FCBF5D18E4A2780005959A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		79FCBF7B18E4A2B00005959A /* MERTwitterKitResources.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MERTwitterKitResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		79FCBF7C18E4A2B00005959A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		79FCBF8018E4A2B00005959A /* MERTwitterKitResources-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MERTwitterKitResources-Info.plist"; sourceTree = "<group>"; };
 		79FCBF8218E4A2B00005959A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		79FCBF8418E4A2B00005959A /* MERTwitterKitResources-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitResources-Prefix.pch"; sourceTree = "<group>"; };
+		79FCBF9018E4D0BE0005959A /* MERTwitterKit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MERTwitterKit.xcdatamodel; sourceTree = "<group>"; };
+		79FCBF9618E4D2560005959A /* _MERTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _MERTweet.h; sourceTree = "<group>"; };
+		79FCBF9718E4D2560005959A /* _MERTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _MERTweet.m; sourceTree = "<group>"; };
+		79FCBF9818E4D2560005959A /* MERTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweet.h; sourceTree = "<group>"; };
+		79FCBF9918E4D2560005959A /* MERTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweet.m; sourceTree = "<group>"; };
+		79FCBF9D18E4D2C80005959A /* MERTweetViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweetViewModel.h; sourceTree = "<group>"; };
+		79FCBF9E18E4D2C80005959A /* MERTweetViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetViewModel.m; sourceTree = "<group>"; };
+		79FCBFA018E4D9C60005959A /* MERTweetTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweetTableViewCell.h; sourceTree = "<group>"; };
+		79FCBFA118E4D9C60005959A /* MERTweetTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetTableViewCell.m; sourceTree = "<group>"; };
+		79FCBFA618E4DABA0005959A /* MERTweetTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MERTweetTableViewCell.xib; sourceTree = "<group>"; };
 		DC80D293A3DB467EAA889C69 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,7 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79FCBF8C18E4A2E20005959A /* libMERTwitterKit.a in Frameworks */,
+				79FCBF8E18E4AC510005959A /* libMERTwitterKit.a in Frameworks */,
 				79FCBF4618E4A2780005959A /* CoreGraphics.framework in Frameworks */,
 				79FCBF4718E4A2780005959A /* UIKit.framework in Frameworks */,
 				79FCBF4418E4A2780005959A /* Foundation.framework in Frameworks */,
@@ -228,6 +250,8 @@
 			children = (
 				79FCBF3918E49ED20005959A /* MERTwitterClient.h */,
 				79FCBF3A18E49ED20005959A /* MERTwitterClient.m */,
+				79FCBF9418E4D2560005959A /* CoreData */,
+				79FCBF9C18E4D26A0005959A /* View Models */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -239,8 +263,11 @@
 				79FCBF5218E4A2780005959A /* MERAppDelegate.m */,
 				79FCBF5418E4A2780005959A /* Main_iPhone.storyboard */,
 				79FCBF5718E4A2780005959A /* Main_iPad.storyboard */,
-				79FCBF5A18E4A2780005959A /* MERViewController.h */,
-				79FCBF5B18E4A2780005959A /* MERViewController.m */,
+				79FCBF5A18E4A2780005959A /* MERRootViewController.h */,
+				79FCBF5B18E4A2780005959A /* MERRootViewController.m */,
+				79FCBFA018E4D9C60005959A /* MERTweetTableViewCell.h */,
+				79FCBFA118E4D9C60005959A /* MERTweetTableViewCell.m */,
+				79FCBFA618E4DABA0005959A /* MERTweetTableViewCell.xib */,
 				79FCBF5D18E4A2780005959A /* Images.xcassets */,
 				79FCBF4918E4A2780005959A /* Supporting Files */,
 			);
@@ -272,8 +299,37 @@
 				79FCBF8018E4A2B00005959A /* MERTwitterKitResources-Info.plist */,
 				79FCBF8118E4A2B00005959A /* InfoPlist.strings */,
 				79FCBF8418E4A2B00005959A /* MERTwitterKitResources-Prefix.pch */,
+				79FCBF8F18E4D0BE0005959A /* MERTwitterKit.xcdatamodeld */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		79FCBF9418E4D2560005959A /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				79FCBF9518E4D2560005959A /* machine */,
+				79FCBF9818E4D2560005959A /* MERTweet.h */,
+				79FCBF9918E4D2560005959A /* MERTweet.m */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		79FCBF9518E4D2560005959A /* machine */ = {
+			isa = PBXGroup;
+			children = (
+				79FCBF9618E4D2560005959A /* _MERTweet.h */,
+				79FCBF9718E4D2560005959A /* _MERTweet.m */,
+			);
+			path = machine;
+			sourceTree = "<group>";
+		};
+		79FCBF9C18E4D26A0005959A /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				79FCBF9D18E4D2C80005959A /* MERTweetViewModel.h */,
+				79FCBF9E18E4D2C80005959A /* MERTweetViewModel.m */,
+			);
+			name = "View Models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,6 +339,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 79FCBF3018E49E6F0005959A /* Build configuration list for PBXNativeTarget "MERTwitterKit" */;
 			buildPhases = (
+				79FCBF9218E4D1D40005959A /* mogenerator */,
+				79FCBF9318E4D2140005959A /* genstrings */,
 				79FCBF0918E49E6E0005959A /* Sources */,
 				79FCBF0A18E49E6E0005959A /* Frameworks */,
 				79FCBF0B18E49E6E0005959A /* CopyFiles */,
@@ -402,6 +460,7 @@
 			files = (
 				79FCBF8D18E4A2EC0005959A /* MERTwitterKitResources.bundle in Resources */,
 				79FCBF5918E4A2780005959A /* Main_iPad.storyboard in Resources */,
+				79FCBFA718E4DABA0005959A /* MERTweetTableViewCell.xib in Resources */,
 				79FCBF5E18E4A2780005959A /* Images.xcassets in Resources */,
 				79FCBF5618E4A2780005959A /* Main_iPhone.storyboard in Resources */,
 				79FCBF4D18E4A2780005959A /* InfoPlist.strings in Resources */,
@@ -419,6 +478,34 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		79FCBF9218E4D1D40005959A /* mogenerator */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = mogenerator;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mogenerator -m $SRCROOT/MERTwitterKitResources/$TARGET_NAME.xcdatamodeld/$TARGET_NAME.xcdatamodel -H $SRCROOT/$TARGET_NAME/CoreData -M $SRCROOT/$TARGET_NAME/CoreData/machine --template-var arc=true";
+		};
+		79FCBF9318E4D2140005959A /* genstrings */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = genstrings;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "genstrings -s NSLocalizedString -q -o $SRCROOT/MERTwitterKitResources/en.lproj $SRCROOT/$TARGET_NAME/*.m";
+		};
 		9483EA949D88431AA9A8ADA9 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -456,7 +543,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79FCBF9B18E4D2560005959A /* MERTweet.m in Sources */,
+				79FCBF9A18E4D2560005959A /* _MERTweet.m in Sources */,
 				79FCBF3B18E49ED20005959A /* MERTwitterClient.m in Sources */,
+				79FCBF9F18E4D2C80005959A /* MERTweetViewModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,8 +562,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79FCBF5C18E4A2780005959A /* MERViewController.m in Sources */,
+				79FCBF5C18E4A2780005959A /* MERRootViewController.m in Sources */,
 				79FCBF4F18E4A2780005959A /* main.m in Sources */,
+				79FCBFA218E4D9C60005959A /* MERTweetTableViewCell.m in Sources */,
 				79FCBF5318E4A2780005959A /* MERAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,6 +573,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79FCBF9118E4D0BE0005959A /* MERTwitterKit.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,7 +838,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -763,7 +855,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -817,6 +909,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		79FCBF8F18E4D0BE0005959A /* MERTwitterKit.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				79FCBF9018E4D0BE0005959A /* MERTwitterKit.xcdatamodel */,
+			);
+			currentVersion = 79FCBF9018E4D0BE0005959A /* MERTwitterKit.xcdatamodel */;
+			path = MERTwitterKit.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 79FCBF0518E49E6E0005959A /* Project object */;
 }

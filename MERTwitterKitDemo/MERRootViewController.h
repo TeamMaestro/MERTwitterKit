@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MERViewController : UIViewController
+@interface MERRootViewController : UIViewController
 
 @end

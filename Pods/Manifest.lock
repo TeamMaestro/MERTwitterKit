@@ -1,4 +1,23 @@
 PODS:
+  - AFNetworking (2.2.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.2.1):
+    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (2.2.1)
+  - AFNetworking/Security (2.2.1)
+  - AFNetworking/Serialization (2.2.1)
+  - AFNetworking/UIKit (2.2.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
   - libextobjc/EXTKeyPathCoding (0.4):
     - libextobjc/RuntimeExtensions
   - libextobjc/EXTScope (0.4):
@@ -23,12 +42,17 @@ PODS:
   - ReactiveCocoa/Core (2.2.4):
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/no-arc (2.2.4)
+  - ReactiveViewModel (0.2):
+    - ReactiveCocoa (~> 2.1)
 
 DEPENDENCIES:
+  - AFNetworking (~> 2.2.0)
   - MECoreDataKit (~> 1.0.0)
   - MEReactiveKit (~> 1.0.0)
+  - ReactiveViewModel (~> 0.2.0)
 
 SPEC CHECKSUMS:
+  AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
   MECoreDataKit: c191b9f1fdd7341c572262480f033aa597dd56c6
   MEFoundation: 025774725221905fd1d28944ddd92a550f84d601
@@ -36,5 +60,6 @@ SPEC CHECKSUMS:
   MEReactiveFoundation: 8fca6120232080a67f78954482c775220ef2a6a1
   MEReactiveKit: 5dda3fef145cc02d9c3b9485185f651314089fa1
   ReactiveCocoa: 953a45dda30674fe704d1d9c77cc874141742f47
+  ReactiveViewModel: f636ab3e06b5e69664b69c883fcdb457ab5cb0cb
 
 COCOAPODS: 0.29.0
