@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		155FF4AAEB35425ABADC3BDA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A273E326DE54FCF8D321B4E /* libPods.a */; };
 		79FCBF1118E49E6E0005959A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1018E49E6E0005959A /* Foundation.framework */; };
 		79FCBF1F18E49E6E0005959A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1E18E49E6E0005959A /* XCTest.framework */; };
 		79FCBF2018E49E6E0005959A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1018E49E6E0005959A /* Foundation.framework */; };
@@ -72,6 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6A273E326DE54FCF8D321B4E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79FCBF0D18E49E6E0005959A /* libMERTwitterKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMERTwitterKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79FCBF1018E49E6E0005959A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		79FCBF1418E49E6E0005959A /* MERTwitterKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKit-Prefix.pch"; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 		79FCBF8018E4A2B00005959A /* MERTwitterKitResources-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MERTwitterKitResources-Info.plist"; sourceTree = "<group>"; };
 		79FCBF8218E4A2B00005959A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		79FCBF8418E4A2B00005959A /* MERTwitterKitResources-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitResources-Prefix.pch"; sourceTree = "<group>"; };
+		DC80D293A3DB467EAA889C69 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +135,7 @@
 				79FCBF4618E4A2780005959A /* CoreGraphics.framework in Frameworks */,
 				79FCBF4718E4A2780005959A /* UIKit.framework in Frameworks */,
 				79FCBF4418E4A2780005959A /* Foundation.framework in Frameworks */,
+				155FF4AAEB35425ABADC3BDA /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +159,7 @@
 				79FCBF4818E4A2780005959A /* MERTwitterKitDemo */,
 				79FCBF0F18E49E6E0005959A /* Frameworks */,
 				79FCBF0E18E49E6E0005959A /* Products */,
+				DC80D293A3DB467EAA889C69 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -177,6 +182,7 @@
 				79FCBF2118E49E6E0005959A /* UIKit.framework */,
 				79FCBF4518E4A2780005959A /* CoreGraphics.framework */,
 				79FCBF7C18E4A2B00005959A /* CoreFoundation.framework */,
+				6A273E326DE54FCF8D321B4E /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -313,9 +319,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 79FCBF7118E4A2780005959A /* Build configuration list for PBXNativeTarget "MERTwitterKitDemo" */;
 			buildPhases = (
+				C91B5E7D9BF243B19214F8D4 /* Check Pods Manifest.lock */,
 				79FCBF3F18E4A2780005959A /* Sources */,
 				79FCBF4018E4A2780005959A /* Frameworks */,
 				79FCBF4118E4A2780005959A /* Resources */,
+				9483EA949D88431AA9A8ADA9 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -409,6 +417,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9483EA949D88431AA9A8ADA9 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C91B5E7D9BF243B19214F8D4 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		79FCBF0918E49E6E0005959A /* Sources */ = {
@@ -578,6 +619,7 @@
 		};
 		79FCBF3118E49E6F0005959A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC80D293A3DB467EAA889C69 /* Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/MERTwitterKit.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -592,6 +634,7 @@
 		};
 		79FCBF3218E49E6F0005959A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC80D293A3DB467EAA889C69 /* Pods.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/MERTwitterKit.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -646,6 +689,7 @@
 		};
 		79FCBF7218E4A2780005959A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC80D293A3DB467EAA889C69 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -669,6 +713,7 @@
 		};
 		79FCBF7318E4A2780005959A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC80D293A3DB467EAA889C69 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -742,6 +787,7 @@
 				79FCBF3218E49E6F0005959A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		79FCBF3318E49E6F0005959A /* Build configuration list for PBXNativeTarget "MERTwitterKitTests" */ = {
 			isa = XCConfigurationList;
@@ -750,6 +796,7 @@
 				79FCBF3518E49E6F0005959A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		79FCBF7118E4A2780005959A /* Build configuration list for PBXNativeTarget "MERTwitterKitDemo" */ = {
 			isa = XCConfigurationList;
@@ -758,6 +805,7 @@
 				79FCBF7318E4A2780005959A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		79FCBF8518E4A2B00005959A /* Build configuration list for PBXNativeTarget "MERTwitterKitResources" */ = {
 			isa = XCConfigurationList;
@@ -766,6 +814,7 @@
 				79FCBF8718E4A2B00005959A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

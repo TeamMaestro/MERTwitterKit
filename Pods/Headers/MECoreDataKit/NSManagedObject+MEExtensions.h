@@ -1,0 +1,1 @@
+../../MECoreDataKit/MECoreDataKit/NSManagedObject+MEExtensions.h

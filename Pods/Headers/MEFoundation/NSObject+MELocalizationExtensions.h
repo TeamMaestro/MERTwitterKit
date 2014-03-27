@@ -1,0 +1,1 @@
+../../MEFoundation/MEFoundation/NSObject+MELocalizationExtensions.h
