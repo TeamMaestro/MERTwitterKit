@@ -8,14 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		79FCBF1118E49E6E0005959A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1018E49E6E0005959A /* Foundation.framework */; };
-		79FCBF1618E49E6E0005959A /* MERTwitterKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF1518E49E6E0005959A /* MERTwitterKit.h */; };
-		79FCBF1818E49E6E0005959A /* MERTwitterKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF1718E49E6E0005959A /* MERTwitterKit.m */; };
 		79FCBF1F18E49E6E0005959A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1E18E49E6E0005959A /* XCTest.framework */; };
 		79FCBF2018E49E6E0005959A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1018E49E6E0005959A /* Foundation.framework */; };
 		79FCBF2218E49E6E0005959A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF2118E49E6E0005959A /* UIKit.framework */; };
 		79FCBF2518E49E6F0005959A /* libMERTwitterKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF0D18E49E6E0005959A /* libMERTwitterKit.a */; };
 		79FCBF2B18E49E6F0005959A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF2918E49E6F0005959A /* InfoPlist.strings */; };
 		79FCBF2D18E49E6F0005959A /* MERTwitterKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF2C18E49E6F0005959A /* MERTwitterKitTests.m */; };
+		79FCBF3B18E49ED20005959A /* MERTwitterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF3A18E49ED20005959A /* MERTwitterClient.m */; };
+		79FCBF3D18E49EF10005959A /* MERTwitterKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF3618E49E9C0005959A /* MERTwitterKit.h */; };
+		79FCBF3E18E49EF30005959A /* MERTwitterClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF3918E49ED20005959A /* MERTwitterClient.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +36,8 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				79FCBF1618E49E6E0005959A /* MERTwitterKit.h in CopyFiles */,
+				79FCBF3D18E49EF10005959A /* MERTwitterKit.h in CopyFiles */,
+				79FCBF3E18E49EF30005959A /* MERTwitterClient.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,14 +47,15 @@
 		79FCBF0D18E49E6E0005959A /* libMERTwitterKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMERTwitterKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79FCBF1018E49E6E0005959A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		79FCBF1418E49E6E0005959A /* MERTwitterKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKit-Prefix.pch"; sourceTree = "<group>"; };
-		79FCBF1518E49E6E0005959A /* MERTwitterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MERTwitterKit.h; sourceTree = "<group>"; };
-		79FCBF1718E49E6E0005959A /* MERTwitterKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MERTwitterKit.m; sourceTree = "<group>"; };
 		79FCBF1D18E49E6E0005959A /* MERTwitterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MERTwitterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		79FCBF1E18E49E6E0005959A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		79FCBF2118E49E6E0005959A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		79FCBF2818E49E6F0005959A /* MERTwitterKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MERTwitterKitTests-Info.plist"; sourceTree = "<group>"; };
 		79FCBF2A18E49E6F0005959A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		79FCBF2C18E49E6F0005959A /* MERTwitterKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MERTwitterKitTests.m; sourceTree = "<group>"; };
+		79FCBF3618E49E9C0005959A /* MERTwitterKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterKit.h; sourceTree = "<group>"; };
+		79FCBF3918E49ED20005959A /* MERTwitterClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterClient.h; sourceTree = "<group>"; };
+		79FCBF3A18E49ED20005959A /* MERTwitterClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,8 +113,8 @@
 		79FCBF1218E49E6E0005959A /* MERTwitterKit */ = {
 			isa = PBXGroup;
 			children = (
-				79FCBF1518E49E6E0005959A /* MERTwitterKit.h */,
-				79FCBF1718E49E6E0005959A /* MERTwitterKit.m */,
+				79FCBF3618E49E9C0005959A /* MERTwitterKit.h */,
+				79FCBF3C18E49ED90005959A /* Classes */,
 				79FCBF1318E49E6E0005959A /* Supporting Files */,
 			);
 			path = MERTwitterKit;
@@ -141,6 +144,15 @@
 				79FCBF2918E49E6F0005959A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		79FCBF3C18E49ED90005959A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				79FCBF3918E49ED20005959A /* MERTwitterClient.h */,
+				79FCBF3A18E49ED20005959A /* MERTwitterClient.m */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,7 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79FCBF1818E49E6E0005959A /* MERTwitterKit.m in Sources */,
+				79FCBF3B18E49ED20005959A /* MERTwitterClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,7 +345,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MERTwitterKit/MERTwitterKit-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
+				PRIVATE_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -345,7 +359,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MERTwitterKit/MERTwitterKit-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
+				PRIVATE_HEADERS_FOLDER_PATH = "include/$(TARGET_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = include;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

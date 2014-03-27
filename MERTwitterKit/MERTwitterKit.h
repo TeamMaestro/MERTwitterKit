@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Maestro, LLC. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#ifndef _MER_TWITTER_KIT_
+#define _MER_TWITTER_KIT_
 
-@interface MERTwitterKit : NSObject
+#import <MERTwitterKit/MERTwitterClient.h>
 
-@end
+#endif

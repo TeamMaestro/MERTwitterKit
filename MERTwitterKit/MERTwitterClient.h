@@ -1,13 +1,14 @@
 //
-//  MERTwitterKit.m
+//  MERTwitterClient.h
 //  MERTwitterKit
 //
 //  Created by William Towe on 3/27/14.
 //  Copyright (c) 2014 Maestro, LLC. All rights reserved.
 //
 
-#import "MERTwitterKit.h"
+#import <Foundation/Foundation.h>
 
-@implementation MERTwitterKit
+@interface MERTwitterClient : NSObject
+
 
 @end
