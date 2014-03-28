@@ -29,7 +29,7 @@
  @param objectIDs An array of `NSManagedObjectID` instances
  @return The array of `NSManagedObject` instances corresponding to the ids in `objectIDs`
  */
-- (NSArray *)ME_objectsForObjectIDs:(NSArray *)objectIDs error:(NSError **)error;
+- (NSArray *)ME_objectsForObjectIDs:(NSArray *)objectIDs;
 
 /**
  Calls through to `ME_fetchEntityNamed:limit:offset:predicate:sortDescriptors:error:`, passing 0 for the _limit_ and _offset_ parameters.

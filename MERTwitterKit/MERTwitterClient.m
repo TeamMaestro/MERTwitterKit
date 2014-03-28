@@ -207,7 +207,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
             
             if ([context ME_saveRecursively:NULL]) {
                 [self.managedObjectContext performBlock:^{
-                    NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds error:NULL] MER_map:^id(id value) {
+                    NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
                         return [[MERTweetViewModel alloc] initWithTweet:value];
                     }];
                     

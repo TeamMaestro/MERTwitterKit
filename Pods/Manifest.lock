@@ -23,7 +23,7 @@ PODS:
   - libextobjc/EXTScope (0.4):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
-  - MECoreDataKit (1.0.3):
+  - MECoreDataKit (1.0.4):
     - MEFoundation (~> 1.0.0)
   - MEFoundation (1.0.7)
   - MEKit (1.0.3):
@@ -54,7 +54,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
-  MECoreDataKit: c191b9f1fdd7341c572262480f033aa597dd56c6
+  MECoreDataKit: b61f1bfee629425d5827d8d04fd92c9d39ec3f8f
   MEFoundation: 025774725221905fd1d28944ddd92a550f84d601
   MEKit: 500066b5207b44660b93871050a0f372479c19c3
   MEReactiveFoundation: 8fca6120232080a67f78954482c775220ef2a6a1

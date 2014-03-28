@@ -49,6 +49,15 @@
         [alertView show];
     }];
     
+    [[[RACObserve(self, viewModels)
+       ignore:nil]
+      deliverOn:[RACScheduler mainThreadScheduler]]
+     subscribeNext:^(id _) {
+         @strongify(self);
+         
+         [self.tableView reloadData];
+     }];
+    
     [[[[[RACObserve([MERTwitterClient sharedClient], selectedAccount)
         distinctUntilChanged]
        ignore:nil]
@@ -61,15 +70,6 @@
         [self setViewModels:value];
     } error:^(NSError *error) {
         MELogObject(error);
-    }];
-    
-    [[[RACObserve(self, viewModels)
-       ignore:nil]
-      deliverOn:[RACScheduler mainThreadScheduler]]
-     subscribeNext:^(id _) {
-         @strongify(self);
-         
-         [self.tableView reloadData];
     }];
 }
 - (void)viewDidLayoutSubviews {
