@@ -14,8 +14,11 @@
 typedef void(^MERTwitterClientRequestTwitterAccountsCompletionBlock)(ACAccount *selectedAccount);
 
 extern NSString *const MERTwitterClientErrorDomain;
+
 extern NSInteger const MERTwitterClientErrorCodeNoAccounts;
+
 extern NSString *const MERTwitterClientErrorUserInfoKeyAlertTitle;
+extern NSString *const MERTwitterClientErrorUserInfoKeyAlertMessage;
 extern NSString *const MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle;
 
 extern NSString *const MERTwitterKitResourcesBundleName;

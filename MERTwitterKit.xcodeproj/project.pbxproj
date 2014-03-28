@@ -24,8 +24,6 @@
 		79FCBF4D18E4A2780005959A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF4B18E4A2780005959A /* InfoPlist.strings */; };
 		79FCBF4F18E4A2780005959A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF4E18E4A2780005959A /* main.m */; };
 		79FCBF5318E4A2780005959A /* MERAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF5218E4A2780005959A /* MERAppDelegate.m */; };
-		79FCBF5618E4A2780005959A /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF5418E4A2780005959A /* Main_iPhone.storyboard */; };
-		79FCBF5918E4A2780005959A /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF5718E4A2780005959A /* Main_iPad.storyboard */; };
 		79FCBF5C18E4A2780005959A /* MERRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF5B18E4A2780005959A /* MERRootViewController.m */; };
 		79FCBF5E18E4A2780005959A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF5D18E4A2780005959A /* Images.xcassets */; };
 		79FCBF7D18E4A2B00005959A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF7C18E4A2B00005959A /* CoreFoundation.framework */; };
@@ -106,8 +104,6 @@
 		79FCBF5018E4A2780005959A /* MERTwitterKitDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitDemo-Prefix.pch"; sourceTree = "<group>"; };
 		79FCBF5118E4A2780005959A /* MERAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MERAppDelegate.h; sourceTree = "<group>"; };
 		79FCBF5218E4A2780005959A /* MERAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MERAppDelegate.m; sourceTree = "<group>"; };
-		79FCBF5518E4A2780005959A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		79FCBF5818E4A2780005959A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		79FCBF5A18E4A2780005959A /* MERRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MERRootViewController.h; sourceTree = "<group>"; };
 		79FCBF5B18E4A2780005959A /* MERRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MERRootViewController.m; sourceTree = "<group>"; };
 		79FCBF5D18E4A2780005959A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -261,8 +257,6 @@
 			children = (
 				79FCBF5118E4A2780005959A /* MERAppDelegate.h */,
 				79FCBF5218E4A2780005959A /* MERAppDelegate.m */,
-				79FCBF5418E4A2780005959A /* Main_iPhone.storyboard */,
-				79FCBF5718E4A2780005959A /* Main_iPad.storyboard */,
 				79FCBF5A18E4A2780005959A /* MERRootViewController.h */,
 				79FCBF5B18E4A2780005959A /* MERRootViewController.m */,
 				79FCBFA018E4D9C60005959A /* MERTweetTableViewCell.h */,
@@ -459,10 +453,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				79FCBF8D18E4A2EC0005959A /* MERTwitterKitResources.bundle in Resources */,
-				79FCBF5918E4A2780005959A /* Main_iPad.storyboard in Resources */,
 				79FCBFA718E4DABA0005959A /* MERTweetTableViewCell.xib in Resources */,
 				79FCBF5E18E4A2780005959A /* Images.xcassets in Resources */,
-				79FCBF5618E4A2780005959A /* Main_iPhone.storyboard in Resources */,
 				79FCBF4D18E4A2780005959A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -612,22 +604,6 @@
 				79FCBF4C18E4A2780005959A /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		79FCBF5418E4A2780005959A /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				79FCBF5518E4A2780005959A /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		79FCBF5718E4A2780005959A /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				79FCBF5818E4A2780005959A /* Base */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		79FCBF8118E4A2B00005959A /* InfoPlist.strings */ = {

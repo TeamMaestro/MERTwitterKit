@@ -21,6 +21,7 @@
 NSString *const MERTwitterClientErrorDomain = @"MERTwitterClientErrorDomain";
 NSInteger const MERTwitterClientErrorCodeNoAccounts = 1;
 NSString *const MERTwitterClientErrorUserInfoKeyAlertTitle = @"MERTwitterClientErrorUserInfoKeyAlertTitle";
+NSString *const MERTwitterClientErrorUserInfoKeyAlertMessage = @"MERTwitterClientErrorUserInfoKeyAlertMessage";
 NSString *const MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle = @"MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle";
 
 NSString *const MERTwitterKitResourcesBundleName = @"MERTwitterKitResources.bundle";
@@ -111,7 +112,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
                     [subscriber sendCompleted];
                 }
                 else {
-                    [subscriber sendError:[NSError errorWithDomain:MERTwitterClientErrorDomain code:MERTwitterClientErrorCodeNoAccounts userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTableInBundle(@"No Twitter accounts. Setup a Twitter account in the Settings application.", nil, MERTwitterKitResourcesBundle(), @"no accounts localized description"), MERTwitterClientErrorUserInfoKeyAlertTitle: NSLocalizedStringFromTableInBundle(@"Error", nil, MERTwitterKitResourcesBundle(), @"no accounts alert title"), MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle: NSLocalizedStringFromTableInBundle(@"Dismiss", nil, MERTwitterKitResourcesBundle(), @"no accounts alert cancel title")}]];
+                    [subscriber sendError:[NSError errorWithDomain:MERTwitterClientErrorDomain code:MERTwitterClientErrorCodeNoAccounts userInfo:@{MERTwitterClientErrorUserInfoKeyAlertMessage: NSLocalizedStringFromTableInBundle(@"No Twitter accounts. Setup a Twitter account in the Settings application.", nil, MERTwitterKitResourcesBundle(), @"no accounts localized description"), MERTwitterClientErrorUserInfoKeyAlertTitle: NSLocalizedStringFromTableInBundle(@"Error", nil, MERTwitterKitResourcesBundle(), @"no accounts alert title"), MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle: NSLocalizedStringFromTableInBundle(@"Dismiss", nil, MERTwitterKitResourcesBundle(), @"no accounts alert cancel title")}]];
                 }
             }
             else {
@@ -181,6 +182,8 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         [context setUndoManager:nil];
         [context setParentContext:self.managedObjectContext];
         [context performBlock:^{
+            @strongify(self);
+            
             NSMutableArray *objectIds = [[NSMutableArray alloc] init];
             
             for (NSDictionary *dict in json) {
@@ -203,7 +206,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
             }
             
             if ([context ME_saveRecursively:NULL]) {
-                [context.parentContext performBlock:^{
+                [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds error:NULL] MER_map:^id(id value) {
                         return [[MERTweetViewModel alloc] initWithTweet:value];
                     }];

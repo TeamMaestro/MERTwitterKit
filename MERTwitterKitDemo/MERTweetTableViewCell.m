@@ -19,19 +19,11 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     
-    [self.tweetTextLabel setTextColor:[UIColor blackColor]];
+    RAC(self.tweetTextLabel,text) = RACObserve(self, viewModel.text);
 }
 
 + (CGFloat)estimatedRowHeight; {
     return 44;
-}
-
-- (void)setViewModel:(MERTweetViewModel *)viewModel {
-    NSAssert([NSThread isMainThread], @"must be main thread!");
-    _viewModel = viewModel;
-    
-    [self.tweetTextLabel setText:viewModel.text];
-    NSLog(@"%@",viewModel.text);
 }
 
 @end

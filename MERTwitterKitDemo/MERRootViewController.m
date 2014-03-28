@@ -22,6 +22,10 @@
 
 @implementation MERRootViewController
 
+- (NSString *)title {
+    return @"Tweets";
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -40,7 +44,7 @@
         completionBlock(accounts.firstObject);
         
     } error:^(NSError *error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertTitle] message:error.localizedDescription delegate:nil cancelButtonTitle:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle] otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertTitle] message:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertMessage] delegate:nil cancelButtonTitle:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle] otherButtonTitles:nil];
         
         [alertView show];
     }];
@@ -55,6 +59,8 @@
         @strongify(self);
         
         [self setViewModels:value];
+    } error:^(NSError *error) {
+        MELogObject(error);
     }];
     
     [[[RACObserve(self, viewModels)
@@ -75,6 +81,8 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     MERTweetTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([MERTweetTableViewCell class]) forIndexPath:indexPath];
+    
+    [self _configureCell:cell indexPath:indexPath];
     
     return cell;
 }
