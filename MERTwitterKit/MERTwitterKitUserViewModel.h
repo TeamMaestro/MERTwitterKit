@@ -13,6 +13,8 @@
 
 @interface MERTwitterKitUserViewModel : RVMViewModel
 
+@property (readonly,nonatomic) NSString *name;
+@property (readonly,nonatomic) NSString *screenName;
 @property (readonly,strong,nonatomic) UIImage *profileImage;
 
 + (instancetype)viewModelWithUser:(TwitterKitUser *)user;

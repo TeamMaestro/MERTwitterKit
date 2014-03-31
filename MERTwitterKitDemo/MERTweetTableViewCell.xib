@@ -6,15 +6,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="61" id="D0d-al-qKQ" customClass="MERTweetTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="144" id="D0d-al-qKQ" customClass="MERTweetTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="144"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D0d-al-qKQ" id="HOD-zT-etR">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="143"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="228" translatesAutoresizingMaskIntoConstraints="NO" id="A4H-mP-t2B">
-                        <rect key="frame" x="72" y="8" width="228" height="44"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="text" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="228" translatesAutoresizingMaskIntoConstraints="NO" id="A4H-mP-t2B">
+                        <rect key="frame" x="72" y="66" width="228" height="69"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -28,20 +28,42 @@
                             <constraint firstAttribute="width" constant="44" id="RhP-iU-Kon"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XjE-3B-1G6">
+                        <rect key="frame" x="72" y="8" width="228" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@screen name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7P-gp-npV">
+                        <rect key="frame" x="72" y="37" width="228" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="XjE-3B-1G6" secondAttribute="trailing" constant="20" id="8zo-Yb-2oz"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="MIo-K5-IjD" secondAttribute="bottom" constant="8" id="DAT-cV-vyo"/>
+                    <constraint firstItem="r7P-gp-npV" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="G74-Zs-Trc"/>
+                    <constraint firstAttribute="trailing" secondItem="r7P-gp-npV" secondAttribute="trailing" constant="20" id="KRi-v8-6tT"/>
                     <constraint firstAttribute="trailing" secondItem="A4H-mP-t2B" secondAttribute="trailing" constant="20" id="R1a-aE-8AO"/>
                     <constraint firstItem="MIo-K5-IjD" firstAttribute="leading" secondItem="HOD-zT-etR" secondAttribute="leading" constant="20" id="Xwy-Qe-IkM"/>
+                    <constraint firstItem="XjE-3B-1G6" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="Zyj-Fo-xsa"/>
                     <constraint firstItem="A4H-mP-t2B" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="a1r-zb-ba7"/>
+                    <constraint firstItem="A4H-mP-t2B" firstAttribute="top" secondItem="r7P-gp-npV" secondAttribute="bottom" constant="8" id="c1u-UH-0Q5"/>
                     <constraint firstItem="MIo-K5-IjD" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="cu3-LN-rPn"/>
+                    <constraint firstItem="XjE-3B-1G6" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="fX4-MF-zbk"/>
+                    <constraint firstItem="r7P-gp-npV" firstAttribute="top" secondItem="XjE-3B-1G6" secondAttribute="bottom" constant="8" id="iIy-Ea-M4W"/>
                     <constraint firstAttribute="bottom" secondItem="A4H-mP-t2B" secondAttribute="bottom" constant="8" id="isx-FH-kBD"/>
-                    <constraint firstItem="A4H-mP-t2B" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="q6t-3p-CeZ"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="profileImageView" destination="MIo-K5-IjD" id="8Yc-rM-PHg"/>
                 <outlet property="tweetTextLabel" destination="A4H-mP-t2B" id="EGF-OI-G2p"/>
+                <outlet property="userNameLabel" destination="XjE-3B-1G6" id="1IU-xV-SUm"/>
+                <outlet property="userScreenNameLabel" destination="r7P-gp-npV" id="BNd-Xi-CJE"/>
             </connections>
         </tableViewCell>
     </objects>

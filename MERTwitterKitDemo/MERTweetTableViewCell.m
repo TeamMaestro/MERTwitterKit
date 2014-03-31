@@ -13,6 +13,8 @@
 @interface MERTweetTableViewCell ()
 @property (weak,nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak,nonatomic) IBOutlet UILabel *tweetTextLabel;
+@property (weak,nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak,nonatomic) IBOutlet UILabel *userScreenNameLabel;
 @end
 
 @implementation MERTweetTableViewCell
@@ -22,6 +24,8 @@
     
     RAC(self.tweetTextLabel,text) = RACObserve(self, viewModel.text);
     RAC(self.profileImageView,image) = RACObserve(self, viewModel.userViewModel.profileImage);
+    RAC(self.userNameLabel,text) = RACObserve(self, viewModel.userViewModel.name);
+    RAC(self.userScreenNameLabel,text) = RACObserve(self, viewModel.userViewModel.screenName);
 }
 
 - (void)prepareForReuse {

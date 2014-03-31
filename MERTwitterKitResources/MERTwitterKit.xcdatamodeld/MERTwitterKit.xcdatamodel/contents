@@ -7,11 +7,13 @@
     </entity>
     <entity name="TwitterKitUser" representedClassName="TwitterKitUser" syncable="YES">
         <attribute name="identity" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profileImageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="user" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
     <elements>
         <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="88"/>
-        <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="88"/>
+        <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="118"/>
     </elements>
 </model>

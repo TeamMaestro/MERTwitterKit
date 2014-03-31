@@ -261,6 +261,8 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         
         [retval setIdentity:identity];
         [retval setProfileImageUrl:dict[@"profile_image_url_https"]];
+        [retval setName:dict[@"name"]];
+        [retval setScreenName:dict[@"screen_name"]];
         
         MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
     }

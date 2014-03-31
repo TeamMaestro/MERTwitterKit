@@ -6,7 +6,9 @@
 
 extern const struct TwitterKitUserAttributes {
 	__unsafe_unretained NSString *identity;
+	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *profileImageUrl;
+	__unsafe_unretained NSString *screenName;
 } TwitterKitUserAttributes;
 
 extern const struct TwitterKitUserRelationships {
@@ -17,6 +19,8 @@ extern const struct TwitterKitUserFetchedProperties {
 } TwitterKitUserFetchedProperties;
 
 @class TwitterKitTweet;
+
+
 
 
 
@@ -48,11 +52,31 @@ extern const struct TwitterKitUserFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* name;
+
+
+
+//- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* profileImageUrl;
 
 
 
 //- (BOOL)validateProfileImageUrl:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* screenName;
+
+
+
+//- (BOOL)validateScreenName:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -89,8 +113,20 @@ extern const struct TwitterKitUserFetchedProperties {
 
 
 
+- (NSString*)primitiveName;
+- (void)setPrimitiveName:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveProfileImageUrl;
 - (void)setPrimitiveProfileImageUrl:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveScreenName;
+- (void)setPrimitiveScreenName:(NSString*)value;
 
 
 

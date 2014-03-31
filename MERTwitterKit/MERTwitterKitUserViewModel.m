@@ -11,6 +11,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
 #import <SDWebImage/SDWebImageManager.h>
+#import "MERTwitterClient.h"
 
 @interface MERTwitterKitUserViewModel ()
 @property (strong,nonatomic) TwitterKitUser *user;
@@ -87,6 +88,13 @@
      }];
     
     return self;
+}
+
+- (NSString *)name {
+    return self.user.name;
+}
+- (NSString *)screenName {
+    return [NSLocalizedStringFromTableInBundle(@"@", nil, MERTwitterKitResourcesBundle(), @"user view model screen name prefix") stringByAppendingString:self.user.screenName];
 }
 
 @end

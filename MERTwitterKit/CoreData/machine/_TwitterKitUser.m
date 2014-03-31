@@ -5,7 +5,9 @@
 
 const struct TwitterKitUserAttributes TwitterKitUserAttributes = {
 	.identity = @"identity",
+	.name = @"name",
 	.profileImageUrl = @"profileImageUrl",
+	.screenName = @"screenName",
 };
 
 const struct TwitterKitUserRelationships TwitterKitUserRelationships = {
@@ -79,7 +81,21 @@ const struct TwitterKitUserFetchedProperties TwitterKitUserFetchedProperties = {
 
 
 
+@dynamic name;
+
+
+
+
+
+
 @dynamic profileImageUrl;
+
+
+
+
+
+
+@dynamic screenName;
 
 
 
