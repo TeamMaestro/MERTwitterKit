@@ -1,40 +1,41 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to MERTweet.m instead.
+// Make changes to TwitterKitUser.m instead.
 
-#import "_MERTweet.h"
+#import "_TwitterKitUser.h"
 
-const struct MERTweetAttributes MERTweetAttributes = {
+const struct TwitterKitUserAttributes TwitterKitUserAttributes = {
 	.identity = @"identity",
-	.text = @"text",
+	.profileImageUrl = @"profileImageUrl",
 };
 
-const struct MERTweetRelationships MERTweetRelationships = {
+const struct TwitterKitUserRelationships TwitterKitUserRelationships = {
+	.tweets = @"tweets",
 };
 
-const struct MERTweetFetchedProperties MERTweetFetchedProperties = {
+const struct TwitterKitUserFetchedProperties TwitterKitUserFetchedProperties = {
 };
 
-@implementation MERTweetID
+@implementation TwitterKitUserID
 @end
 
-@implementation _MERTweet
+@implementation _TwitterKitUser
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"MERTweet" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"TwitterKitUser" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"MERTweet";
+	return @"TwitterKitUser";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"MERTweet" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"TwitterKitUser" inManagedObjectContext:moc_];
 }
 
-- (MERTweetID*)objectID {
-	return (MERTweetID*)[super objectID];
+- (TwitterKitUserID*)objectID {
+	return (TwitterKitUserID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
@@ -78,12 +79,25 @@ const struct MERTweetFetchedProperties MERTweetFetchedProperties = {
 
 
 
-@dynamic text;
+@dynamic profileImageUrl;
 
 
 
 
 
+
+@dynamic tweets;
+
+	
+- (NSMutableSet*)tweetsSet {
+	[self willAccessValueForKey:@"tweets"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"tweets"];
+  
+	[self didAccessValueForKey:@"tweets"];
+	return result;
+}
+	
 
 
 

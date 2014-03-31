@@ -9,7 +9,8 @@
 #import "MERTwitterClient.h"
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/AFNetworkActivityIndicatorManager.h>
-#import "MERTweet.h"
+#import "TwitterKitTweet.h"
+#import "TwitterKitUser.h"
 #import <MECoreDataKit/MECoreDataKit.h>
 #import <MEFoundation/NSFileManager+MEExtensions.h>
 #import <MEFoundation/MEDebugging.h>
@@ -41,6 +42,9 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 @property (strong,nonatomic) NSManagedObjectContext *writeManagedObjectContext;
 
 - (RACSignal *)_importTweetJSON:(NSArray *)json;
+
+- (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 @end
 
 @implementation MERTwitterClient
@@ -139,11 +143,20 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
     }];
 }
 
-- (RACSignal *)requestHomeTimelineTweets {
+- (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     @weakify(self);
     
     return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (afterIdentity > 0)
+            [parameters setObject:@(afterIdentity) forKey:@"since_id"];
+        if (beforeIdentity > 0)
+            [parameters setObject:@(beforeIdentity) forKey:@"max_id"];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:@"count"];
         
         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/home_timeline.json" relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
         
@@ -187,20 +200,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
             NSMutableArray *objectIds = [[NSMutableArray alloc] init];
             
             for (NSDictionary *dict in json) {
-                NSNumber *identity = dict[@"id"];
-                
-                NSParameterAssert(identity);
-                
-                MERTweet *tweet = [context ME_fetchEntityNamed:[MERTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",MERTweetAttributes.identity,identity] sortDescriptors:nil error:NULL].firstObject;
-                
-                if (!tweet) {
-                    tweet = [NSEntityDescription insertNewObjectForEntityForName:[MERTweet entityName] inManagedObjectContext:context];
-                    
-                    [tweet setIdentity:identity];
-                    [tweet setText:dict[@"text"]];
-                    
-                    MELog(@"created entity %@ with identity %@",tweet.entity.name,identity);
-                }
+                TwitterKitTweet *tweet = [self _tweetWithDictionary:dict context:context];
                 
                 [objectIds addObject:tweet.objectID];
             }
@@ -208,7 +208,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
             if ([context ME_saveRecursively:NULL]) {
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
-                        return [[MERTweetViewModel alloc] initWithTweet:value];
+                        return [MERTweetViewModel viewModelWithTweet:value];
                     }];
                     
                     [subscriber sendNext:objects];
@@ -223,6 +223,49 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         
         return nil;
     }];
+}
+
+- (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSNumber *identity = dict[@"id"];
+    
+    NSParameterAssert(identity);
+    
+    TwitterKitTweet *retval = [context ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,identity] sortDescriptors:nil error:NULL].firstObject;
+    
+    if (!retval) {
+        retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitTweet entityName] inManagedObjectContext:context];
+        
+        [retval setIdentity:identity];
+        [retval setText:dict[@"text"]];
+        
+        if (dict[@"user"]) {
+            TwitterKitUser *user = [self _userWithDictionary:dict[@"user"] context:context];
+            
+            [retval setUser:user];
+        }
+        
+        MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
+    }
+    
+    return retval;
+}
+- (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSNumber *identity = dict[@"id"];
+    
+    NSParameterAssert(identity);
+    
+    TwitterKitUser *retval = [context ME_fetchEntityNamed:[TwitterKitUser entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitUserAttributes.identity,identity] sortDescriptors:nil error:NULL].firstObject;
+    
+    if (!retval) {
+        retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitUser entityName] inManagedObjectContext:context];
+        
+        [retval setIdentity:identity];
+        [retval setProfileImageUrl:dict[@"profile_image_url_https"]];
+        
+        MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
+    }
+    
+    return retval;
 }
 
 @end

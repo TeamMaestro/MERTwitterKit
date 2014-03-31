@@ -7,10 +7,21 @@
 //
 
 #import "MERTweetViewModel.h"
-#import "MERTweet.h"
+#import "TwitterKitTweet.h"
+#import "TwitterKitUser.h"
+#import <SDWebImage/SDWebImageManager.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <libextobjc/EXTScope.h>
+#import <MEFoundation/MEDebugging.h>
 
 @interface MERTweetViewModel ()
-@property (strong,nonatomic) MERTweet *tweet;
+@property (strong,nonatomic) TwitterKitTweet *tweet;
+
+@property (readwrite,strong,nonatomic) UIImage *userProfileImage;
+
+@property (strong,nonatomic) id<SDWebImageOperation> userProfileImageOperation;
+
+- (instancetype)initWithTweet:(TwitterKitTweet *)tweet;
 @end
 
 @implementation MERTweetViewModel
@@ -26,13 +37,46 @@
     return [self.tweet isEqual:object];
 }
 
-- (instancetype)initWithTweet:(MERTweet *)tweet; {
++ (instancetype)viewModelWithTweet:(TwitterKitTweet *)tweet; {
+    return [[self alloc] initWithTweet:tweet];
+}
+
+- (instancetype)initWithTweet:(TwitterKitTweet *)tweet; {
     if (!(self = [super init]))
-    return nil;
+        return nil;
     
     NSParameterAssert(tweet);
     
     [self setTweet:tweet];
+    
+    @weakify(self);
+    
+    RAC(self,userProfileImage) = [[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:self.tweet.user.profileImageUrl]] reduce:^id(id _, NSString *value) {
+        return value;
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            @strongify(self);
+            
+            id<SDWebImageOperation> operation = [[SDWebImageManager sharedManager] downloadWithURL:[NSURL URLWithString:value] options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                [subscriber sendNext:image];
+                [subscriber sendCompleted];
+            }];
+            
+            [self setUserProfileImageOperation:operation];
+            
+            return nil;
+        }];
+    }];
+    
+    [self.didBecomeInactiveSignal
+     subscribeNext:^(id _) {
+         @strongify(self);
+         
+         [self.userProfileImageOperation cancel];
+         [self setUserProfileImageOperation:nil];
+    }];
     
     return self;
 }

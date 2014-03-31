@@ -1,32 +1,34 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to MERTweet.h instead.
+// Make changes to TwitterKitTweet.h instead.
 
 #import <CoreData/CoreData.h>
 
 
-extern const struct MERTweetAttributes {
+extern const struct TwitterKitTweetAttributes {
 	__unsafe_unretained NSString *identity;
 	__unsafe_unretained NSString *text;
-} MERTweetAttributes;
+} TwitterKitTweetAttributes;
 
-extern const struct MERTweetRelationships {
-} MERTweetRelationships;
+extern const struct TwitterKitTweetRelationships {
+	__unsafe_unretained NSString *user;
+} TwitterKitTweetRelationships;
 
-extern const struct MERTweetFetchedProperties {
-} MERTweetFetchedProperties;
+extern const struct TwitterKitTweetFetchedProperties {
+} TwitterKitTweetFetchedProperties;
+
+@class TwitterKitUser;
 
 
 
 
-
-@interface MERTweetID : NSManagedObjectID {}
+@interface TwitterKitTweetID : NSManagedObjectID {}
 @end
 
-@interface _MERTweet : NSManagedObject {}
+@interface _TwitterKitTweet : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (MERTweetID*)objectID;
+- (TwitterKitTweetID*)objectID;
 
 
 
@@ -56,14 +58,21 @@ extern const struct MERTweetFetchedProperties {
 
 
 
+@property (nonatomic, strong) TwitterKitUser *user;
+
+//- (BOOL)validateUser:(id*)value_ error:(NSError**)error_;
+
+
+
+
 
 @end
 
-@interface _MERTweet (CoreDataGeneratedAccessors)
+@interface _TwitterKitTweet (CoreDataGeneratedAccessors)
 
 @end
 
-@interface _MERTweet (CoreDataGeneratedPrimitiveAccessors)
+@interface _TwitterKitTweet (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSNumber*)primitiveIdentity;
@@ -79,6 +88,11 @@ extern const struct MERTweetFetchedProperties {
 - (void)setPrimitiveText:(NSString*)value;
 
 
+
+
+
+- (TwitterKitUser*)primitiveUser;
+- (void)setPrimitiveUser:(TwitterKitUser*)value;
 
 
 @end

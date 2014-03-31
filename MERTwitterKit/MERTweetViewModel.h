@@ -7,13 +7,15 @@
 //
 
 #import "RVMViewModel.h"
+#import <UIKit/UIImage.h>
 
-@class MERTweet;
+@class TwitterKitTweet;
 
 @interface MERTweetViewModel : RVMViewModel
 
+@property (readonly,strong,nonatomic) UIImage *userProfileImage;
 @property (readonly,nonatomic) NSString *text;
 
-- (instancetype)initWithTweet:(MERTweet *)tweet;
++ (instancetype)viewModelWithTweet:(TwitterKitTweet *)tweet;
 
 @end

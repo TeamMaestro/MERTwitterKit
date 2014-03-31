@@ -11,6 +11,7 @@
 #import <libextobjc/EXTScope.h>
 
 @interface MERTweetTableViewCell ()
+@property (weak,nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak,nonatomic) IBOutlet UILabel *tweetTextLabel;
 @end
 
@@ -20,10 +21,23 @@
     [super awakeFromNib];
     
     RAC(self.tweetTextLabel,text) = RACObserve(self, viewModel.text);
+    RAC(self.profileImageView,image) = RACObserve(self, viewModel.userProfileImage);
+}
+
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    
+    [self.viewModel setActive:NO];
 }
 
 + (CGFloat)estimatedRowHeight; {
     return 44;
+}
+
+- (void)setViewModel:(MERTweetViewModel *)viewModel {
+    _viewModel = viewModel;
+    
+    [viewModel setActive:YES];
 }
 
 @end

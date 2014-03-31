@@ -63,7 +63,7 @@
        ignore:nil]
         take:1]
       flattenMap:^RACStream *(id value) {
-          return [[MERTwitterClient sharedClient] requestHomeTimelineTweets];
+          return [[MERTwitterClient sharedClient] requestHomeTimelineTweetsAfterTweetWithIdentity:0 beforeIdentity:0 count:0];
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         

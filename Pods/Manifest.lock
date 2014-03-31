@@ -44,12 +44,16 @@ PODS:
   - ReactiveCocoa/no-arc (2.2.4)
   - ReactiveViewModel (0.2):
     - ReactiveCocoa (~> 2.1)
+  - SDWebImage (3.6):
+    - SDWebImage/Core
+  - SDWebImage/Core (3.6)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2.0)
   - MECoreDataKit (~> 1.0.0)
   - MEReactiveKit (~> 1.0.0)
   - ReactiveViewModel (~> 0.2.0)
+  - SDWebImage (~> 3.6.0)
 
 SPEC CHECKSUMS:
   AFNetworking: 0121f4b69be3fa58d1ab317866e036e12ac9651d
@@ -61,5 +65,6 @@ SPEC CHECKSUMS:
   MEReactiveKit: 5dda3fef145cc02d9c3b9485185f651314089fa1
   ReactiveCocoa: 953a45dda30674fe704d1d9c77cc874141742f47
   ReactiveViewModel: f636ab3e06b5e69664b69c883fcdb457ab5cb0cb
+  SDWebImage: 7eb273e54ca8a2e506ad9bd5e80c35b2a4d7c95e
 
 COCOAPODS: 0.29.0
