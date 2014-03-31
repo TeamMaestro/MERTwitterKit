@@ -10,12 +10,14 @@
 #import <UIKit/UIImage.h>
 
 @class TwitterKitTweet;
+@class MERTwitterKitUserViewModel;
 
-@interface MERTweetViewModel : RVMViewModel
+@interface MERTwitterKitTweetViewModel : RVMViewModel
 
-@property (readonly,strong,nonatomic) UIImage *userProfileImage;
 @property (readonly,nonatomic) NSString *text;
 
-+ (instancetype)viewModelWithTweet:(TwitterKitTweet *)tweet;
+@property (readonly,strong,nonatomic) MERTwitterKitUserViewModel *userViewModel;
+
+- (instancetype)initWithTweet:(TwitterKitTweet *)tweet;
 
 @end

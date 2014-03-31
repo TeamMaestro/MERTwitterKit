@@ -21,23 +21,23 @@
     [super awakeFromNib];
     
     RAC(self.tweetTextLabel,text) = RACObserve(self, viewModel.text);
-    RAC(self.profileImageView,image) = RACObserve(self, viewModel.userProfileImage);
+    RAC(self.profileImageView,image) = RACObserve(self, viewModel.userViewModel.profileImage);
 }
 
 - (void)prepareForReuse {
     [super prepareForReuse];
     
-    [self.viewModel setActive:NO];
+    [self.viewModel.userViewModel setActive:NO];
 }
 
 + (CGFloat)estimatedRowHeight; {
     return 44;
 }
 
-- (void)setViewModel:(MERTweetViewModel *)viewModel {
+- (void)setViewModel:(MERTwitterKitTweetViewModel *)viewModel {
     _viewModel = viewModel;
     
-    [viewModel setActive:YES];
+    [viewModel.userViewModel setActive:YES];
 }
 
 @end

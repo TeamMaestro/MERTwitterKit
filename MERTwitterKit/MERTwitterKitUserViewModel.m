@@ -1,61 +1,69 @@
 //
-//  MERTweetViewModel.m
+//  MERTwitterKitUserViewModel.m
 //  MERTwitterKit
 //
-//  Created by William Towe on 3/27/14.
+//  Created by William Towe on 3/31/14.
 //  Copyright (c) 2014 Maestro, LLC. All rights reserved.
 //
 
-#import "MERTweetViewModel.h"
-#import "TwitterKitTweet.h"
+#import "MERTwitterKitUserViewModel.h"
 #import "TwitterKitUser.h"
-#import <SDWebImage/SDWebImageManager.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
-#import <MEFoundation/MEDebugging.h>
+#import <SDWebImage/SDWebImageManager.h>
 
-@interface MERTweetViewModel ()
-@property (strong,nonatomic) TwitterKitTweet *tweet;
+@interface MERTwitterKitUserViewModel ()
+@property (strong,nonatomic) TwitterKitUser *user;
 
-@property (readwrite,strong,nonatomic) UIImage *userProfileImage;
+@property (readwrite,strong,nonatomic) UIImage *profileImage;
 
 @property (strong,nonatomic) id<SDWebImageOperation> userProfileImageOperation;
 
-- (instancetype)initWithTweet:(TwitterKitTweet *)tweet;
+- (instancetype)initWithUser:(TwitterKitUser *)user;
 @end
 
-@implementation MERTweetViewModel
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"identity: %@ text: %@",self.tweet.identity,self.tweet.text];
-}
+@implementation MERTwitterKitUserViewModel
 
 - (NSUInteger)hash {
-    return self.tweet.hash;
+    return self.user.hash;
 }
 - (BOOL)isEqual:(id)object {
-    return [self.tweet isEqual:object];
+    return [self.user isEqual:object];
 }
 
-+ (instancetype)viewModelWithTweet:(TwitterKitTweet *)tweet; {
-    return [[self alloc] initWithTweet:tweet];
++ (instancetype)viewModelWithUser:(TwitterKitUser *)user; {
+    static NSCache *kCache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        kCache = [[NSCache alloc] init];
+    });
+    
+    MERTwitterKitUserViewModel *retval = [kCache objectForKey:user.identity];
+    
+    if (!retval) {
+        retval = [[MERTwitterKitUserViewModel alloc] initWithUser:user];
+        
+        [kCache setObject:retval forKey:user.identity];
+    }
+    
+    return retval;
 }
 
-- (instancetype)initWithTweet:(TwitterKitTweet *)tweet; {
+- (instancetype)initWithUser:(TwitterKitUser *)user; {
     if (!(self = [super init]))
         return nil;
     
-    NSParameterAssert(tweet);
+    NSParameterAssert(user);
     
-    [self setTweet:tweet];
+    [self setUser:user];
     
     @weakify(self);
     
-    RAC(self,userProfileImage) = [[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:self.tweet.user.profileImageUrl]] reduce:^id(id _, NSString *value) {
+    RAC(self,profileImage) = [[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:self.user.profileImageUrl]] reduce:^id(id _, NSString *value) {
         return value;
     }] flattenMap:^RACStream *(id value) {
         @strongify(self);
-
+        
         return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
             @strongify(self);
             
@@ -76,13 +84,9 @@
          
          [self.userProfileImageOperation cancel];
          [self setUserProfileImageOperation:nil];
-    }];
+     }];
     
     return self;
-}
-
-- (NSString *)text {
-    return self.tweet.text;
 }
 
 @end

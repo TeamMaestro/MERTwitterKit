@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MERTwitterKit/MERTweetViewModel.h>
+#import <MERTwitterKit/MERTwitterKit.h>
 
 @interface MERTweetTableViewCell : UITableViewCell
 
-@property (strong,nonatomic) MERTweetViewModel *viewModel;
+@property (strong,nonatomic) MERTwitterKitTweetViewModel *viewModel;
 
 + (CGFloat)estimatedRowHeight;
 

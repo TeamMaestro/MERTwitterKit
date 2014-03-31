@@ -99,7 +99,7 @@
 }
 
 - (void)_configureCell:(MERTweetTableViewCell *)cell indexPath:(NSIndexPath *)indexPath; {
-    MERTweetViewModel *viewModel = self.viewModels[indexPath.row];
+    MERTwitterKitTweetViewModel *viewModel = self.viewModels[indexPath.row];
     
     [cell setViewModel:viewModel];
 }

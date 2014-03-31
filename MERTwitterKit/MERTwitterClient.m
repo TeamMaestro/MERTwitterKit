@@ -15,7 +15,7 @@
 #import <MEFoundation/NSFileManager+MEExtensions.h>
 #import <MEFoundation/MEDebugging.h>
 #import <MEReactiveFoundation/MEReactiveFoundation.h>
-#import "MERTweetViewModel.h"
+#import "MERTwitterKitTweetViewModel.h"
 
 #import <Social/Social.h>
 
@@ -208,7 +208,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
             if ([context ME_saveRecursively:NULL]) {
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
-                        return [MERTweetViewModel viewModelWithTweet:value];
+                        return [[MERTwitterKitTweetViewModel alloc] initWithTweet:value];
                     }];
                     
                     [subscriber sendNext:objects];
