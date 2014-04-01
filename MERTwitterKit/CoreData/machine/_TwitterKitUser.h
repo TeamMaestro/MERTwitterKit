@@ -12,12 +12,14 @@ extern const struct TwitterKitUserAttributes {
 } TwitterKitUserAttributes;
 
 extern const struct TwitterKitUserRelationships {
+	__unsafe_unretained NSString *mentions;
 	__unsafe_unretained NSString *tweets;
 } TwitterKitUserRelationships;
 
 extern const struct TwitterKitUserFetchedProperties {
 } TwitterKitUserFetchedProperties;
 
+@class TwitterKitMention;
 @class TwitterKitTweet;
 
 
@@ -82,6 +84,13 @@ extern const struct TwitterKitUserFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *mentions;
+
+- (NSMutableSet*)mentionsSet;
+
+
+
+
 @property (nonatomic, strong) NSSet *tweets;
 
 - (NSMutableSet*)tweetsSet;
@@ -93,6 +102,11 @@ extern const struct TwitterKitUserFetchedProperties {
 @end
 
 @interface _TwitterKitUser (CoreDataGeneratedAccessors)
+
+- (void)addMentions:(NSSet*)value_;
+- (void)removeMentions:(NSSet*)value_;
+- (void)addMentionsObject:(TwitterKitMention*)value_;
+- (void)removeMentionsObject:(TwitterKitMention*)value_;
 
 - (void)addTweets:(NSSet*)value_;
 - (void)removeTweets:(NSSet*)value_;
@@ -129,6 +143,11 @@ extern const struct TwitterKitUserFetchedProperties {
 - (void)setPrimitiveScreenName:(NSString*)value;
 
 
+
+
+
+- (NSMutableSet*)primitiveMentions;
+- (void)setPrimitiveMentions:(NSMutableSet*)value;
 
 
 

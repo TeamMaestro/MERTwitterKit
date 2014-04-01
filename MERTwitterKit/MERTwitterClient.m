@@ -226,31 +226,47 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 }
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
-    NSDateFormatter *createdAtDateFormatter = [NSThread currentThread].threadDictionary[TwitterKitTweetAttributes.createdAt];
+    NSString *const kTextKey = @"text";
+    NSString *const kCreatedAtKey = @"created_at";
+    NSString *const kUserKey = @"user";
+    NSString *const kIdKey = @"id";
+    NSString *const kCoordinatesKey = @"coordinates";
+    NSString *const kEntities = @"entities";
     
-    if (!createdAtDateFormatter) {
-        createdAtDateFormatter = [[NSDateFormatter alloc] init];
-        
-        [createdAtDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
-        
-        [[NSThread currentThread].threadDictionary setObject:createdAtDateFormatter forKey:TwitterKitTweetAttributes.createdAt];
-    }
-    
-    NSNumber *identity = dict[@"id"];
+    NSNumber *identity = dict[kIdKey];
     
     NSParameterAssert(identity);
     
     TwitterKitTweet *retval = [context ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,identity] sortDescriptors:nil error:NULL].firstObject;
     
     if (!retval) {
+        NSDateFormatter *createdAtDateFormatter = [NSThread currentThread].threadDictionary[TwitterKitTweetAttributes.createdAt];
+        
+        if (!createdAtDateFormatter) {
+            createdAtDateFormatter = [[NSDateFormatter alloc] init];
+            
+            [createdAtDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+            
+            [[NSThread currentThread].threadDictionary setObject:createdAtDateFormatter forKey:TwitterKitTweetAttributes.createdAt];
+        }
+        
         retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitTweet entityName] inManagedObjectContext:context];
         
         [retval setIdentity:identity];
-        [retval setText:dict[@"text"]];
-        [retval setCreatedAt:[createdAtDateFormatter dateFromString:dict[@"created_at"]]];
+        [retval setText:dict[kTextKey]];
+        [retval setCreatedAt:[createdAtDateFormatter dateFromString:dict[kCreatedAtKey]]];
         
-        if (dict[@"user"]) {
-            TwitterKitUser *user = [self _userWithDictionary:dict[@"user"] context:context];
+        if ([dict[kCoordinatesKey] isKindOfClass:[NSDictionary class]]) {
+            [retval setLongitude:dict[kCoordinatesKey][kCoordinatesKey][0]];
+            [retval setLatitude:dict[kCoordinatesKey][kCoordinatesKey][1]];
+        }
+        
+        if ([dict[kEntities] isKindOfClass:[NSDictionary class]]) {
+            
+        }
+        
+        if (dict[kUserKey]) {
+            TwitterKitUser *user = [self _userWithDictionary:dict[kUserKey] context:context];
             
             [retval setUser:user];
         }

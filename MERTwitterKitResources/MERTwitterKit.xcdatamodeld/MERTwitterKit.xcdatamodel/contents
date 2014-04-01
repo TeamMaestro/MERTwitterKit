@@ -1,20 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="TwitterKitHashTag" representedClassName="TwitterKitHashTag" syncable="YES">
+        <attribute name="endStartIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitHashTag" inverseName="tweets" inverseEntity="TwitterKitHashTag" syncable="YES"/>
+    </entity>
+    <entity name="TwitterKitMedia" representedClassName="TwitterKitMedia" syncable="YES">
+        <attribute name="displayUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="identity" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sizes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitMediaSize" inverseName="media" inverseEntity="TwitterKitMediaSize" syncable="YES"/>
+        <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="media" inverseEntity="TwitterKitTweet" syncable="YES"/>
+    </entity>
+    <entity name="TwitterKitMediaSize" representedClassName="TwitterKitMediaSize" syncable="YES">
+        <attribute name="height" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="resize" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitMedia" inverseName="sizes" inverseEntity="TwitterKitMedia" syncable="YES"/>
+    </entity>
+    <entity name="TwitterKitMention" representedClassName="TwitterKitMention" syncable="YES">
+        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="mentions" inverseEntity="TwitterKitTweet" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitUser" inverseName="mentions" inverseEntity="TwitterKitUser" syncable="YES"/>
+    </entity>
+    <entity name="TwitterKitPlace" representedClassName="TwitterKitPlace" syncable="YES">
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="countryCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fullName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="place" inverseEntity="TwitterKitTweet" syncable="YES"/>
+    </entity>
+    <entity name="TwitterKitSymbol" representedClassName="TwitterKitSymbol" syncable="YES">
+        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="symbols" inverseEntity="TwitterKitTweet" syncable="YES"/>
+    </entity>
     <entity name="TwitterKitTweet" representedClassName="TwitterKitTweet" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="favoriteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="favorited" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="identity" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="retweetCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="retweeted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="hashTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitHashTag" syncable="YES"/>
+        <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitMedia" inverseName="tweet" inverseEntity="TwitterKitMedia" syncable="YES"/>
+        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitMention" inverseName="tweet" inverseEntity="TwitterKitMention" syncable="YES"/>
+        <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitPlace" inverseName="tweet" inverseEntity="TwitterKitPlace" syncable="YES"/>
+        <relationship name="retweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="retweets" inverseEntity="TwitterKitTweet" syncable="YES"/>
+        <relationship name="retweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="retweet" inverseEntity="TwitterKitTweet" syncable="YES"/>
+        <relationship name="symbols" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitSymbol" inverseName="tweets" inverseEntity="TwitterKitSymbol" syncable="YES"/>
+        <relationship name="urls" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitURL" inverseName="tweet" inverseEntity="TwitterKitURL" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitUser" inverseName="tweets" inverseEntity="TwitterKitUser" syncable="YES"/>
+    </entity>
+    <entity name="TwitterKitURL" representedClassName="TwitterKitURL" syncable="YES">
+        <attribute name="displayUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="expandedUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="url" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="urls" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
     <entity name="TwitterKitUser" representedClassName="TwitterKitUser" syncable="YES">
         <attribute name="identity" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profileImageUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitMention" inverseName="user" inverseEntity="TwitterKitMention" syncable="YES"/>
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="user" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="103"/>
-        <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="118"/>
+        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="313"/>
+        <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="133"/>
+        <element name="TwitterKitMedia" positionX="-54" positionY="36" width="128" height="163"/>
+        <element name="TwitterKitMediaSize" positionX="-45" positionY="45" width="128" height="118"/>
+        <element name="TwitterKitURL" positionX="-36" positionY="90" width="128" height="133"/>
+        <element name="TwitterKitMention" positionX="-27" positionY="117" width="128" height="103"/>
+        <element name="TwitterKitHashTag" positionX="-18" positionY="126" width="128" height="103"/>
+        <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="103"/>
+        <element name="TwitterKitPlace" positionX="18" positionY="162" width="128" height="163"/>
     </elements>
 </model>

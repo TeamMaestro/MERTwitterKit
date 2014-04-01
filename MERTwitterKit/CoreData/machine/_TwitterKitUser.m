@@ -11,6 +11,7 @@ const struct TwitterKitUserAttributes TwitterKitUserAttributes = {
 };
 
 const struct TwitterKitUserRelationships TwitterKitUserRelationships = {
+	.mentions = @"mentions",
 	.tweets = @"tweets",
 };
 
@@ -101,6 +102,19 @@ const struct TwitterKitUserFetchedProperties TwitterKitUserFetchedProperties = {
 
 
 
+
+@dynamic mentions;
+
+	
+- (NSMutableSet*)mentionsSet {
+	[self willAccessValueForKey:@"mentions"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"mentions"];
+  
+	[self didAccessValueForKey:@"mentions"];
+	return result;
+}
+	
 
 @dynamic tweets;
 
