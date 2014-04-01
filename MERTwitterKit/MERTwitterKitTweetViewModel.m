@@ -51,5 +51,21 @@
 - (NSString *)text {
     return self.tweet.text;
 }
+- (NSDate *)createdAt {
+    return self.tweet.createdAt;
+}
+- (NSString *)relativeCreatedAtString {
+    static NSDateFormatter *kDateFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        kDateFormatter = [[NSDateFormatter alloc] init];
+        
+        [kDateFormatter setDateStyle:NSDateFormatterShortStyle];
+        [kDateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [kDateFormatter setDoesRelativeDateFormatting:YES];
+    });
+    
+    return [kDateFormatter stringFromDate:self.createdAt];
+}
 
 @end

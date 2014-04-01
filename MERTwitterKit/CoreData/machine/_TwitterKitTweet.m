@@ -4,6 +4,7 @@
 #import "_TwitterKitTweet.h"
 
 const struct TwitterKitTweetAttributes TwitterKitTweetAttributes = {
+	.createdAt = @"createdAt",
 	.identity = @"identity",
 	.text = @"text",
 };
@@ -49,6 +50,13 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic createdAt;
+
+
 
 
 

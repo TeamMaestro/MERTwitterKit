@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="TwitterKitTweet" representedClassName="TwitterKitTweet" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="identity" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitUser" inverseName="tweets" inverseEntity="TwitterKitUser" syncable="YES"/>
@@ -13,7 +14,7 @@
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="user" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="88"/>
+        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="103"/>
         <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="118"/>
     </elements>
 </model>

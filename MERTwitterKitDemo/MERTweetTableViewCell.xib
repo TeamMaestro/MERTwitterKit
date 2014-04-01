@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="text" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="228" translatesAutoresizingMaskIntoConstraints="NO" id="A4H-mP-t2B">
-                        <rect key="frame" x="72" y="66" width="228" height="69"/>
+                        <rect key="frame" x="72" y="66" width="228" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -42,6 +42,12 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="created at" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFX-Gp-nFj">
+                        <rect key="frame" x="72" y="114" width="228" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="XjE-3B-1G6" secondAttribute="trailing" constant="20" id="8zo-Yb-2oz"/>
@@ -49,18 +55,22 @@
                     <constraint firstItem="r7P-gp-npV" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="G74-Zs-Trc"/>
                     <constraint firstAttribute="trailing" secondItem="r7P-gp-npV" secondAttribute="trailing" constant="20" id="KRi-v8-6tT"/>
                     <constraint firstAttribute="trailing" secondItem="A4H-mP-t2B" secondAttribute="trailing" constant="20" id="R1a-aE-8AO"/>
+                    <constraint firstItem="yFX-Gp-nFj" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="XTc-gn-rCC"/>
                     <constraint firstItem="MIo-K5-IjD" firstAttribute="leading" secondItem="HOD-zT-etR" secondAttribute="leading" constant="20" id="Xwy-Qe-IkM"/>
                     <constraint firstItem="XjE-3B-1G6" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="Zyj-Fo-xsa"/>
                     <constraint firstItem="A4H-mP-t2B" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="a1r-zb-ba7"/>
                     <constraint firstItem="A4H-mP-t2B" firstAttribute="top" secondItem="r7P-gp-npV" secondAttribute="bottom" constant="8" id="c1u-UH-0Q5"/>
+                    <constraint firstAttribute="trailing" secondItem="yFX-Gp-nFj" secondAttribute="trailing" constant="20" id="cGR-XH-v0g"/>
                     <constraint firstItem="MIo-K5-IjD" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="cu3-LN-rPn"/>
                     <constraint firstItem="XjE-3B-1G6" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="fX4-MF-zbk"/>
                     <constraint firstItem="r7P-gp-npV" firstAttribute="top" secondItem="XjE-3B-1G6" secondAttribute="bottom" constant="8" id="iIy-Ea-M4W"/>
-                    <constraint firstAttribute="bottom" secondItem="A4H-mP-t2B" secondAttribute="bottom" constant="8" id="isx-FH-kBD"/>
+                    <constraint firstAttribute="bottom" secondItem="yFX-Gp-nFj" secondAttribute="bottom" constant="8" id="lKS-fI-NPS"/>
+                    <constraint firstItem="yFX-Gp-nFj" firstAttribute="top" secondItem="A4H-mP-t2B" secondAttribute="bottom" constant="8" id="yLZ-HK-D8Q"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="profileImageView" destination="MIo-K5-IjD" id="8Yc-rM-PHg"/>
+                <outlet property="tweetCreatedAtLabel" destination="yFX-Gp-nFj" id="Ufg-nl-ebl"/>
                 <outlet property="tweetTextLabel" destination="A4H-mP-t2B" id="EGF-OI-G2p"/>
                 <outlet property="userNameLabel" destination="XjE-3B-1G6" id="1IU-xV-SUm"/>
                 <outlet property="userScreenNameLabel" destination="r7P-gp-npV" id="BNd-Xi-CJE"/>

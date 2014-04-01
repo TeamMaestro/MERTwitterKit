@@ -15,6 +15,8 @@
 @interface MERTwitterKitTweetViewModel : RVMViewModel
 
 @property (readonly,nonatomic) NSString *text;
+@property (readonly,nonatomic) NSDate *createdAt;
+@property (readonly,nonatomic) NSString *relativeCreatedAtString;
 
 @property (readonly,strong,nonatomic) MERTwitterKitUserViewModel *userViewModel;
 

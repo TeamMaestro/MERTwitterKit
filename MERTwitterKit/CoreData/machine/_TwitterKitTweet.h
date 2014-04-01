@@ -5,6 +5,7 @@
 
 
 extern const struct TwitterKitTweetAttributes {
+	__unsafe_unretained NSString *createdAt;
 	__unsafe_unretained NSString *identity;
 	__unsafe_unretained NSString *text;
 } TwitterKitTweetAttributes;
@@ -21,6 +22,7 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
+
 @interface TwitterKitTweetID : NSManagedObjectID {}
 @end
 
@@ -29,6 +31,16 @@ extern const struct TwitterKitTweetFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (TwitterKitTweetID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* createdAt;
+
+
+
+//- (BOOL)validateCreatedAt:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -73,6 +85,12 @@ extern const struct TwitterKitTweetFetchedProperties {
 @end
 
 @interface _TwitterKitTweet (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSDate*)primitiveCreatedAt;
+- (void)setPrimitiveCreatedAt:(NSDate*)value;
+
+
 
 
 - (NSNumber*)primitiveIdentity;

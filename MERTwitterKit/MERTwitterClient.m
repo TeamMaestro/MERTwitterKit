@@ -226,6 +226,16 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 }
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSDateFormatter *createdAtDateFormatter = [NSThread currentThread].threadDictionary[TwitterKitTweetAttributes.createdAt];
+    
+    if (!createdAtDateFormatter) {
+        createdAtDateFormatter = [[NSDateFormatter alloc] init];
+        
+        [createdAtDateFormatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+        
+        [[NSThread currentThread].threadDictionary setObject:createdAtDateFormatter forKey:TwitterKitTweetAttributes.createdAt];
+    }
+    
     NSNumber *identity = dict[@"id"];
     
     NSParameterAssert(identity);
@@ -237,6 +247,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         
         [retval setIdentity:identity];
         [retval setText:dict[@"text"]];
+        [retval setCreatedAt:[createdAtDateFormatter dateFromString:dict[@"created_at"]]];
         
         if (dict[@"user"]) {
             TwitterKitUser *user = [self _userWithDictionary:dict[@"user"] context:context];
