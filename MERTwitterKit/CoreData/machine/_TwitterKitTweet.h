@@ -5,12 +5,11 @@
 
 
 extern const struct TwitterKitTweetAttributes {
+	__unsafe_unretained NSString *coordinates;
 	__unsafe_unretained NSString *createdAt;
 	__unsafe_unretained NSString *favoriteCount;
 	__unsafe_unretained NSString *favorited;
 	__unsafe_unretained NSString *identity;
-	__unsafe_unretained NSString *latitude;
-	__unsafe_unretained NSString *longitude;
 	__unsafe_unretained NSString *retweetCount;
 	__unsafe_unretained NSString *retweeted;
 	__unsafe_unretained NSString *text;
@@ -41,8 +40,7 @@ extern const struct TwitterKitTweetFetchedProperties {
 @class TwitterKitUrl;
 @class TwitterKitUser;
 
-
-
+@class NSValue;
 
 
 
@@ -59,6 +57,16 @@ extern const struct TwitterKitTweetFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (TwitterKitTweetID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSValue* coordinates;
+
+
+
+//- (BOOL)validateCoordinates:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -111,34 +119,6 @@ extern const struct TwitterKitTweetFetchedProperties {
 - (void)setIdentityValue:(int64_t)value_;
 
 //- (BOOL)validateIdentity:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* latitude;
-
-
-
-@property double latitudeValue;
-- (double)latitudeValue;
-- (void)setLatitudeValue:(double)value_;
-
-//- (BOOL)validateLatitude:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* longitude;
-
-
-
-@property double longitudeValue;
-- (double)longitudeValue;
-- (void)setLongitudeValue:(double)value_;
-
-//- (BOOL)validateLongitude:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -285,6 +265,12 @@ extern const struct TwitterKitTweetFetchedProperties {
 @interface _TwitterKitTweet (CoreDataGeneratedPrimitiveAccessors)
 
 
+- (NSValue*)primitiveCoordinates;
+- (void)setPrimitiveCoordinates:(NSValue*)value;
+
+
+
+
 - (NSDate*)primitiveCreatedAt;
 - (void)setPrimitiveCreatedAt:(NSDate*)value;
 
@@ -314,24 +300,6 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 - (int64_t)primitiveIdentityValue;
 - (void)setPrimitiveIdentityValue:(int64_t)value_;
-
-
-
-
-- (NSNumber*)primitiveLatitude;
-- (void)setPrimitiveLatitude:(NSNumber*)value;
-
-- (double)primitiveLatitudeValue;
-- (void)setPrimitiveLatitudeValue:(double)value_;
-
-
-
-
-- (NSNumber*)primitiveLongitude;
-- (void)setPrimitiveLongitude:(NSNumber*)value;
-
-- (double)primitiveLongitudeValue;
-- (void)setPrimitiveLongitudeValue:(double)value_;
 
 
 

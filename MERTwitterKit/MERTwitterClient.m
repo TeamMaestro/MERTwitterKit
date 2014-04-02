@@ -58,6 +58,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 - (TwitterKitMedia *)_mediaWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitMediaSize *)_mediaSizeWithName:(NSString *)name dictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitMention *)_mentionWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitPlace *)_placeWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 @end
 
 @implementation MERTwitterClient
@@ -261,6 +262,7 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     NSString *const kUrlsKey = @"urls";
     NSString *const kMediaKey = @"media";
     NSString *const kMentionsKey = @"user_mentions";
+    NSString *const kPlaceKey = @"place";
     
     NSNumber *identity = dict[kIdKey];
     
@@ -286,8 +288,7 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
         [retval setCreatedAt:[createdAtDateFormatter dateFromString:dict[kCreatedAtKey]]];
         
         if ([dict[kCoordinatesKey] isKindOfClass:[NSDictionary class]]) {
-            [retval setLongitude:dict[kCoordinatesKey][kCoordinatesKey][0]];
-            [retval setLatitude:dict[kCoordinatesKey][kCoordinatesKey][1]];
+            [retval setCoordinates:[NSValue valueWithCGPoint:CGPointMake([dict[kCoordinatesKey][kCoordinatesKey][1] doubleValue], [dict[kCoordinatesKey][kCoordinatesKey][0] doubleValue])]];
         }
         
         if ([dict[kEntitiesKey] isKindOfClass:[NSDictionary class]]) {
@@ -306,6 +307,10 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
             [retval setMentions:[[dict[kEntitiesKey][kMentionsKey] MER_map:^id(NSDictionary *value) {
                 return [self _mentionWithDictionary:value context:context];
             }] ME_set]];
+        }
+        
+        if ([dict[kPlaceKey] isKindOfClass:[NSDictionary class]]) {
+            [retval setPlace:[self _placeWithDictionary:dict[kPlaceKey] context:context]];
         }
         
         if (dict[kUserKey]) {
@@ -454,6 +459,26 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     [retval setUser:[self _userWithDictionary:dict context:context]];
     
     MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
+    
+    return retval;
+}
+- (TwitterKitPlace *)_placeWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    NSString *identity = dict[kIdKey];
+    
+    NSParameterAssert(identity);
+    
+    TwitterKitPlace *retval = [context ME_fetchEntityNamed:[TwitterKitPlace entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitPlaceAttributes.identity,identity] sortDescriptors:nil error:NULL].firstObject;
+    
+    if (!retval) {
+        retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitPlace entityName] inManagedObjectContext:context];
+        
+        [retval setIdentity:identity];
+    }
+    
+    
     
     return retval;
 }
