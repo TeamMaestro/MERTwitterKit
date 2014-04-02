@@ -15,6 +15,12 @@
 @interface MERTwitterKitTweetViewModel : RVMViewModel
 
 @property (readonly,nonatomic) NSString *text;
+@property (readonly,nonatomic) NSSet *hashtagRanges;
+@property (readonly,nonatomic) NSSet *mediaRanges;
+@property (readonly,nonatomic) NSSet *mentionRanges;
+@property (readonly,nonatomic) NSSet *symbolRanges;
+@property (readonly,nonatomic) NSSet *urlRanges;
+
 @property (readonly,nonatomic) NSDate *createdAt;
 @property (readonly,nonatomic) NSString *relativeCreatedAtString;
 

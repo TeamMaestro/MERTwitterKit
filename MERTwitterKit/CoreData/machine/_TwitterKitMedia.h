@@ -7,7 +7,9 @@
 extern const struct TwitterKitMediaAttributes {
 	__unsafe_unretained NSString *displayUrl;
 	__unsafe_unretained NSString *endTextIndex;
+	__unsafe_unretained NSString *expandedUrl;
 	__unsafe_unretained NSString *identity;
+	__unsafe_unretained NSString *mediaUrl;
 	__unsafe_unretained NSString *startTextIndex;
 	__unsafe_unretained NSString *type;
 	__unsafe_unretained NSString *url;
@@ -23,6 +25,8 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 @class TwitterKitMediaSize;
 @class TwitterKitTweet;
+
+
 
 
 
@@ -68,6 +72,16 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* expandedUrl;
+
+
+
+//- (BOOL)validateExpandedUrl:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSNumber* identity;
 
 
@@ -77,6 +91,16 @@ extern const struct TwitterKitMediaFetchedProperties {
 - (void)setIdentityValue:(int64_t)value_;
 
 //- (BOOL)validateIdentity:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* mediaUrl;
+
+
+
+//- (BOOL)validateMediaUrl:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -160,11 +184,23 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
+- (NSString*)primitiveExpandedUrl;
+- (void)setPrimitiveExpandedUrl:(NSString*)value;
+
+
+
+
 - (NSNumber*)primitiveIdentity;
 - (void)setPrimitiveIdentity:(NSNumber*)value;
 
 - (int64_t)primitiveIdentityValue;
 - (void)setPrimitiveIdentityValue:(int64_t)value_;
+
+
+
+
+- (NSString*)primitiveMediaUrl;
+- (void)setPrimitiveMediaUrl:(NSString*)value;
 
 
 

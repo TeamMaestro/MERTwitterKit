@@ -86,9 +86,9 @@ extern const struct TwitterKitMediaSizeFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *media;
+@property (nonatomic, strong) TwitterKitMedia *media;
 
-- (NSMutableSet*)mediaSet;
+//- (BOOL)validateMedia:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -97,11 +97,6 @@ extern const struct TwitterKitMediaSizeFetchedProperties {
 @end
 
 @interface _TwitterKitMediaSize (CoreDataGeneratedAccessors)
-
-- (void)addMedia:(NSSet*)value_;
-- (void)removeMedia:(NSSet*)value_;
-- (void)addMediaObject:(TwitterKitMedia*)value_;
-- (void)removeMediaObject:(TwitterKitMedia*)value_;
 
 @end
 
@@ -139,8 +134,8 @@ extern const struct TwitterKitMediaSizeFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveMedia;
-- (void)setPrimitiveMedia:(NSMutableSet*)value;
+- (TwitterKitMedia*)primitiveMedia;
+- (void)setPrimitiveMedia:(TwitterKitMedia*)value;
 
 
 @end

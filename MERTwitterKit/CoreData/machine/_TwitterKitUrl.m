@@ -1,42 +1,44 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to TwitterKitSymbol.m instead.
+// Make changes to TwitterKitUrl.m instead.
 
-#import "_TwitterKitSymbol.h"
+#import "_TwitterKitUrl.h"
 
-const struct TwitterKitSymbolAttributes TwitterKitSymbolAttributes = {
+const struct TwitterKitUrlAttributes TwitterKitUrlAttributes = {
+	.displayUrl = @"displayUrl",
 	.endTextIndex = @"endTextIndex",
+	.expandedUrl = @"expandedUrl",
 	.startTextIndex = @"startTextIndex",
-	.text = @"text",
+	.url = @"url",
 };
 
-const struct TwitterKitSymbolRelationships TwitterKitSymbolRelationships = {
+const struct TwitterKitUrlRelationships TwitterKitUrlRelationships = {
 	.tweet = @"tweet",
 };
 
-const struct TwitterKitSymbolFetchedProperties TwitterKitSymbolFetchedProperties = {
+const struct TwitterKitUrlFetchedProperties TwitterKitUrlFetchedProperties = {
 };
 
-@implementation TwitterKitSymbolID
+@implementation TwitterKitUrlID
 @end
 
-@implementation _TwitterKitSymbol
+@implementation _TwitterKitUrl
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"TwitterKitSymbol" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"TwitterKitUrl" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"TwitterKitSymbol";
+	return @"TwitterKitUrl";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"TwitterKitSymbol" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"TwitterKitUrl" inManagedObjectContext:moc_];
 }
 
-- (TwitterKitSymbolID*)objectID {
-	return (TwitterKitSymbolID*)[super objectID];
+- (TwitterKitUrlID*)objectID {
+	return (TwitterKitUrlID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
@@ -55,6 +57,13 @@ const struct TwitterKitSymbolFetchedProperties TwitterKitSymbolFetchedProperties
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic displayUrl;
+
+
 
 
 
@@ -80,6 +89,13 @@ const struct TwitterKitSymbolFetchedProperties TwitterKitSymbolFetchedProperties
 - (void)setPrimitiveEndTextIndexValue:(int16_t)value_ {
 	[self setPrimitiveEndTextIndex:[NSNumber numberWithShort:value_]];
 }
+
+
+
+
+
+@dynamic expandedUrl;
+
 
 
 
@@ -111,7 +127,7 @@ const struct TwitterKitSymbolFetchedProperties TwitterKitSymbolFetchedProperties
 
 
 
-@dynamic text;
+@dynamic url;
 
 
 

@@ -1,44 +1,42 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to TwitterKitURL.m instead.
+// Make changes to TwitterKitHashtag.m instead.
 
-#import "_TwitterKitURL.h"
+#import "_TwitterKitHashtag.h"
 
-const struct TwitterKitURLAttributes TwitterKitURLAttributes = {
-	.displayUrl = @"displayUrl",
+const struct TwitterKitHashtagAttributes TwitterKitHashtagAttributes = {
 	.endTextIndex = @"endTextIndex",
-	.expandedUrl = @"expandedUrl",
 	.startTextIndex = @"startTextIndex",
-	.url = @"url",
+	.text = @"text",
 };
 
-const struct TwitterKitURLRelationships TwitterKitURLRelationships = {
+const struct TwitterKitHashtagRelationships TwitterKitHashtagRelationships = {
 	.tweet = @"tweet",
 };
 
-const struct TwitterKitURLFetchedProperties TwitterKitURLFetchedProperties = {
+const struct TwitterKitHashtagFetchedProperties TwitterKitHashtagFetchedProperties = {
 };
 
-@implementation TwitterKitURLID
+@implementation TwitterKitHashtagID
 @end
 
-@implementation _TwitterKitURL
+@implementation _TwitterKitHashtag
 
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"TwitterKitURL" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"TwitterKitHashtag" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"TwitterKitURL";
+	return @"TwitterKitHashtag";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"TwitterKitURL" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"TwitterKitHashtag" inManagedObjectContext:moc_];
 }
 
-- (TwitterKitURLID*)objectID {
-	return (TwitterKitURLID*)[super objectID];
+- (TwitterKitHashtagID*)objectID {
+	return (TwitterKitHashtagID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
@@ -57,13 +55,6 @@ const struct TwitterKitURLFetchedProperties TwitterKitURLFetchedProperties = {
 
 	return keyPaths;
 }
-
-
-
-
-@dynamic displayUrl;
-
-
 
 
 
@@ -89,13 +80,6 @@ const struct TwitterKitURLFetchedProperties TwitterKitURLFetchedProperties = {
 - (void)setPrimitiveEndTextIndexValue:(int16_t)value_ {
 	[self setPrimitiveEndTextIndex:[NSNumber numberWithShort:value_]];
 }
-
-
-
-
-
-@dynamic expandedUrl;
-
 
 
 
@@ -127,7 +111,7 @@ const struct TwitterKitURLFetchedProperties TwitterKitURLFetchedProperties = {
 
 
 
-@dynamic url;
+@dynamic text;
 
 
 

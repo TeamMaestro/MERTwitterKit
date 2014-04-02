@@ -1,36 +1,36 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to TwitterKitSymbol.h instead.
+// Make changes to TwitterKitHashtag.h instead.
 
 #import <CoreData/CoreData.h>
 
 
-extern const struct TwitterKitSymbolAttributes {
+extern const struct TwitterKitHashtagAttributes {
 	__unsafe_unretained NSString *endTextIndex;
 	__unsafe_unretained NSString *startTextIndex;
 	__unsafe_unretained NSString *text;
-} TwitterKitSymbolAttributes;
+} TwitterKitHashtagAttributes;
 
-extern const struct TwitterKitSymbolRelationships {
+extern const struct TwitterKitHashtagRelationships {
 	__unsafe_unretained NSString *tweet;
-} TwitterKitSymbolRelationships;
+} TwitterKitHashtagRelationships;
 
-extern const struct TwitterKitSymbolFetchedProperties {
-} TwitterKitSymbolFetchedProperties;
+extern const struct TwitterKitHashtagFetchedProperties {
+} TwitterKitHashtagFetchedProperties;
 
-@class TwitterKitTweet;
-
-
+@class TwitterKitHashtag;
 
 
 
-@interface TwitterKitSymbolID : NSManagedObjectID {}
+
+
+@interface TwitterKitHashtagID : NSManagedObjectID {}
 @end
 
-@interface _TwitterKitSymbol : NSManagedObject {}
+@interface _TwitterKitHashtag : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (TwitterKitSymbolID*)objectID;
+- (TwitterKitHashtagID*)objectID;
 
 
 
@@ -74,7 +74,7 @@ extern const struct TwitterKitSymbolFetchedProperties {
 
 
 
-@property (nonatomic, strong) TwitterKitTweet *tweet;
+@property (nonatomic, strong) TwitterKitHashtag *tweet;
 
 //- (BOOL)validateTweet:(id*)value_ error:(NSError**)error_;
 
@@ -84,11 +84,11 @@ extern const struct TwitterKitSymbolFetchedProperties {
 
 @end
 
-@interface _TwitterKitSymbol (CoreDataGeneratedAccessors)
+@interface _TwitterKitHashtag (CoreDataGeneratedAccessors)
 
 @end
 
-@interface _TwitterKitSymbol (CoreDataGeneratedPrimitiveAccessors)
+@interface _TwitterKitHashtag (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSNumber*)primitiveEndTextIndex;
@@ -116,8 +116,8 @@ extern const struct TwitterKitSymbolFetchedProperties {
 
 
 
-- (TwitterKitTweet*)primitiveTweet;
-- (void)setPrimitiveTweet:(TwitterKitTweet*)value;
+- (TwitterKitHashtag*)primitiveTweet;
+- (void)setPrimitiveTweet:(TwitterKitHashtag*)value;
 
 
 @end

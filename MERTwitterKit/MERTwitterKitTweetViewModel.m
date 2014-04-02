@@ -12,6 +12,12 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
 #import "MERTwitterKitUserViewModel.h"
+#import "TwitterKitUrl.h"
+#import <MEReactiveFoundation/MEReactiveFoundation.h>
+#import "TwitterKitMention.h"
+#import "TwitterKitHashtag.h"
+#import "TwitterKitSymbol.h"
+#import "TwitterKitMedia.h"
 
 @interface MERTwitterKitTweetViewModel ()
 @property (strong,nonatomic) TwitterKitTweet *tweet;
@@ -51,6 +57,32 @@
 - (NSString *)text {
     return self.tweet.text;
 }
+- (NSSet *)hashtagRanges {
+    return [self.tweet.hashtags MER_map:^id(TwitterKitHashtag *value) {
+        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+    }];
+}
+- (NSSet *)mediaRanges {
+    return [self.tweet.media MER_map:^id(TwitterKitMedia *value) {
+        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+    }];
+}
+- (NSSet *)mentionRanges {
+    return [self.tweet.mentions MER_map:^id(TwitterKitMention *value) {
+        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+    }];
+}
+- (NSSet *)symbolRanges {
+    return [self.tweet.symbols MER_map:^id(TwitterKitSymbol *value) {
+        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+    }];
+}
+- (NSSet *)urlRanges {
+    return [self.tweet.urls MER_map:^id(TwitterKitUrl *value) {
+        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+    }];
+}
+
 - (NSDate *)createdAt {
     return self.tweet.createdAt;
 }

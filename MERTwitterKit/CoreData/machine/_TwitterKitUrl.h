@@ -1,23 +1,23 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to TwitterKitURL.h instead.
+// Make changes to TwitterKitUrl.h instead.
 
 #import <CoreData/CoreData.h>
 
 
-extern const struct TwitterKitURLAttributes {
+extern const struct TwitterKitUrlAttributes {
 	__unsafe_unretained NSString *displayUrl;
 	__unsafe_unretained NSString *endTextIndex;
 	__unsafe_unretained NSString *expandedUrl;
 	__unsafe_unretained NSString *startTextIndex;
 	__unsafe_unretained NSString *url;
-} TwitterKitURLAttributes;
+} TwitterKitUrlAttributes;
 
-extern const struct TwitterKitURLRelationships {
+extern const struct TwitterKitUrlRelationships {
 	__unsafe_unretained NSString *tweet;
-} TwitterKitURLRelationships;
+} TwitterKitUrlRelationships;
 
-extern const struct TwitterKitURLFetchedProperties {
-} TwitterKitURLFetchedProperties;
+extern const struct TwitterKitUrlFetchedProperties {
+} TwitterKitUrlFetchedProperties;
 
 @class TwitterKitTweet;
 
@@ -27,14 +27,14 @@ extern const struct TwitterKitURLFetchedProperties {
 
 
 
-@interface TwitterKitURLID : NSManagedObjectID {}
+@interface TwitterKitUrlID : NSManagedObjectID {}
 @end
 
-@interface _TwitterKitURL : NSManagedObject {}
+@interface _TwitterKitUrl : NSManagedObject {}
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (TwitterKitURLID*)objectID;
+- (TwitterKitUrlID*)objectID;
 
 
 
@@ -108,11 +108,11 @@ extern const struct TwitterKitURLFetchedProperties {
 
 @end
 
-@interface _TwitterKitURL (CoreDataGeneratedAccessors)
+@interface _TwitterKitUrl (CoreDataGeneratedAccessors)
 
 @end
 
-@interface _TwitterKitURL (CoreDataGeneratedPrimitiveAccessors)
+@interface _TwitterKitUrl (CoreDataGeneratedPrimitiveAccessors)
 
 
 - (NSString*)primitiveDisplayUrl;

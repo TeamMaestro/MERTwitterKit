@@ -129,15 +129,6 @@ const struct TwitterKitMediaSizeFetchedProperties TwitterKitMediaSizeFetchedProp
 @dynamic media;
 
 	
-- (NSMutableSet*)mediaSet {
-	[self willAccessValueForKey:@"media"];
-  
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"media"];
-  
-	[self didAccessValueForKey:@"media"];
-	return result;
-}
-	
 
 
 

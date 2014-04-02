@@ -10,11 +10,13 @@ const struct TwitterKitTweetAttributes TwitterKitTweetAttributes = {
 	.identity = @"identity",
 	.latitude = @"latitude",
 	.longitude = @"longitude",
+	.retweetCount = @"retweetCount",
+	.retweeted = @"retweeted",
 	.text = @"text",
 };
 
 const struct TwitterKitTweetRelationships TwitterKitTweetRelationships = {
-	.hashTags = @"hashTags",
+	.hashtags = @"hashtags",
 	.media = @"media",
 	.mentions = @"mentions",
 	.place = @"place",
@@ -76,6 +78,16 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 	}
 	if ([key isEqualToString:@"longitudeValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"longitude"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"retweetCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"retweetCount"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"retweetedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"retweeted"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -223,6 +235,58 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 
 
 
+@dynamic retweetCount;
+
+
+
+- (int32_t)retweetCountValue {
+	NSNumber *result = [self retweetCount];
+	return [result intValue];
+}
+
+- (void)setRetweetCountValue:(int32_t)value_ {
+	[self setRetweetCount:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveRetweetCountValue {
+	NSNumber *result = [self primitiveRetweetCount];
+	return [result intValue];
+}
+
+- (void)setPrimitiveRetweetCountValue:(int32_t)value_ {
+	[self setPrimitiveRetweetCount:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic retweeted;
+
+
+
+- (BOOL)retweetedValue {
+	NSNumber *result = [self retweeted];
+	return [result boolValue];
+}
+
+- (void)setRetweetedValue:(BOOL)value_ {
+	[self setRetweeted:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveRetweetedValue {
+	NSNumber *result = [self primitiveRetweeted];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveRetweetedValue:(BOOL)value_ {
+	[self setPrimitiveRetweeted:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
 @dynamic text;
 
 
@@ -230,15 +294,15 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 
 
 
-@dynamic hashTags;
+@dynamic hashtags;
 
 	
-- (NSMutableSet*)hashTagsSet {
-	[self willAccessValueForKey:@"hashTags"];
+- (NSMutableSet*)hashtagsSet {
+	[self willAccessValueForKey:@"hashtags"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"hashTags"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"hashtags"];
   
-	[self didAccessValueForKey:@"hashTags"];
+	[self didAccessValueForKey:@"hashtags"];
 	return result;
 }
 	

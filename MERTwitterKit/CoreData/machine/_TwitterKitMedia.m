@@ -6,7 +6,9 @@
 const struct TwitterKitMediaAttributes TwitterKitMediaAttributes = {
 	.displayUrl = @"displayUrl",
 	.endTextIndex = @"endTextIndex",
+	.expandedUrl = @"expandedUrl",
 	.identity = @"identity",
+	.mediaUrl = @"mediaUrl",
 	.startTextIndex = @"startTextIndex",
 	.type = @"type",
 	.url = @"url",
@@ -101,6 +103,13 @@ const struct TwitterKitMediaFetchedProperties TwitterKitMediaFetchedProperties =
 
 
 
+@dynamic expandedUrl;
+
+
+
+
+
+
 @dynamic identity;
 
 
@@ -122,6 +131,13 @@ const struct TwitterKitMediaFetchedProperties TwitterKitMediaFetchedProperties =
 - (void)setPrimitiveIdentityValue:(int64_t)value_ {
 	[self setPrimitiveIdentity:[NSNumber numberWithLongLong:value_]];
 }
+
+
+
+
+
+@dynamic mediaUrl;
+
 
 
 

@@ -11,11 +11,13 @@ extern const struct TwitterKitTweetAttributes {
 	__unsafe_unretained NSString *identity;
 	__unsafe_unretained NSString *latitude;
 	__unsafe_unretained NSString *longitude;
+	__unsafe_unretained NSString *retweetCount;
+	__unsafe_unretained NSString *retweeted;
 	__unsafe_unretained NSString *text;
 } TwitterKitTweetAttributes;
 
 extern const struct TwitterKitTweetRelationships {
-	__unsafe_unretained NSString *hashTags;
+	__unsafe_unretained NSString *hashtags;
 	__unsafe_unretained NSString *media;
 	__unsafe_unretained NSString *mentions;
 	__unsafe_unretained NSString *place;
@@ -29,15 +31,17 @@ extern const struct TwitterKitTweetRelationships {
 extern const struct TwitterKitTweetFetchedProperties {
 } TwitterKitTweetFetchedProperties;
 
-@class TwitterKitHashTag;
+@class TwitterKitHashtag;
 @class TwitterKitMedia;
 @class TwitterKitMention;
 @class TwitterKitPlace;
 @class TwitterKitTweet;
 @class TwitterKitTweet;
 @class TwitterKitSymbol;
-@class TwitterKitURL;
+@class TwitterKitUrl;
 @class TwitterKitUser;
+
+
 
 
 
@@ -140,6 +144,34 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* retweetCount;
+
+
+
+@property int32_t retweetCountValue;
+- (int32_t)retweetCountValue;
+- (void)setRetweetCountValue:(int32_t)value_;
+
+//- (BOOL)validateRetweetCount:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* retweeted;
+
+
+
+@property BOOL retweetedValue;
+- (BOOL)retweetedValue;
+- (void)setRetweetedValue:(BOOL)value_;
+
+//- (BOOL)validateRetweeted:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* text;
 
 
@@ -150,9 +182,9 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *hashTags;
+@property (nonatomic, strong) NSSet *hashtags;
 
-- (NSMutableSet*)hashTagsSet;
+- (NSMutableSet*)hashtagsSet;
 
 
 
@@ -218,10 +250,10 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 @interface _TwitterKitTweet (CoreDataGeneratedAccessors)
 
-- (void)addHashTags:(NSSet*)value_;
-- (void)removeHashTags:(NSSet*)value_;
-- (void)addHashTagsObject:(TwitterKitHashTag*)value_;
-- (void)removeHashTagsObject:(TwitterKitHashTag*)value_;
+- (void)addHashtags:(NSSet*)value_;
+- (void)removeHashtags:(NSSet*)value_;
+- (void)addHashtagsObject:(TwitterKitHashtag*)value_;
+- (void)removeHashtagsObject:(TwitterKitHashtag*)value_;
 
 - (void)addMedia:(NSSet*)value_;
 - (void)removeMedia:(NSSet*)value_;
@@ -245,8 +277,8 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 - (void)addUrls:(NSSet*)value_;
 - (void)removeUrls:(NSSet*)value_;
-- (void)addUrlsObject:(TwitterKitURL*)value_;
-- (void)removeUrlsObject:(TwitterKitURL*)value_;
+- (void)addUrlsObject:(TwitterKitUrl*)value_;
+- (void)removeUrlsObject:(TwitterKitUrl*)value_;
 
 @end
 
@@ -304,6 +336,24 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
+- (NSNumber*)primitiveRetweetCount;
+- (void)setPrimitiveRetweetCount:(NSNumber*)value;
+
+- (int32_t)primitiveRetweetCountValue;
+- (void)setPrimitiveRetweetCountValue:(int32_t)value_;
+
+
+
+
+- (NSNumber*)primitiveRetweeted;
+- (void)setPrimitiveRetweeted:(NSNumber*)value;
+
+- (BOOL)primitiveRetweetedValue;
+- (void)setPrimitiveRetweetedValue:(BOOL)value_;
+
+
+
+
 - (NSString*)primitiveText;
 - (void)setPrimitiveText:(NSString*)value;
 
@@ -311,8 +361,8 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveHashTags;
-- (void)setPrimitiveHashTags:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveHashtags;
+- (void)setPrimitiveHashtags:(NSMutableSet*)value;
 
 
 

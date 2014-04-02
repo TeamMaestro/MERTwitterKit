@@ -16,6 +16,14 @@
 #import <MEFoundation/MEDebugging.h>
 #import <MEReactiveFoundation/MEReactiveFoundation.h>
 #import "MERTwitterKitTweetViewModel.h"
+#import "TwitterKitMedia.h"
+#import "TwitterKitHashtag.h"
+#import "TwitterKitSymbol.h"
+#import "TwitterKitUrl.h"
+#import "TwitterKitMediaSize.h"
+#import "TwitterKitMention.h"
+#import "TwitterKitPlace.h"
+#import <MEFoundation/NSArray+MEExtensions.h>
 
 #import <Social/Social.h>
 
@@ -45,6 +53,11 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitHashtag *)_hashtagWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitUrl *)_urlWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitMedia *)_mediaWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitMediaSize *)_mediaSizeWithName:(NSString *)name dictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitMention *)_mentionWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 @end
 
 @implementation MERTwitterClient
@@ -225,13 +238,25 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
     }];
 }
 
+static NSString *const kIdKey = @"id";
+static NSString *const kTextKey = @"text";
+static NSString *const kIndicesKey = @"indices";
+static NSString *const kUrlKey = @"url";
+static NSString *const kDisplayUrlKey = @"display_url";
+static NSString *const kExpandedUrlKey = @"expanded_url";
+
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
-    NSString *const kTextKey = @"text";
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
     NSString *const kCreatedAtKey = @"created_at";
     NSString *const kUserKey = @"user";
-    NSString *const kIdKey = @"id";
     NSString *const kCoordinatesKey = @"coordinates";
-    NSString *const kEntities = @"entities";
+    NSString *const kEntitiesKey = @"entities";
+    NSString *const kHashtagsKey = @"hashtags";
+    NSString *const kUrlsKey = @"urls";
+    NSString *const kMediaKey = @"media";
+    NSString *const kMentionsKey = @"user_mentions";
     
     NSNumber *identity = dict[kIdKey];
     
@@ -261,8 +286,22 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
             [retval setLatitude:dict[kCoordinatesKey][kCoordinatesKey][1]];
         }
         
-        if ([dict[kEntities] isKindOfClass:[NSDictionary class]]) {
+        if ([dict[kEntitiesKey] isKindOfClass:[NSDictionary class]]) {
+            [retval setHashtags:[[dict[kEntitiesKey][kHashtagsKey] MER_map:^id(NSDictionary *value) {
+                return [self _hashtagWithDictionary:value context:context];
+            }] ME_set]];
             
+            [retval setUrls:[[dict[kEntitiesKey][kUrlsKey] MER_map:^id(NSDictionary *value) {
+                return [self _urlWithDictionary:value context:context];
+            }] ME_set]];
+            
+            [retval setMedia:[[dict[kEntitiesKey][kMediaKey] MER_map:^id(NSDictionary *value) {
+                return [self _mediaWithDictionary:value context:context];
+            }] ME_set]];
+            
+            [retval setMentions:[[dict[kEntitiesKey][kMentionsKey] MER_map:^id(NSDictionary *value) {
+                return [self _mentionWithDictionary:value context:context];
+            }] ME_set]];
         }
         
         if (dict[kUserKey]) {
@@ -277,6 +316,13 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
     return retval;
 }
 - (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    NSString *const kProfileImageUrlKey = @"profile_image_url_https";
+    NSString *const kNameKey = @"name";
+    NSString *const kScreenNameKey = @"screen_name";
+    
     NSNumber *identity = dict[@"id"];
     
     NSParameterAssert(identity);
@@ -287,12 +333,121 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitUser entityName] inManagedObjectContext:context];
         
         [retval setIdentity:identity];
-        [retval setProfileImageUrl:dict[@"profile_image_url_https"]];
-        [retval setName:dict[@"name"]];
-        [retval setScreenName:dict[@"screen_name"]];
         
         MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
     }
+    
+    if (dict[kProfileImageUrlKey])
+        [retval setProfileImageUrl:dict[kProfileImageUrlKey]];
+    if (dict[kNameKey])
+        [retval setName:dict[kNameKey]];
+    if (dict[kScreenNameKey])
+        [retval setScreenName:dict[kScreenNameKey]];
+    
+    return retval;
+}
+- (TwitterKitHashtag *)_hashtagWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    NSString *text = dict[kTextKey];
+    
+    NSParameterAssert(text);
+    
+    TwitterKitHashtag *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitHashtag entityName] inManagedObjectContext:context];
+    
+    [retval setText:text];
+    [retval setStartTextIndex:dict[kIndicesKey][0]];
+    [retval setEndTextIndex:dict[kIndicesKey][1]];
+    
+    MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
+    
+    return retval;
+}
+- (TwitterKitUrl *)_urlWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    NSString *url = dict[kUrlKey];
+    
+    NSParameterAssert(url);
+    
+    TwitterKitUrl *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitUrl entityName] inManagedObjectContext:context];
+    
+    [retval setUrl:url];
+    [retval setDisplayUrl:dict[kDisplayUrlKey]];
+    [retval setExpandedUrl:dict[kExpandedUrlKey]];
+    [retval setStartTextIndex:dict[kIndicesKey][0]];
+    [retval setEndTextIndex:dict[kIndicesKey][1]];
+    
+    MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
+    
+    return retval;
+}
+- (TwitterKitMedia *)_mediaWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    NSString *const kMediaUrlKey = @"media_url_https";
+    NSString *const kTypeKey = @"type";
+    NSString *const kSizesKey = @"sizes";
+    
+    NSNumber *identity = dict[kIdKey];
+    
+    NSParameterAssert(identity);
+    
+    TwitterKitMedia *retval = [context ME_fetchEntityNamed:[TwitterKitMedia entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitMediaAttributes.identity,identity] sortDescriptors:nil error:NULL].firstObject;
+    
+    if (!retval) {
+        retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitMedia entityName] inManagedObjectContext:context];
+        
+        [retval setIdentity:identity];
+        [retval setUrl:dict[kUrlKey]];
+        [retval setDisplayUrl:dict[kDisplayUrlKey]];
+        [retval setExpandedUrl:dict[kExpandedUrlKey]];
+        [retval setMediaUrl:dict[kMediaUrlKey]];
+        [retval setType:dict[kTypeKey]];
+        
+        [dict[kSizesKey] enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *value, BOOL *stop) {
+            [retval.sizesSet addObject:[self _mediaSizeWithName:key dictionary:value context:context]];
+        }];
+        
+        MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
+    }
+    
+    return retval;
+}
+- (TwitterKitMediaSize *)_mediaSizeWithName:(NSString *)name dictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(name);
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    NSString *const kResizeKey = @"resize";
+    NSString *const kWidthKey = @"w";
+    NSString *const kHeightKey = @"h";
+    
+    TwitterKitMediaSize *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitMediaSize entityName] inManagedObjectContext:context];
+    
+    [retval setName:name];
+    [retval setResize:dict[kResizeKey]];
+    [retval setWidth:dict[kWidthKey]];
+    [retval setHeight:dict[kHeightKey]];
+    
+    MELog(@"created entity %@ with name %@ and dict %@",retval.entity.name,name,dict);
+    
+    return retval;
+}
+- (TwitterKitMention *)_mentionWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    TwitterKitMention *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitMention entityName] inManagedObjectContext:context];
+    
+    [retval setStartTextIndex:dict[kIndicesKey][0]];
+    [retval setEndTextIndex:dict[kIndicesKey][1]];
+    [retval setUser:[self _userWithDictionary:dict context:context]];
+    
+    MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
     
     return retval;
 }
