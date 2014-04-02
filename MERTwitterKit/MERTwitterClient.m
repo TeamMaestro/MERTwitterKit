@@ -157,6 +157,10 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 }
 
 - (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSString *const kAfterIdentityKey = @"since_id";
+    NSString *const kBeforeIdentityKey = @"max_id";
+    NSString *const kCountKey = @"count";
+    
     @weakify(self);
     
     return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -165,11 +169,11 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
         if (afterIdentity > 0)
-            [parameters setObject:@(afterIdentity) forKey:@"since_id"];
+            [parameters setObject:@(afterIdentity) forKey:kAfterIdentityKey];
         if (beforeIdentity > 0)
-            [parameters setObject:@(beforeIdentity) forKey:@"max_id"];
+            [parameters setObject:@(beforeIdentity) forKey:kBeforeIdentityKey];
         if (count > 0)
-            [parameters setObject:@(count) forKey:@"count"];
+            [parameters setObject:@(count) forKey:kCountKey];
         
         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/home_timeline.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
         
