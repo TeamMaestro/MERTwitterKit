@@ -29,14 +29,14 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XjE-3B-1G6">
-                        <rect key="frame" x="72" y="8" width="228" height="21"/>
+                        <rect key="frame" x="72" y="8" width="176" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@screen name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r7P-gp-npV">
-                        <rect key="frame" x="72" y="37" width="228" height="21"/>
+                        <rect key="frame" x="72" y="37" width="176" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -48,27 +48,38 @@
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ube-Fx-BVL">
+                        <rect key="frame" x="256" y="8" width="44" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="Cg2-tk-PTD"/>
+                            <constraint firstAttribute="height" constant="44" id="Sta-Y9-jFh"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="XjE-3B-1G6" secondAttribute="trailing" constant="20" id="8zo-Yb-2oz"/>
+                    <constraint firstAttribute="trailing" secondItem="A4H-mP-t2B" secondAttribute="trailing" constant="20" id="7BS-Pw-R4b"/>
+                    <constraint firstAttribute="trailing" secondItem="Ube-Fx-BVL" secondAttribute="trailing" constant="20" id="9dy-mV-RY3"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="MIo-K5-IjD" secondAttribute="bottom" constant="8" id="DAT-cV-vyo"/>
                     <constraint firstItem="r7P-gp-npV" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="G74-Zs-Trc"/>
-                    <constraint firstAttribute="trailing" secondItem="r7P-gp-npV" secondAttribute="trailing" constant="20" id="KRi-v8-6tT"/>
-                    <constraint firstAttribute="trailing" secondItem="A4H-mP-t2B" secondAttribute="trailing" constant="20" id="R1a-aE-8AO"/>
                     <constraint firstItem="yFX-Gp-nFj" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="XTc-gn-rCC"/>
                     <constraint firstItem="MIo-K5-IjD" firstAttribute="leading" secondItem="HOD-zT-etR" secondAttribute="leading" constant="20" id="Xwy-Qe-IkM"/>
                     <constraint firstItem="XjE-3B-1G6" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="Zyj-Fo-xsa"/>
                     <constraint firstItem="A4H-mP-t2B" firstAttribute="leading" secondItem="MIo-K5-IjD" secondAttribute="trailing" constant="8" id="a1r-zb-ba7"/>
                     <constraint firstItem="A4H-mP-t2B" firstAttribute="top" secondItem="r7P-gp-npV" secondAttribute="bottom" constant="8" id="c1u-UH-0Q5"/>
-                    <constraint firstAttribute="trailing" secondItem="yFX-Gp-nFj" secondAttribute="trailing" constant="20" id="cGR-XH-v0g"/>
+                    <constraint firstItem="Ube-Fx-BVL" firstAttribute="leading" secondItem="r7P-gp-npV" secondAttribute="trailing" constant="8" id="cVG-Zz-MqW"/>
                     <constraint firstItem="MIo-K5-IjD" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="cu3-LN-rPn"/>
                     <constraint firstItem="XjE-3B-1G6" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="fX4-MF-zbk"/>
+                    <constraint firstAttribute="trailing" secondItem="yFX-Gp-nFj" secondAttribute="trailing" constant="20" id="hvj-92-8vP"/>
+                    <constraint firstItem="Ube-Fx-BVL" firstAttribute="leading" secondItem="XjE-3B-1G6" secondAttribute="trailing" constant="8" id="hw7-yJ-NpI"/>
                     <constraint firstItem="r7P-gp-npV" firstAttribute="top" secondItem="XjE-3B-1G6" secondAttribute="bottom" constant="8" id="iIy-Ea-M4W"/>
                     <constraint firstAttribute="bottom" secondItem="yFX-Gp-nFj" secondAttribute="bottom" constant="8" id="lKS-fI-NPS"/>
+                    <constraint firstItem="Ube-Fx-BVL" firstAttribute="top" secondItem="HOD-zT-etR" secondAttribute="top" constant="8" id="lqH-Rq-8Uj"/>
                     <constraint firstItem="yFX-Gp-nFj" firstAttribute="top" secondItem="A4H-mP-t2B" secondAttribute="bottom" constant="8" id="yLZ-HK-D8Q"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="mediaThumbnailImageView" destination="Ube-Fx-BVL" id="92H-Zw-bNa"/>
                 <outlet property="profileImageView" destination="MIo-K5-IjD" id="8Yc-rM-PHg"/>
                 <outlet property="tweetCreatedAtLabel" destination="yFX-Gp-nFj" id="Ufg-nl-ebl"/>
                 <outlet property="tweetTextLabel" destination="A4H-mP-t2B" id="EGF-OI-G2p"/>

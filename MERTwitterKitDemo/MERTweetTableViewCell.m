@@ -17,6 +17,7 @@
 @property (weak,nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak,nonatomic) IBOutlet UILabel *userScreenNameLabel;
 @property (weak,nonatomic) IBOutlet UILabel *tweetCreatedAtLabel;
+@property (weak,nonatomic) IBOutlet UIImageView *mediaThumbnailImageView;
 @end
 
 @implementation MERTweetTableViewCell
@@ -43,6 +44,9 @@
         for (NSValue *urlRange in value.mentionRanges) {
             [retval addAttributes:@{NSForegroundColorAttributeName: [UIColor purpleColor]} range:urlRange.rangeValue];
         }
+        for (NSValue *urlRange in value.symbolRanges) {
+            [retval addAttributes:@{NSForegroundColorAttributeName: [UIColor magentaColor]} range:urlRange.rangeValue];
+        }
         
         return retval;
     }];
@@ -50,11 +54,13 @@
     RAC(self.userNameLabel,text) = RACObserve(self, viewModel.userViewModel.name);
     RAC(self.userScreenNameLabel,text) = RACObserve(self, viewModel.userViewModel.screenName);
     RAC(self.tweetCreatedAtLabel,text) = RACObserve(self, viewModel.relativeCreatedAtString);
+    RAC(self.mediaThumbnailImageView,image) = RACObserve(self, viewModel.mediaThumbnailImage);
 }
 
 - (void)prepareForReuse {
     [super prepareForReuse];
     
+    [self.viewModel setActive:NO];
     [self.viewModel.userViewModel setActive:NO];
 }
 
@@ -65,6 +71,7 @@
 - (void)setViewModel:(MERTwitterKitTweetViewModel *)viewModel {
     _viewModel = viewModel;
     
+    [viewModel setActive:YES];
     [viewModel.userViewModel setActive:YES];
 }
 

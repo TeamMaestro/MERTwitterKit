@@ -60,7 +60,7 @@
     
     @weakify(self);
     
-    RAC(self,profileImage) = [[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:self.user.profileImageUrl]] reduce:^id(id _, NSString *value) {
+    RAC(self,profileImage) = [[[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:self.user.profileImageUrl]] reduce:^id(id _, NSString *value) {
         return value;
     }] flattenMap:^RACStream *(id value) {
         @strongify(self);
@@ -77,7 +77,7 @@
             
             return nil;
         }];
-    }];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
     
     [self.didBecomeInactiveSignal
      subscribeNext:^(id _) {

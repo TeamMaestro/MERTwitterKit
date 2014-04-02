@@ -171,7 +171,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         if (count > 0)
             [parameters setObject:@(count) forKey:@"count"];
         
-        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/home_timeline.json" relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/home_timeline.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
         
         [request setAccount:self.selectedAccount];
         
@@ -407,6 +407,8 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
         [retval setExpandedUrl:dict[kExpandedUrlKey]];
         [retval setMediaUrl:dict[kMediaUrlKey]];
         [retval setType:dict[kTypeKey]];
+        [retval setStartTextIndex:dict[kIndicesKey][0]];
+        [retval setEndTextIndex:dict[kIndicesKey][1]];
         
         [dict[kSizesKey] enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *value, BOOL *stop) {
             [retval.sizesSet addObject:[self _mediaSizeWithName:key dictionary:value context:context]];
