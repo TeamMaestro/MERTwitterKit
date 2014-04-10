@@ -5,6 +5,7 @@
 
 
 extern const struct TwitterKitPlaceAttributes {
+	__unsafe_unretained NSString *boundingBox;
 	__unsafe_unretained NSString *country;
 	__unsafe_unretained NSString *countryCode;
 	__unsafe_unretained NSString *fullName;
@@ -23,6 +24,7 @@ extern const struct TwitterKitPlaceFetchedProperties {
 
 @class TwitterKitTweet;
 
+@class NSArray;
 
 
 
@@ -39,6 +41,16 @@ extern const struct TwitterKitPlaceFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (TwitterKitPlaceID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSArray* boundingBox;
+
+
+
+//- (BOOL)validateBoundingBox:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -129,6 +141,12 @@ extern const struct TwitterKitPlaceFetchedProperties {
 @end
 
 @interface _TwitterKitPlace (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSArray*)primitiveBoundingBox;
+- (void)setPrimitiveBoundingBox:(NSArray*)value;
+
+
 
 
 - (NSString*)primitiveCountry;

@@ -4,6 +4,7 @@
 #import "_TwitterKitPlace.h"
 
 const struct TwitterKitPlaceAttributes TwitterKitPlaceAttributes = {
+	.boundingBox = @"boundingBox",
 	.country = @"country",
 	.countryCode = @"countryCode",
 	.fullName = @"fullName",
@@ -49,6 +50,13 @@ const struct TwitterKitPlaceFetchedProperties TwitterKitPlaceFetchedProperties =
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic boundingBox;
+
+
 
 
 

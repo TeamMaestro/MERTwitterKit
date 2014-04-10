@@ -34,7 +34,7 @@
     <entity name="TwitterKitPlace" representedClassName="TwitterKitPlace" syncable="YES">
         <attribute name="boundingBox" optional="YES" attributeType="Transformable" syncable="YES">
             <userInfo>
-                <entry key="attributeValueClassName" value="NSValue"/>
+                <entry key="attributeValueClassName" value="NSArray"/>
             </userInfo>
         </attribute>
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
