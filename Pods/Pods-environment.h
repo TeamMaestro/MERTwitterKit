@@ -108,6 +108,12 @@
 #define COCOAPODS_VERSION_MINOR_SDWebImage_Core 6
 #define COCOAPODS_VERSION_PATCH_SDWebImage_Core 0
 
+// SVProgressHUD
+#define COCOAPODS_POD_AVAILABLE_SVProgressHUD
+#define COCOAPODS_VERSION_MAJOR_SVProgressHUD 1
+#define COCOAPODS_VERSION_MINOR_SVProgressHUD 0
+#define COCOAPODS_VERSION_PATCH_SVProgressHUD 0
+
 // libextobjc/EXTKeyPathCoding
 #define COCOAPODS_POD_AVAILABLE_libextobjc_EXTKeyPathCoding
 #define COCOAPODS_VERSION_MAJOR_libextobjc_EXTKeyPathCoding 0

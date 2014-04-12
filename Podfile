@@ -9,6 +9,7 @@ pod "ReactiveViewModel", "~> 0.2.0"
 pod "libextobjc/EXTScope", "~> 0.4.0"
 pod "libextobjc/EXTKeyPathCoding", "~> 0.4.0"
 pod "SDWebImage", "~> 3.6.0"
+pod "SVProgressHUD", "~> 1.0.0"
 
 link_with "MERTwitterKitDemo"
 workspace "MERTwitterKitDemo"
