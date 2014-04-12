@@ -485,6 +485,58 @@ static NSString *const kScreenNameKey = @"screen_name";
         }];
     }];
 }
+
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status inReplyToTweetWithIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
+    NSParameterAssert(status);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kStatusKey = @"status";
+        NSString *const kInReplyToStatusIdKey = @"in_reply_to_status_id";
+        NSString *const kMultipartFormDataKey = @"multipart/form-data";
+        NSString *const kLatitudeKey = @"lat";
+        NSString *const kLongitudeKey = @"long";
+        NSString *const kPlaceIdKey = @"place_id";
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"statuses/update.json" relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
+        
+        [request setAccount:self.selectedAccount];
+        
+        [request addMultipartData:[(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)status, CFSTR("!@#$%^*()-+/'\" "), CFSTR("&"), kCFStringEncodingUTF8) dataUsingEncoding:NSUTF8StringEncoding] withName:kStatusKey type:kMultipartFormDataKey filename:nil];
+        
+        if (replyIdentity > 0)
+            [request addMultipartData:[@(replyIdentity).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kInReplyToStatusIdKey type:kMultipartFormDataKey filename:nil];
+        if (latitude != 0.0)
+            [request addMultipartData:[@(latitude).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kLatitudeKey type:kMultipartFormDataKey filename:nil];
+        if (longitude != 0.0)
+            [request addMultipartData:[@(longitude).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kLongitudeKey type:kMultipartFormDataKey filename:nil];
+        if (placeIdentity)
+            [request addMultipartData:[placeIdentity dataUsingEncoding:NSUTF8StringEncoding] withName:kPlaceIdKey type:kMultipartFormDataKey filename:nil];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importTweetJSON:@[value]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
     @weakify(self);

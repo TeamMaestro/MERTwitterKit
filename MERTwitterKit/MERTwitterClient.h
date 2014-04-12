@@ -53,4 +53,6 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 - (RACSignal *)requestDestroyTweetWithIdentity:(int16_t)identity;
 
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status inReplyToTweetWithIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity;
+
 @end
