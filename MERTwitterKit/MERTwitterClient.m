@@ -284,6 +284,46 @@ static NSString *const kScreenNameKey = @"screen_name";
         return [self _importTweetJSON:value];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+- (RACSignal *)requestRetweetsOfMeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (afterIdentity > 0)
+            [parameters setObject:@(afterIdentity) forKey:kAfterIdentityKey];
+        if (beforeIdentity > 0)
+            [parameters setObject:@(beforeIdentity) forKey:kBeforeIdentityKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/retweets_of_me.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importTweetJSON:value];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
     @weakify(self);
