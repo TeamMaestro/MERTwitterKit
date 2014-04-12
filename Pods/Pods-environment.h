@@ -60,23 +60,11 @@
 #define COCOAPODS_VERSION_MINOR_MEFoundation 0
 #define COCOAPODS_VERSION_PATCH_MEFoundation 7
 
-// MEKit
-#define COCOAPODS_POD_AVAILABLE_MEKit
-#define COCOAPODS_VERSION_MAJOR_MEKit 1
-#define COCOAPODS_VERSION_MINOR_MEKit 0
-#define COCOAPODS_VERSION_PATCH_MEKit 3
-
 // MEReactiveFoundation
 #define COCOAPODS_POD_AVAILABLE_MEReactiveFoundation
 #define COCOAPODS_VERSION_MAJOR_MEReactiveFoundation 1
 #define COCOAPODS_VERSION_MINOR_MEReactiveFoundation 0
-#define COCOAPODS_VERSION_PATCH_MEReactiveFoundation 2
-
-// MEReactiveKit
-#define COCOAPODS_POD_AVAILABLE_MEReactiveKit
-#define COCOAPODS_VERSION_MAJOR_MEReactiveKit 1
-#define COCOAPODS_VERSION_MINOR_MEReactiveKit 0
-#define COCOAPODS_VERSION_PATCH_MEReactiveKit 6
+#define COCOAPODS_VERSION_PATCH_MEReactiveFoundation 3
 
 // ReactiveCocoa
 #define COCOAPODS_POD_AVAILABLE_ReactiveCocoa

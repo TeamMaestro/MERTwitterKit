@@ -1,6 +1,6 @@
-##MEFoundation
+##MEReactiveFoundation
 
-A collection of classes that extend the Foundation framework collection classes. Compatible with iOS/OSX, 7.0+/10.9+.
+A collection of classes that extend the Foundation framework collection classes with functionality commonly found in functional languages (e.g. Haskell). Compatible with iOS/OSX, 7.0+/10.9+.
 
 ###Documentation
 
