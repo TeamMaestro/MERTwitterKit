@@ -32,8 +32,11 @@
         <relationship name="media" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitMedia" inverseName="sizes" inverseEntity="TwitterKitMedia" syncable="YES"/>
     </entity>
     <entity name="TwitterKitMention" representedClassName="TwitterKitMention" syncable="YES">
-        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="range" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSValue"/>
+            </userInfo>
+        </attribute>
         <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="mentions" inverseEntity="TwitterKitTweet" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitUser" inverseName="mentions" inverseEntity="TwitterKitUser" syncable="YES"/>
     </entity>
@@ -101,7 +104,7 @@
         <element name="TwitterKitHashtag" positionX="-18" positionY="126" width="128" height="88"/>
         <element name="TwitterKitMedia" positionX="-54" positionY="36" width="128" height="178"/>
         <element name="TwitterKitMediaSize" positionX="-45" positionY="45" width="128" height="118"/>
-        <element name="TwitterKitMention" positionX="-27" positionY="117" width="128" height="103"/>
+        <element name="TwitterKitMention" positionX="-27" positionY="117" width="128" height="88"/>
         <element name="TwitterKitPlace" positionX="18" positionY="162" width="128" height="178"/>
         <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="103"/>
         <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="298"/>

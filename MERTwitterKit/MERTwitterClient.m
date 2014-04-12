@@ -452,8 +452,7 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     
     TwitterKitMention *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitMention entityName] inManagedObjectContext:context];
     
-    [retval setStartTextIndex:dict[kIndicesKey][0]];
-    [retval setEndTextIndex:dict[kIndicesKey][1]];
+    [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
     [retval setUser:[self _userWithDictionary:dict context:context]];
     
     MELog(@"created entity %@ with dict %@",retval.entity.name,dict);

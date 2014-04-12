@@ -5,8 +5,7 @@
 
 
 extern const struct TwitterKitMentionAttributes {
-	__unsafe_unretained NSString *endTextIndex;
-	__unsafe_unretained NSString *startTextIndex;
+	__unsafe_unretained NSString *range;
 } TwitterKitMentionAttributes;
 
 extern const struct TwitterKitMentionRelationships {
@@ -20,8 +19,7 @@ extern const struct TwitterKitMentionFetchedProperties {
 @class TwitterKitTweet;
 @class TwitterKitUser;
 
-
-
+@class NSValue;
 
 @interface TwitterKitMentionID : NSManagedObjectID {}
 @end
@@ -36,29 +34,11 @@ extern const struct TwitterKitMentionFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* endTextIndex;
+@property (nonatomic, strong) NSValue* range;
 
 
 
-@property int16_t endTextIndexValue;
-- (int16_t)endTextIndexValue;
-- (void)setEndTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateEndTextIndex:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* startTextIndex;
-
-
-
-@property int16_t startTextIndexValue;
-- (int16_t)startTextIndexValue;
-- (void)setStartTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateStartTextIndex:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateRange:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -88,20 +68,8 @@ extern const struct TwitterKitMentionFetchedProperties {
 @interface _TwitterKitMention (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveEndTextIndex;
-- (void)setPrimitiveEndTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveEndTextIndexValue;
-- (void)setPrimitiveEndTextIndexValue:(int16_t)value_;
-
-
-
-
-- (NSNumber*)primitiveStartTextIndex;
-- (void)setPrimitiveStartTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveStartTextIndexValue;
-- (void)setPrimitiveStartTextIndexValue:(int16_t)value_;
+- (NSValue*)primitiveRange;
+- (void)setPrimitiveRange:(NSValue*)value;
 
 
 

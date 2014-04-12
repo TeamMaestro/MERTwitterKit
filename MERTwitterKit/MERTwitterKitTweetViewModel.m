@@ -104,7 +104,7 @@
 }
 - (NSSet *)mentionRanges {
     return [self.tweet.mentions MER_map:^id(TwitterKitMention *value) {
-        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+        return value.range;
     }];
 }
 - (NSSet *)symbolRanges {
