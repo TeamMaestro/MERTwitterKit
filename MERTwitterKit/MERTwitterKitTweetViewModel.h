@@ -14,7 +14,6 @@
 #import "RVMViewModel.h"
 #import <UIKit/UIImage.h>
 
-@class TwitterKitTweet;
 @class MERTwitterKitUserViewModel;
 
 @interface MERTwitterKitTweetViewModel : RVMViewModel
@@ -32,7 +31,5 @@
 @property (readonly,strong,nonatomic) UIImage *mediaThumbnailImage;
 
 @property (readonly,strong,nonatomic) MERTwitterKitUserViewModel *userViewModel;
-
-- (instancetype)initWithTweet:(TwitterKitTweet *)tweet;
 
 @end

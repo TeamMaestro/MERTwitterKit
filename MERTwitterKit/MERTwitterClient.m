@@ -20,7 +20,7 @@
 #import <MEFoundation/NSFileManager+MEExtensions.h>
 #import <MEFoundation/MEDebugging.h>
 #import <MEReactiveFoundation/MEReactiveFoundation.h>
-#import "MERTwitterKitTweetViewModel.h"
+#import "MERTwitterKitTweetViewModel+Private.h"
 #import "TwitterKitMedia.h"
 #import "TwitterKitHashtag.h"
 #import "TwitterKitSymbol.h"
@@ -29,6 +29,8 @@
 #import "TwitterKitMention.h"
 #import "TwitterKitPlace.h"
 #import <MEFoundation/NSArray+MEExtensions.h>
+#import <libextobjc/EXTScope.h>
+#import <libextobjc/EXTKeyPathCoding.h>
 
 #import <Social/Social.h>
 
@@ -45,8 +47,6 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 
 @interface MERTwitterClient ()
 @property (strong,nonatomic) ACAccountStore *accountStore;
-@property (readwrite,strong,nonatomic) NSArray *accounts;
-@property (readwrite,strong,nonatomic) ACAccount *selectedAccount;
 
 @property (strong,nonatomic) AFHTTPSessionManager *httpSessionManager;
 
@@ -64,6 +64,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 - (TwitterKitMediaSize *)_mediaSizeWithName:(NSString *)name dictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitMention *)_mentionWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitPlace *)_placeWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitSymbol *)_symbolWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 @end
 
 @implementation MERTwitterClient
@@ -115,7 +116,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
     });
     return retval;
 }
-
+#pragma mark Accounts
 - (RACSignal *)requestAccounts; {
     @weakify(self);
     
@@ -146,22 +147,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
         return nil;
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
-- (RACSignal *)selectAccount; {
-    @weakify(self);
-    
-    return [[self requestAccounts] flattenMap:^RACStream *(NSArray *value) {
-        @strongify(self);
-        
-        MERTwitterClientRequestTwitterAccountsCompletionBlock completionBlock = ^(ACAccount *selectedAccount) {
-            @strongify(self);
-            
-            [self setSelectedAccount:selectedAccount];
-        };
-        
-        return [RACSignal return:@[value,completionBlock]];
-    }];
-}
-
+#pragma mark Timelines
 - (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     NSString *const kAfterIdentityKey = @"since_id";
     NSString *const kBeforeIdentityKey = @"max_id";
@@ -231,7 +217,7 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
             if ([context ME_saveRecursively:NULL]) {
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
-                        return [[MERTwitterKitTweetViewModel alloc] initWithTweet:value];
+                        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
                     }];
                     
                     [subscriber sendNext:objects];
@@ -268,6 +254,7 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     NSString *const kMediaKey = @"media";
     NSString *const kMentionsKey = @"user_mentions";
     NSString *const kPlaceKey = @"place";
+    NSString *const kSymbolsKey = @"symbols";
     
     NSNumber *identity = dict[kIdKey];
     
@@ -311,6 +298,10 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
             
             [retval setMentions:[[dict[kEntitiesKey][kMentionsKey] MER_map:^id(NSDictionary *value) {
                 return [self _mentionWithDictionary:value context:context];
+            }] ME_set]];
+            
+            [retval setSymbols:[[dict[kEntitiesKey][kSymbolsKey] MER_map:^id(NSDictionary *value) {
+                return [self _symbolWithDictionary:value context:context];
             }] ME_set]];
         }
         
@@ -480,6 +471,21 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     }
     
     
+    
+    return retval;
+}
+- (TwitterKitSymbol *)_symbolWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    NSString *text = dict[kTextKey];
+    
+    NSParameterAssert(text);
+    
+    TwitterKitSymbol *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitSymbol entityName] inManagedObjectContext:context];
+    
+    [retval setText:text];
+    [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
     
     return retval;
 }

@@ -14,9 +14,6 @@
 #import <Foundation/Foundation.h>
 #import <Accounts/Accounts.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import <libextobjc/EXTScope.h>
-
-typedef void(^MERTwitterClientRequestTwitterAccountsCompletionBlock)(ACAccount *selectedAccount);
 
 extern NSString *const MERTwitterClientErrorDomain;
 
@@ -33,13 +30,11 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 @interface MERTwitterClient : NSObject
 
-@property (readonly,strong,nonatomic) NSArray *accounts;
-@property (readonly,strong,nonatomic) ACAccount *selectedAccount;
+@property (strong,nonatomic) ACAccount *selectedAccount;
 
 + (instancetype)sharedClient;
 
 - (RACSignal *)requestAccounts;
-- (RACSignal *)selectAccount;
 
 - (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 

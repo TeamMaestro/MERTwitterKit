@@ -11,6 +11,7 @@
 #import <MEFoundation/MEDebugging.h>
 #import "MERTweetTableViewCell.h"
 #import <MEKit/UITableViewCell+MEExtensions.h>
+#import <libextobjc/EXTScope.h>
 
 @interface MERRootViewController () <UITableViewDataSource,UITableViewDelegate>
 @property (strong,nonatomic) UITableView *tableView;
@@ -37,11 +38,8 @@
     
     @weakify(self);
     
-    [[[MERTwitterClient sharedClient] selectAccount] subscribeNext:^(NSArray *value) {
-        NSArray *accounts = value[0];
-        MERTwitterClientRequestTwitterAccountsCompletionBlock completionBlock = value[1];
-        
-        completionBlock(accounts.firstObject);
+    [[[MERTwitterClient sharedClient] requestAccounts] subscribeNext:^(NSArray *value) {
+        [[MERTwitterClient sharedClient] setSelectedAccount:value.firstObject];
         
     } error:^(NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertTitle] message:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertMessage] delegate:nil cancelButtonTitle:error.userInfo[MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle] otherButtonTitles:nil];

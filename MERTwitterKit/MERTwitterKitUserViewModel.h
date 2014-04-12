@@ -14,14 +14,10 @@
 #import "RVMViewModel.h"
 #import <UIKit/UIImage.h>
 
-@class TwitterKitUser;
-
 @interface MERTwitterKitUserViewModel : RVMViewModel
 
 @property (readonly,nonatomic) NSString *name;
 @property (readonly,nonatomic) NSString *screenName;
 @property (readonly,strong,nonatomic) UIImage *profileImage;
-
-+ (instancetype)viewModelWithUser:(TwitterKitUser *)user;
 
 @end

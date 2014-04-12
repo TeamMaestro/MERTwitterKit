@@ -127,6 +127,8 @@
 		791F835D18EBBC9900C0BB80 /* _TwitterKitUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUrl.h; sourceTree = "<group>"; };
 		791F835E18EBBC9900C0BB80 /* _TwitterKitUrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitUrl.m; sourceTree = "<group>"; };
 		791F836018EBBCD600C0BB80 /* TwitterKitUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterKitUrl.h; sourceTree = "<group>"; };
+		791F837B18F8FE1300C0BB80 /* MERTwitterKitTweetViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitTweetViewModel+Private.h"; sourceTree = "<group>"; };
+		791F837E18F8FF1800C0BB80 /* MERTwitterKitUserViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitUserViewModel+Private.h"; sourceTree = "<group>"; };
 		79D8A4F018E600D30024F0D5 /* _TwitterKitTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitTweet.h; sourceTree = "<group>"; };
 		79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitTweet.m; sourceTree = "<group>"; };
 		79D8A4F218E600D30024F0D5 /* _TwitterKitUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUser.h; sourceTree = "<group>"; };
@@ -217,6 +219,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		791F837A18F8FE0100C0BB80 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				791F837B18F8FE1300C0BB80 /* MERTwitterKitTweetViewModel+Private.h */,
+				791F837E18F8FF1800C0BB80 /* MERTwitterKitUserViewModel+Private.h */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
 		79D8A4EE18E600D30024F0D5 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -347,6 +358,7 @@
 				79FCBF3918E49ED20005959A /* MERTwitterClient.h */,
 				79FCBF3A18E49ED20005959A /* MERTwitterClient.m */,
 				79D8A4EE18E600D30024F0D5 /* CoreData */,
+				791F837A18F8FE0100C0BB80 /* Private */,
 				79FCBF9C18E4D26A0005959A /* View Models */,
 			);
 			name = Classes;
