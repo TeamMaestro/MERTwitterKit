@@ -26,8 +26,6 @@ extern NSString *const MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle;
 extern NSString *const MERTwitterKitResourcesBundleName;
 extern NSBundle *MERTwitterKitResourcesBundle(void);
 
-@class RACSignal;
-
 @interface MERTwitterClient : NSObject
 
 @property (strong,nonatomic) ACAccount *selectedAccount;
