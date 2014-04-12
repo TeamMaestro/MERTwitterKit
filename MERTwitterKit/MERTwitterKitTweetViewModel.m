@@ -94,7 +94,7 @@
 }
 - (NSSet *)hashtagRanges {
     return [self.tweet.hashtags MER_map:^id(TwitterKitHashtag *value) {
-        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+        return value.range;
     }];
 }
 - (NSSet *)mediaRanges {

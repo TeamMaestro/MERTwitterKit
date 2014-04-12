@@ -1,5 +1,7 @@
 #import "_TwitterKitHashtag.h"
 
 @interface TwitterKitHashtag : _TwitterKitHashtag {}
-// Custom logic goes here.
+
+@property (assign,nonatomic) NSRange rangeValue;
+
 @end

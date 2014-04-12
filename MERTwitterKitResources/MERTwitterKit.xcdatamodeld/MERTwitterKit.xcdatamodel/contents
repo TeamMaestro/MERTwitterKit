@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="TwitterKitHashtag" representedClassName="TwitterKitHashtag" syncable="YES">
-        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="range" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSValue"/>
+            </userInfo>
+        </attribute>
         <attribute name="text" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitHashtag" inverseName="tweet" inverseEntity="TwitterKitHashtag" syncable="YES"/>
     </entity>
@@ -92,14 +95,14 @@
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="user" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="298"/>
-        <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="133"/>
+        <element name="TwitterKitHashtag" positionX="-18" positionY="126" width="128" height="88"/>
         <element name="TwitterKitMedia" positionX="-54" positionY="36" width="128" height="193"/>
         <element name="TwitterKitMediaSize" positionX="-45" positionY="45" width="128" height="118"/>
-        <element name="TwitterKitUrl" positionX="-36" positionY="90" width="128" height="133"/>
         <element name="TwitterKitMention" positionX="-27" positionY="117" width="128" height="103"/>
-        <element name="TwitterKitHashtag" positionX="-18" positionY="126" width="128" height="103"/>
-        <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="103"/>
         <element name="TwitterKitPlace" positionX="18" positionY="162" width="128" height="178"/>
+        <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="103"/>
+        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="298"/>
+        <element name="TwitterKitUrl" positionX="-36" positionY="90" width="128" height="133"/>
+        <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="133"/>
     </elements>
 </model>

@@ -10,6 +10,12 @@
 
 @implementation TwitterKitHashtag
 
-// Custom logic goes here.
+@dynamic rangeValue;
+- (NSRange)rangeValue {
+    return self.range.rangeValue;
+}
+- (void)setRangeValue:(NSRange)rangeValue {
+    [self setRange:[NSValue valueWithRange:rangeValue]];
+}
 
 @end
