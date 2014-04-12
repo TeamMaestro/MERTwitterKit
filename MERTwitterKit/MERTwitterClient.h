@@ -26,6 +26,8 @@ extern NSString *const MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle;
 extern NSString *const MERTwitterKitResourcesBundleName;
 extern NSBundle *MERTwitterKitResourcesBundle(void);
 
+@class MERTwitterKitTweetViewModel;
+
 @interface MERTwitterClient : NSObject
 
 @property (strong,nonatomic) ACAccount *selectedAccount;
@@ -45,5 +47,8 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (NSArray *)fetchTweetsAfterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 
 - (RACSignal *)requestRetweetsOfTweetWithIdentity:(int64_t)identity count:(NSUInteger)count;
+
+- (MERTwitterKitTweetViewModel *)fetchTweetWithIdentity:(int64_t)identity;
+- (RACSignal *)requestTweetWithIdentity:(int64_t)identity;
 
 @end

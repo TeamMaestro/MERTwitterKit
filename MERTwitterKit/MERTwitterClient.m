@@ -395,6 +395,53 @@ static NSString *const kScreenNameKey = @"screen_name";
         return [self _importTweetJSON:value];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+- (MERTwitterKitTweetViewModel *)fetchTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
+    
+    return (tweet) ? [MERTwitterKitTweetViewModel viewModelWithTweet:tweet] : nil;
+}
+- (RACSignal *)requestTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:@(identity) forKey:kIdKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/show.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [[self _importTweetJSON:value] map:^id(NSArray *value) {
+            return value.firstObject;
+        }];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
     @weakify(self);
