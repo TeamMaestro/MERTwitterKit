@@ -26,6 +26,8 @@ PODS:
   - MECoreDataKit (1.0.4):
     - MEFoundation (~> 1.0.0)
   - MEFoundation (1.0.7)
+  - MEKit (1.0.4):
+    - MEFoundation (~> 1.0.0)
   - MEReactiveFoundation (1.0.3)
   - ReactiveCocoa (2.2.4):
     - ReactiveCocoa/Core
@@ -44,6 +46,7 @@ DEPENDENCIES:
   - libextobjc/EXTKeyPathCoding (~> 0.4.0)
   - libextobjc/EXTScope (~> 0.4.0)
   - MECoreDataKit (~> 1.0.0)
+  - MEKit (~> 1.0.0)
   - MEReactiveFoundation (~> 1.0.0)
   - ReactiveCocoa (~> 2.2.0)
   - ReactiveViewModel (~> 0.2.0)
@@ -54,6 +57,7 @@ SPEC CHECKSUMS:
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
   MECoreDataKit: b61f1bfee629425d5827d8d04fd92c9d39ec3f8f
   MEFoundation: 025774725221905fd1d28944ddd92a550f84d601
+  MEKit: ab543f4ec0d217812e6f8c4b539431866b000b33
   MEReactiveFoundation: 247c6d82458f394a73cc21470ede557b65c227ec
   ReactiveCocoa: 953a45dda30674fe704d1d9c77cc874141742f47
   ReactiveViewModel: f636ab3e06b5e69664b69c883fcdb457ab5cb0cb
