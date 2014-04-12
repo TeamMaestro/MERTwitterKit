@@ -442,6 +442,49 @@ static NSString *const kScreenNameKey = @"screen_name";
         }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+- (RACSignal *)requestDestroyTweetWithIdentity:(int16_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:[NSString stringWithFormat:@"statuses/destroy/%@.json",@(identity)] relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            @strongify(self);
+            
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [self.managedObjectContext performBlock:^{
+                    @strongify(self);
+                    
+                    TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
+                    
+                    NSParameterAssert(tweet);
+                    
+                    [self.managedObjectContext deleteObject:tweet];
+                    [self.managedObjectContext ME_saveRecursively:NULL];
+                    
+                    [subscriber sendNext:@YES];
+                    [subscriber sendCompleted];
+                }];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }];
+}
 #pragma mark *** Private Methods ***
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
     @weakify(self);

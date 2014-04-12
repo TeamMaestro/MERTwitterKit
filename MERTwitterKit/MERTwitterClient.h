@@ -51,4 +51,6 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (MERTwitterKitTweetViewModel *)fetchTweetWithIdentity:(int64_t)identity;
 - (RACSignal *)requestTweetWithIdentity:(int64_t)identity;
 
+- (RACSignal *)requestDestroyTweetWithIdentity:(int16_t)identity;
+
 @end
