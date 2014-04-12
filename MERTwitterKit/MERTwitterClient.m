@@ -148,8 +148,8 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Timelines
-static NSString *const kAfterIdentityKey = @"since_id";
-static NSString *const kBeforeIdentityKey = @"max_id";
+static NSString *const kSinceIdKey = @"since_id";
+static NSString *const kMaxIdKey = @"max_id";
 static NSString *const kCountKey = @"count";
 
 - (RACSignal *)requestMentionsTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
@@ -161,9 +161,9 @@ static NSString *const kCountKey = @"count";
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
         if (afterIdentity > 0)
-            [parameters setObject:@(afterIdentity) forKey:kAfterIdentityKey];
+            [parameters setObject:@(afterIdentity) forKey:kSinceIdKey];
         if (beforeIdentity > 0)
-            [parameters setObject:@(beforeIdentity) forKey:kBeforeIdentityKey];
+            [parameters setObject:@(beforeIdentity) forKey:kMaxIdKey];
         if (count > 0)
             [parameters setObject:@(count) forKey:kCountKey];
         
@@ -213,9 +213,9 @@ static NSString *const kScreenNameKey = @"screen_name";
             [parameters setObject:screenName forKey:kScreenNameKey];
         
         if (afterIdentity > 0)
-            [parameters setObject:@(afterIdentity) forKey:kAfterIdentityKey];
+            [parameters setObject:@(afterIdentity) forKey:kSinceIdKey];
         if (beforeIdentity > 0)
-            [parameters setObject:@(beforeIdentity) forKey:kBeforeIdentityKey];
+            [parameters setObject:@(beforeIdentity) forKey:kMaxIdKey];
         if (count > 0)
             [parameters setObject:@(count) forKey:kCountKey];
         
@@ -244,6 +244,24 @@ static NSString *const kScreenNameKey = @"screen_name";
         return [self _importTweetJSON:value];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+- (NSArray *)fetchUserTimelineTweetsForUserWithIdentity:(int64_t)userIdentity screenName:(NSString *)screenName afterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSParameterAssert(userIdentity > 0 || screenName);
+    
+    TwitterKitUser *user = (userIdentity > 0) ? [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitUser entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitUserAttributes.identity,@(userIdentity)] sortDescriptors:nil error:NULL].firstObject : [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitUser entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitUserAttributes.screenName,screenName] sortDescriptors:nil error:NULL].firstObject;
+    NSMutableArray *predicates = [[NSMutableArray alloc] init];
+    
+    [predicates addObject:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetRelationships.user,user]];
+    
+    if (afterIdentity > 0)
+        [predicates addObject:[NSPredicate predicateWithFormat:@"%K > %@",TwitterKitTweetAttributes.identity,@(afterIdentity)]];
+    if (beforeIdentity > 0)
+        [predicates addObject:[NSPredicate predicateWithFormat:@"%K < 0",TwitterKitTweetAttributes.identity]];
+    
+    return [[self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:count predicate:[NSCompoundPredicate andPredicateWithSubpredicates:predicates] sortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:TwitterKitUserAttributes.identity ascending:NO]] error:NULL] MER_map:^id(id value) {
+        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
+    }];
+}
 - (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     @weakify(self);
     
@@ -253,9 +271,9 @@ static NSString *const kScreenNameKey = @"screen_name";
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
         if (afterIdentity > 0)
-            [parameters setObject:@(afterIdentity) forKey:kAfterIdentityKey];
+            [parameters setObject:@(afterIdentity) forKey:kSinceIdKey];
         if (beforeIdentity > 0)
-            [parameters setObject:@(beforeIdentity) forKey:kBeforeIdentityKey];
+            [parameters setObject:@(beforeIdentity) forKey:kMaxIdKey];
         if (count > 0)
             [parameters setObject:@(count) forKey:kCountKey];
         
@@ -284,6 +302,7 @@ static NSString *const kScreenNameKey = @"screen_name";
         return [self _importTweetJSON:value];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
 - (RACSignal *)requestRetweetsOfMeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     @weakify(self);
     
@@ -293,9 +312,9 @@ static NSString *const kScreenNameKey = @"screen_name";
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
         if (afterIdentity > 0)
-            [parameters setObject:@(afterIdentity) forKey:kAfterIdentityKey];
+            [parameters setObject:@(afterIdentity) forKey:kSinceIdKey];
         if (beforeIdentity > 0)
-            [parameters setObject:@(beforeIdentity) forKey:kBeforeIdentityKey];
+            [parameters setObject:@(beforeIdentity) forKey:kMaxIdKey];
         if (count > 0)
             [parameters setObject:@(count) forKey:kCountKey];
         

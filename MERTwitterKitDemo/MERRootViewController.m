@@ -61,7 +61,7 @@
        ignore:nil]
         take:1]
       flattenMap:^RACStream *(ACAccount *value) {
-          return [[MERTwitterClient sharedClient] requestRetweetsOfMeTimelineTweetsAfterTweetWithIdentity:0 beforeIdentity:0 count:100];
+          return [RACSignal return:[[MERTwitterClient sharedClient] fetchUserTimelineTweetsForUserWithIdentity:0 screenName:value.username afterTweetWithIdentity:0 beforeIdentity:0 count:100]];
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         
