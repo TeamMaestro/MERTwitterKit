@@ -344,6 +344,19 @@ static NSString *const kScreenNameKey = @"screen_name";
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Tweets
+- (NSArray *)fetchTweetsAfterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSMutableArray *predicates = [[NSMutableArray alloc] init];
+    
+    if (afterIdentity > 0)
+        [predicates addObject:[NSPredicate predicateWithFormat:@"%K > %@",TwitterKitTweetAttributes.identity,@(afterIdentity)]];
+    if (beforeIdentity > 0)
+        [predicates addObject:[NSPredicate predicateWithFormat:@"%K < 0",TwitterKitTweetAttributes.identity]];
+    
+    return [[self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:count predicate:[NSCompoundPredicate andPredicateWithSubpredicates:predicates] sortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:TwitterKitUserAttributes.identity ascending:NO]] error:NULL] MER_map:^id(id value) {
+        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
+    }];
+}
+
 - (RACSignal *)requestRetweetsOfTweetWithIdentity:(int64_t)identity count:(NSUInteger)count; {
     NSParameterAssert(identity > 0);
     
