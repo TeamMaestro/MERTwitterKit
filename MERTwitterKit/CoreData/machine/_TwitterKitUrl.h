@@ -6,9 +6,8 @@
 
 extern const struct TwitterKitUrlAttributes {
 	__unsafe_unretained NSString *displayUrl;
-	__unsafe_unretained NSString *endTextIndex;
 	__unsafe_unretained NSString *expandedUrl;
-	__unsafe_unretained NSString *startTextIndex;
+	__unsafe_unretained NSString *range;
 	__unsafe_unretained NSString *url;
 } TwitterKitUrlAttributes;
 
@@ -23,8 +22,7 @@ extern const struct TwitterKitUrlFetchedProperties {
 
 
 
-
-
+@class NSValue;
 
 
 @interface TwitterKitUrlID : NSManagedObjectID {}
@@ -50,20 +48,6 @@ extern const struct TwitterKitUrlFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* endTextIndex;
-
-
-
-@property int16_t endTextIndexValue;
-- (int16_t)endTextIndexValue;
-- (void)setEndTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateEndTextIndex:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSString* expandedUrl;
 
 
@@ -74,15 +58,11 @@ extern const struct TwitterKitUrlFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* startTextIndex;
+@property (nonatomic, strong) NSValue* range;
 
 
 
-@property int16_t startTextIndexValue;
-- (int16_t)startTextIndexValue;
-- (void)setStartTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateStartTextIndex:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateRange:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -121,26 +101,14 @@ extern const struct TwitterKitUrlFetchedProperties {
 
 
 
-- (NSNumber*)primitiveEndTextIndex;
-- (void)setPrimitiveEndTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveEndTextIndexValue;
-- (void)setPrimitiveEndTextIndexValue:(int16_t)value_;
-
-
-
-
 - (NSString*)primitiveExpandedUrl;
 - (void)setPrimitiveExpandedUrl:(NSString*)value;
 
 
 
 
-- (NSNumber*)primitiveStartTextIndex;
-- (void)setPrimitiveStartTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveStartTextIndexValue;
-- (void)setPrimitiveStartTextIndexValue:(int16_t)value_;
+- (NSValue*)primitiveRange;
+- (void)setPrimitiveRange:(NSValue*)value;
 
 
 

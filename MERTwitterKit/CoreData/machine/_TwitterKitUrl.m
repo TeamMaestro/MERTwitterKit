@@ -5,9 +5,8 @@
 
 const struct TwitterKitUrlAttributes TwitterKitUrlAttributes = {
 	.displayUrl = @"displayUrl",
-	.endTextIndex = @"endTextIndex",
 	.expandedUrl = @"expandedUrl",
-	.startTextIndex = @"startTextIndex",
+	.range = @"range",
 	.url = @"url",
 };
 
@@ -44,16 +43,6 @@ const struct TwitterKitUrlFetchedProperties TwitterKitUrlFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"endTextIndexValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"endTextIndex"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-	if ([key isEqualToString:@"startTextIndexValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"startTextIndex"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
 
 	return keyPaths;
 }
@@ -68,32 +57,6 @@ const struct TwitterKitUrlFetchedProperties TwitterKitUrlFetchedProperties = {
 
 
 
-@dynamic endTextIndex;
-
-
-
-- (int16_t)endTextIndexValue {
-	NSNumber *result = [self endTextIndex];
-	return [result shortValue];
-}
-
-- (void)setEndTextIndexValue:(int16_t)value_ {
-	[self setEndTextIndex:[NSNumber numberWithShort:value_]];
-}
-
-- (int16_t)primitiveEndTextIndexValue {
-	NSNumber *result = [self primitiveEndTextIndex];
-	return [result shortValue];
-}
-
-- (void)setPrimitiveEndTextIndexValue:(int16_t)value_ {
-	[self setPrimitiveEndTextIndex:[NSNumber numberWithShort:value_]];
-}
-
-
-
-
-
 @dynamic expandedUrl;
 
 
@@ -101,27 +64,8 @@ const struct TwitterKitUrlFetchedProperties TwitterKitUrlFetchedProperties = {
 
 
 
-@dynamic startTextIndex;
+@dynamic range;
 
-
-
-- (int16_t)startTextIndexValue {
-	NSNumber *result = [self startTextIndex];
-	return [result shortValue];
-}
-
-- (void)setStartTextIndexValue:(int16_t)value_ {
-	[self setStartTextIndex:[NSNumber numberWithShort:value_]];
-}
-
-- (int16_t)primitiveStartTextIndexValue {
-	NSNumber *result = [self primitiveStartTextIndex];
-	return [result shortValue];
-}
-
-- (void)setPrimitiveStartTextIndexValue:(int16_t)value_ {
-	[self setPrimitiveStartTextIndex:[NSNumber numberWithShort:value_]];
-}
 
 
 

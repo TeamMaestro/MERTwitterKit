@@ -109,12 +109,12 @@
 }
 - (NSSet *)symbolRanges {
     return [self.tweet.symbols MER_map:^id(TwitterKitSymbol *value) {
-        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+        return value.range;
     }];
 }
 - (NSSet *)urlRanges {
     return [self.tweet.urls MER_map:^id(TwitterKitUrl *value) {
-        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+        return value.range;
     }];
 }
 

@@ -385,8 +385,7 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     [retval setUrl:url];
     [retval setDisplayUrl:dict[kDisplayUrlKey]];
     [retval setExpandedUrl:dict[kExpandedUrlKey]];
-    [retval setStartTextIndex:dict[kIndicesKey][0]];
-    [retval setEndTextIndex:dict[kIndicesKey][1]];
+    [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
     
     MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
     

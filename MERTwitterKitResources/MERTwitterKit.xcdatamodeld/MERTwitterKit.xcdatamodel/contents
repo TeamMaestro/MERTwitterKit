@@ -56,8 +56,11 @@
         <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="place" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
     <entity name="TwitterKitSymbol" representedClassName="TwitterKitSymbol" syncable="YES">
-        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="range" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSValue"/>
+            </userInfo>
+        </attribute>
         <attribute name="text" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="symbols" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
@@ -86,9 +89,12 @@
     </entity>
     <entity name="TwitterKitUrl" representedClassName="TwitterKitUrl" syncable="YES">
         <attribute name="displayUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="endTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="expandedUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="startTextIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="range" optional="YES" attributeType="Transformable" syncable="YES">
+            <userInfo>
+                <entry key="attributeValueClassName" value="NSValue"/>
+            </userInfo>
+        </attribute>
         <attribute name="url" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="urls" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
@@ -106,9 +112,9 @@
         <element name="TwitterKitMediaSize" positionX="-45" positionY="45" width="128" height="118"/>
         <element name="TwitterKitMention" positionX="-27" positionY="117" width="128" height="88"/>
         <element name="TwitterKitPlace" positionX="18" positionY="162" width="128" height="178"/>
-        <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="103"/>
+        <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="88"/>
         <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="298"/>
-        <element name="TwitterKitUrl" positionX="-36" positionY="90" width="128" height="133"/>
+        <element name="TwitterKitUrl" positionX="-36" positionY="90" width="128" height="120"/>
         <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="133"/>
     </elements>
 </model>

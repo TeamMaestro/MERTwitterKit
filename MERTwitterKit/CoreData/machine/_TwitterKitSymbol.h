@@ -5,8 +5,7 @@
 
 
 extern const struct TwitterKitSymbolAttributes {
-	__unsafe_unretained NSString *endTextIndex;
-	__unsafe_unretained NSString *startTextIndex;
+	__unsafe_unretained NSString *range;
 	__unsafe_unretained NSString *text;
 } TwitterKitSymbolAttributes;
 
@@ -19,8 +18,7 @@ extern const struct TwitterKitSymbolFetchedProperties {
 
 @class TwitterKitTweet;
 
-
-
+@class NSValue;
 
 
 @interface TwitterKitSymbolID : NSManagedObjectID {}
@@ -36,29 +34,11 @@ extern const struct TwitterKitSymbolFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* endTextIndex;
+@property (nonatomic, strong) NSValue* range;
 
 
 
-@property int16_t endTextIndexValue;
-- (int16_t)endTextIndexValue;
-- (void)setEndTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateEndTextIndex:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* startTextIndex;
-
-
-
-@property int16_t startTextIndexValue;
-- (int16_t)startTextIndexValue;
-- (void)setStartTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateStartTextIndex:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateRange:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -91,20 +71,8 @@ extern const struct TwitterKitSymbolFetchedProperties {
 @interface _TwitterKitSymbol (CoreDataGeneratedPrimitiveAccessors)
 
 
-- (NSNumber*)primitiveEndTextIndex;
-- (void)setPrimitiveEndTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveEndTextIndexValue;
-- (void)setPrimitiveEndTextIndexValue:(int16_t)value_;
-
-
-
-
-- (NSNumber*)primitiveStartTextIndex;
-- (void)setPrimitiveStartTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveStartTextIndexValue;
-- (void)setPrimitiveStartTextIndexValue:(int16_t)value_;
+- (NSValue*)primitiveRange;
+- (void)setPrimitiveRange:(NSValue*)value;
 
 
 
