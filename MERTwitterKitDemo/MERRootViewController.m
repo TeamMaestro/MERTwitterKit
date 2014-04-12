@@ -16,6 +16,7 @@
 #import <MEFoundation/MEDebugging.h>
 #import <libextobjc/EXTScope.h>
 #import "MERTweetsTableViewController.h"
+#import "MERTweetUpdateViewController.h"
 
 @interface MERRootViewController ()
 @property (strong,nonatomic) MERTweetsTableViewController *tableViewController;
@@ -25,6 +26,36 @@
 
 - (NSString *)title {
     return @"Tweets";
+}
+- (UINavigationItem *)navigationItem {
+    UINavigationItem *retval = [super navigationItem];
+    
+    UIBarButtonItem *updateItem = [[UIBarButtonItem alloc] initWithTitle:@"Update" style:UIBarButtonItemStylePlain target:nil action:NULL];
+    
+    @weakify(self);
+    
+    [updateItem setRac_command:[[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            @strongify(self);
+            
+            MERTweetUpdateViewController *viewController = [[MERTweetUpdateViewController alloc] init];
+            
+            [viewController setCompletionBlock:^(MERTwitterKitTweetViewModel *viewModel, NSError *error) {
+                MELog(@"%@ %@",viewModel,error);
+            }];
+            
+            [self presentViewController:[[UINavigationController alloc] initWithRootViewController:viewController] animated:YES completion:nil];
+            
+            [subscriber sendNext:@YES];
+            [subscriber sendCompleted];
+            
+            return nil;
+        }];
+    }]];
+    
+    [retval setRightBarButtonItems:@[updateItem]];
+    
+    return retval;
 }
 
 - (void)viewDidLoad {

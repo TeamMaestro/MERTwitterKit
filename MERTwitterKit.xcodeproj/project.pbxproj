@@ -24,6 +24,7 @@
 		791F835F18EBBC9900C0BB80 /* _TwitterKitUrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F835E18EBBC9900C0BB80 /* _TwitterKitUrl.m */; };
 		791F838318F9160D00C0BB80 /* MERTweetsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F838218F9160D00C0BB80 /* MERTweetsTableViewController.m */; };
 		791F838618F919C700C0BB80 /* MERTweetDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F838518F919C700C0BB80 /* MERTweetDetailViewController.m */; };
+		791F838918F9F2CC00C0BB80 /* MERTweetUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F838818F9F2CC00C0BB80 /* MERTweetUpdateViewController.m */; };
 		79D8A4F818E600D30024F0D5 /* _TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */; };
 		79D8A4F918E600D30024F0D5 /* _TwitterKitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F318E600D30024F0D5 /* _TwitterKitUser.m */; };
 		79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F518E600D30024F0D5 /* TwitterKitTweet.m */; };
@@ -135,6 +136,8 @@
 		791F838218F9160D00C0BB80 /* MERTweetsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetsTableViewController.m; sourceTree = "<group>"; };
 		791F838418F919C700C0BB80 /* MERTweetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweetDetailViewController.h; sourceTree = "<group>"; };
 		791F838518F919C700C0BB80 /* MERTweetDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetDetailViewController.m; sourceTree = "<group>"; };
+		791F838718F9F2CC00C0BB80 /* MERTweetUpdateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweetUpdateViewController.h; sourceTree = "<group>"; };
+		791F838818F9F2CC00C0BB80 /* MERTweetUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetUpdateViewController.m; sourceTree = "<group>"; };
 		79D8A4F018E600D30024F0D5 /* _TwitterKitTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitTweet.h; sourceTree = "<group>"; };
 		79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitTweet.m; sourceTree = "<group>"; };
 		79D8A4F218E600D30024F0D5 /* _TwitterKitUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUser.h; sourceTree = "<group>"; };
@@ -377,6 +380,8 @@
 				79FCBF5218E4A2780005959A /* MERAppDelegate.m */,
 				79FCBF5A18E4A2780005959A /* MERRootViewController.h */,
 				79FCBF5B18E4A2780005959A /* MERRootViewController.m */,
+				791F838718F9F2CC00C0BB80 /* MERTweetUpdateViewController.h */,
+				791F838818F9F2CC00C0BB80 /* MERTweetUpdateViewController.m */,
 				791F838418F919C700C0BB80 /* MERTweetDetailViewController.h */,
 				791F838518F919C700C0BB80 /* MERTweetDetailViewController.m */,
 				791F838118F9160D00C0BB80 /* MERTweetsTableViewController.h */,
@@ -676,6 +681,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				791F838918F9F2CC00C0BB80 /* MERTweetUpdateViewController.m in Sources */,
 				791F838618F919C700C0BB80 /* MERTweetDetailViewController.m in Sources */,
 				79FCBF5C18E4A2780005959A /* MERRootViewController.m in Sources */,
 				79FCBF4F18E4A2780005959A /* main.m in Sources */,
