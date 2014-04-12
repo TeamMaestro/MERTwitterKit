@@ -280,6 +280,7 @@ static NSString *const kIndicesKey = @"indices";
 static NSString *const kUrlKey = @"url";
 static NSString *const kDisplayUrlKey = @"display_url";
 static NSString *const kExpandedUrlKey = @"expanded_url";
+static NSString *const kCoordinatesKey = @"coordinates";
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
     NSParameterAssert(dict);
@@ -287,7 +288,6 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     
     NSString *const kCreatedAtKey = @"created_at";
     NSString *const kUserKey = @"user";
-    NSString *const kCoordinatesKey = @"coordinates";
     NSString *const kEntitiesKey = @"entities";
     NSString *const kHashtagsKey = @"hashtags";
     NSString *const kUrlsKey = @"urls";
@@ -498,6 +498,13 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     NSParameterAssert(dict);
     NSParameterAssert(context);
     
+    NSString *const kBoundingBoxKey = @"bounding_box";
+    NSString *const kCountryKey = @"country";
+    NSString *const kCountryCodeKey = @"country_code";
+    NSString *const kFullNameKey = @"full_name";
+    NSString *const kNameKey = @"name";
+    NSString *const kPlaceTypeKey = @"place_type";
+    
     NSString *identity = dict[kIdKey];
     
     NSParameterAssert(identity);
@@ -510,7 +517,12 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
         [retval setIdentity:identity];
     }
     
-    
+    [retval setBoundingBox:dict[kBoundingBoxKey][kCoordinatesKey]];
+    [retval setCountry:dict[kCountryKey]];
+    [retval setCountryCode:dict[kCountryCodeKey]];
+    [retval setFullName:dict[kFullNameKey]];
+    [retval setName:dict[kNameKey]];
+    [retval setType:dict[kPlaceTypeKey]];
     
     return retval;
 }
