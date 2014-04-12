@@ -27,7 +27,7 @@
 }
 
 - (NSArray *)toolbarItems {
-    UIBarButtonItem *retweetsItem = [[UIBarButtonItem alloc] initWithTitle:@"Retweets" style:UIBarButtonItemStylePlain target:nil action:NULL];
+    UIBarButtonItem *retweetsItem = [[UIBarButtonItem alloc] initWithTitle:@"RTs" style:UIBarButtonItemStylePlain target:nil action:NULL];
     
     @weakify(self);
     
