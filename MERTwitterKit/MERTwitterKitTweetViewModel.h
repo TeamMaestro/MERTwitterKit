@@ -18,6 +18,8 @@
 
 @interface MERTwitterKitTweetViewModel : RVMViewModel
 
+@property (readonly,nonatomic) int64_t identity;
+
 @property (readonly,nonatomic) NSString *text;
 @property (readonly,nonatomic) NSSet *hashtagRanges;
 @property (readonly,nonatomic) NSSet *mediaRanges;

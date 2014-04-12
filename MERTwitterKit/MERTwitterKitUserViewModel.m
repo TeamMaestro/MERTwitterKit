@@ -95,6 +95,10 @@
     return self;
 }
 
+- (int64_t)identity {
+    return self.user.identity.longLongValue;
+}
+
 - (NSString *)name {
     return self.user.name;
 }

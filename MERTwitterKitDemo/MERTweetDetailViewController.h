@@ -1,8 +1,8 @@
 //
-//  MERAppDelegate.h
-//  MERTwitterKitDemo
+//  MERTweetDetailViewController.h
+//  MERTwitterKit
 //
-//  Created by William Towe on 3/27/14.
+//  Created by William Towe on 4/12/14.
 //  Copyright (c) 2014 Maestro, LLC. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -13,8 +13,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MERAppDelegate : UIResponder <UIApplicationDelegate>
+@class MERTwitterKitTweetViewModel;
 
-@property (strong, nonatomic) UIWindow *window;
+@interface MERTweetDetailViewController : UIViewController
+
+- (instancetype)initWithViewModel:(MERTwitterKitTweetViewModel *)viewModel;
 
 @end

@@ -94,6 +94,10 @@
     return self;
 }
 
+- (int64_t)identity {
+    return self.tweet.identity.longLongValue;
+}
+
 - (NSString *)text {
     return self.tweet.text;
 }

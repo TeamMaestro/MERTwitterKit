@@ -5,20 +5,20 @@
 //  Created by William Towe on 3/27/14.
 //  Copyright (c) 2014 Maestro, LLC. All rights reserved.
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #import "MERRootViewController.h"
 #import <MERTwitterKit/MERTwitterKit.h>
 #import <MEFoundation/MEDebugging.h>
-#import "MERTweetTableViewCell.h"
-#import <MEKit/UITableViewCell+MEExtensions.h>
 #import <libextobjc/EXTScope.h>
+#import "MERTweetsTableViewController.h"
 
-@interface MERRootViewController () <UITableViewDataSource,UITableViewDelegate>
-@property (strong,nonatomic) UITableView *tableView;
-
-@property (strong,nonatomic) NSArray *viewModels;
-
-- (void)_configureCell:(MERTweetTableViewCell *)cell indexPath:(NSIndexPath *)indexPath;
+@interface MERRootViewController ()
+@property (strong,nonatomic) MERTweetsTableViewController *tableViewController;
 @end
 
 @implementation MERRootViewController
@@ -30,11 +30,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setTableView:[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain]];
-    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([MERTweetTableViewCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([MERTweetTableViewCell class])];
-    [self.tableView setDataSource:self];
-    [self.tableView setDelegate:self];
-    [self.view addSubview:self.tableView];
+    [self setTableViewController:[[MERTweetsTableViewController alloc] init]];
+    [self addChildViewController:self.tableViewController];
+    [self.view addSubview:self.tableViewController.view];
+    [self.tableViewController didMoveToParentViewController:self];
     
     @weakify(self);
     
@@ -47,59 +46,22 @@
         [alertView show];
     }];
     
-    [[[RACObserve(self, viewModels)
-       ignore:nil]
-      deliverOn:[RACScheduler mainThreadScheduler]]
-     subscribeNext:^(id _) {
-         @strongify(self);
-         
-         [self.tableView reloadData];
-     }];
-    
     [[[[[RACObserve([MERTwitterClient sharedClient], selectedAccount)
         distinctUntilChanged]
        ignore:nil]
         take:1]
       flattenMap:^RACStream *(ACAccount *value) {
-          return [RACSignal return:[[MERTwitterClient sharedClient] fetchUserTimelineTweetsForUserWithIdentity:0 screenName:value.username afterTweetWithIdentity:0 beforeIdentity:0 count:100]];
+          return [[MERTwitterClient sharedClient] requestHomeTimelineTweetsAfterTweetWithIdentity:0 beforeIdentity:0 count:100];
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         
-        [self setViewModels:value];
+        [self.tableViewController setViewModels:value];
     } error:^(NSError *error) {
         MELogObject(error);
     }];
 }
 - (void)viewDidLayoutSubviews {
-    [self.tableView setFrame:self.view.bounds];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.viewModels.count;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MERTweetTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([MERTweetTableViewCell class]) forIndexPath:indexPath];
-    
-    [self _configureCell:cell indexPath:indexPath];
-    
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [MERTweetTableViewCell estimatedRowHeight];
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MERTweetTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([MERTweetTableViewCell class])];
-    
-    [self _configureCell:cell indexPath:indexPath];
-    
-    return [cell ME_autolayoutSizeThatFits:CGSizeMake(CGRectGetWidth(tableView.frame), CGRectGetHeight(cell.bounds))].height + 1;
-}
-
-- (void)_configureCell:(MERTweetTableViewCell *)cell indexPath:(NSIndexPath *)indexPath; {
-    MERTwitterKitTweetViewModel *viewModel = self.viewModels[indexPath.row];
-    
-    [cell setViewModel:viewModel];
+    [self.tableViewController.view setFrame:self.view.bounds];
 }
 
 @end
