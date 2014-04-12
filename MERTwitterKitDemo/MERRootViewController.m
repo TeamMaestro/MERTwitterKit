@@ -60,8 +60,8 @@
         distinctUntilChanged]
        ignore:nil]
         take:1]
-      flattenMap:^RACStream *(id value) {
-          return [[MERTwitterClient sharedClient] requestMentionsTimelineTweetsAfterTweetWithIdentity:0 beforeIdentity:0 count:100];
+      flattenMap:^RACStream *(ACAccount *value) {
+          return [[MERTwitterClient sharedClient] requestUserTimelineTweetsForUserWithIdentity:0 screenName:value.username afterTweetWithIdentity:0 beforeIdentity:0 count:100];
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         

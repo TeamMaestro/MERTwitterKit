@@ -192,6 +192,58 @@ static NSString *const kCountKey = @"count";
         return [self _importTweetJSON:value];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+static NSString *const kScreenNameKey = @"screen_name";
+
+- (RACSignal *)requestUserTimelineTweetsForUserWithIdentity:(int64_t)userIdentity screenName:(NSString *)screenName afterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSParameterAssert(userIdentity > 0 || screenName);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kUserIdKey = @"user_id";
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (userIdentity > 0)
+            [parameters setObject:@(userIdentity) forKey:kUserIdKey];
+        if (screenName)
+            [parameters setObject:screenName forKey:kScreenNameKey];
+        
+        if (afterIdentity > 0)
+            [parameters setObject:@(afterIdentity) forKey:kAfterIdentityKey];
+        if (beforeIdentity > 0)
+            [parameters setObject:@(beforeIdentity) forKey:kBeforeIdentityKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/user_timeline.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importTweetJSON:value];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 - (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     @weakify(self);
     
@@ -366,7 +418,6 @@ static NSString *const kCoordinatesKey = @"coordinates";
     
     NSString *const kProfileImageUrlKey = @"profile_image_url_https";
     NSString *const kNameKey = @"name";
-    NSString *const kScreenNameKey = @"screen_name";
     
     NSNumber *identity = dict[@"id"];
     
