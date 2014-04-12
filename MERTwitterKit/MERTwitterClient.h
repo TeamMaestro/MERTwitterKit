@@ -33,9 +33,9 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 @property (strong,nonatomic) ACAccount *selectedAccount;
 
 + (instancetype)sharedClient;
-
+#pragma mark Accounts
 - (RACSignal *)requestAccounts;
-
+#pragma mark Timelines
 - (RACSignal *)requestMentionsTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 
 - (NSArray *)fetchUserTimelineTweetsForUserWithIdentity:(int64_t)userIdentity screenName:(NSString *)screenName afterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
@@ -43,5 +43,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 - (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 - (RACSignal *)requestRetweetsOfMeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
+#pragma mark Tweets
+- (RACSignal *)requestRetweetsOfTweetWithIdentity:(int64_t)identity count:(NSUInteger)count;
 
 @end
