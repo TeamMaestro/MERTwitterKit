@@ -99,7 +99,7 @@
 }
 - (NSSet *)mediaRanges {
     return [self.tweet.media MER_map:^id(TwitterKitMedia *value) {
-        return [NSValue valueWithRange:NSMakeRange(value.startTextIndexValue, value.endTextIndexValue - value.startTextIndexValue)];
+        return value.range;
     }];
 }
 - (NSSet *)mentionRanges {

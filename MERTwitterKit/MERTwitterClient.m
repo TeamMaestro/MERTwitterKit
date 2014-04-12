@@ -366,7 +366,7 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
     TwitterKitHashtag *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitHashtag entityName] inManagedObjectContext:context];
     
     [retval setText:text];
-    [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue])]];
+    [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
     
     MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
     
@@ -415,8 +415,7 @@ static NSString *const kExpandedUrlKey = @"expanded_url";
         [retval setExpandedUrl:dict[kExpandedUrlKey]];
         [retval setMediaUrl:dict[kMediaUrlKey]];
         [retval setType:dict[kTypeKey]];
-        [retval setStartTextIndex:dict[kIndicesKey][0]];
-        [retval setEndTextIndex:dict[kIndicesKey][1]];
+        [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
         
         [dict[kSizesKey] enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *value, BOOL *stop) {
             [retval.sizesSet addObject:[self _mediaSizeWithName:key dictionary:value context:context]];

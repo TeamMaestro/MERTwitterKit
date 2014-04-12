@@ -6,11 +6,10 @@
 
 extern const struct TwitterKitMediaAttributes {
 	__unsafe_unretained NSString *displayUrl;
-	__unsafe_unretained NSString *endTextIndex;
 	__unsafe_unretained NSString *expandedUrl;
 	__unsafe_unretained NSString *identity;
 	__unsafe_unretained NSString *mediaUrl;
-	__unsafe_unretained NSString *startTextIndex;
+	__unsafe_unretained NSString *range;
 	__unsafe_unretained NSString *type;
 	__unsafe_unretained NSString *url;
 } TwitterKitMediaAttributes;
@@ -30,8 +29,7 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
-
-
+@class NSValue;
 
 
 
@@ -53,20 +51,6 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 //- (BOOL)validateDisplayUrl:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* endTextIndex;
-
-
-
-@property int16_t endTextIndexValue;
-- (int16_t)endTextIndexValue;
-- (void)setEndTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateEndTextIndex:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -106,15 +90,11 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* startTextIndex;
+@property (nonatomic, strong) NSValue* range;
 
 
 
-@property int16_t startTextIndexValue;
-- (int16_t)startTextIndexValue;
-- (void)setStartTextIndexValue:(int16_t)value_;
-
-//- (BOOL)validateStartTextIndex:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateRange:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -175,15 +155,6 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
-- (NSNumber*)primitiveEndTextIndex;
-- (void)setPrimitiveEndTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveEndTextIndexValue;
-- (void)setPrimitiveEndTextIndexValue:(int16_t)value_;
-
-
-
-
 - (NSString*)primitiveExpandedUrl;
 - (void)setPrimitiveExpandedUrl:(NSString*)value;
 
@@ -205,11 +176,8 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
-- (NSNumber*)primitiveStartTextIndex;
-- (void)setPrimitiveStartTextIndex:(NSNumber*)value;
-
-- (int16_t)primitiveStartTextIndexValue;
-- (void)setPrimitiveStartTextIndexValue:(int16_t)value_;
+- (NSValue*)primitiveRange;
+- (void)setPrimitiveRange:(NSValue*)value;
 
 
 
