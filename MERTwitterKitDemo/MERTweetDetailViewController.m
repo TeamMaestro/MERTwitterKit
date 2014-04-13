@@ -15,6 +15,7 @@
 #import <MERTwitterKit/MERTwitterKit.h>
 #import <libextobjc/EXTScope.h>
 #import "MERTweetsTableViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface MERTweetDetailViewController ()
 @property (strong,nonatomic) MERTwitterKitTweetViewModel *viewModel;
@@ -35,9 +36,10 @@
         return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
             @strongify(self);
             
-            [[[[MERTwitterClient sharedClient] requestRetweetsOfTweetWithIdentity:self.viewModel.identity count:0]
-              finally:^{
-                  [subscriber sendCompleted];
+            [[[[[MERTwitterClient sharedClient] requestRetweetsOfTweetWithIdentity:self.viewModel.identity count:0] initially:^{
+                [SVProgressHUD show];
+            }] finally:^{
+                [SVProgressHUD dismiss];
             }]
              subscribeNext:^(NSArray *value) {
                  @strongify(self);
@@ -49,6 +51,8 @@
                  
                  [self.navigationController pushViewController:viewController animated:YES];
             }];
+            
+            [subscriber sendCompleted];
             
             return nil;
         }];

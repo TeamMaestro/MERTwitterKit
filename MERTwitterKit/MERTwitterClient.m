@@ -45,6 +45,12 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
     return [NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:MERTwitterKitResourcesBundleName.stringByDeletingPathExtension withExtension:MERTwitterKitResourcesBundleName.pathExtension]];
 }
 
+static NSString *const kMERTwitterClientHelpConfigurationName = @"MERTwitterKit.help.configuration.json";
+
+@interface MERTwitterClient (Private)
+- (RACSignal *)requestHelpConfiguration;
+@end
+
 @interface MERTwitterClient ()
 @property (strong,nonatomic) ACAccountStore *accountStore;
 
@@ -53,6 +59,8 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
 @property (strong,nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (strong,nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong,nonatomic) NSManagedObjectContext *writeManagedObjectContext;
+
+@property (copy,nonatomic) NSDictionary *helpConfiguration;
 
 - (RACSignal *)_importTweetJSON:(NSArray *)json;
 
@@ -104,6 +112,38 @@ NSBundle *MERTwitterKitResourcesBundle(void) {
     [self.httpSessionManager setResponseSerializer:[AFJSONResponseSerializer serializerWithReadingOptions:0]];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
+    NSURL *helpConfigurationUrl = [[NSFileManager defaultManager].ME_applicationSupportDirectoryURL URLByAppendingPathComponent:kMERTwitterClientHelpConfigurationName isDirectory:NO];
+    
+    if ([helpConfigurationUrl checkResourceIsReachableAndReturnError:NULL]) {
+        NSData *data = [NSData dataWithContentsOfURL:helpConfigurationUrl options:0 error:NULL];
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
+        
+        [self setHelpConfiguration:json];
+    }
+    
+    @weakify(self);
+    
+    [[[RACObserve(self, selectedAccount)
+       distinctUntilChanged]
+      ignore:nil]
+     subscribeNext:^(id _) {
+         @strongify(self);
+         
+         if (!self.helpConfiguration) {
+             [[self requestHelpConfiguration] subscribeNext:^(NSDictionary *value) {
+                 @strongify(self);
+                 
+                 NSData *data = [NSJSONSerialization dataWithJSONObject:value options:0 error:NULL];
+                 
+                 [[NSFileManager defaultManager] removeItemAtURL:helpConfigurationUrl error:NULL];
+                 
+                 [data writeToURL:helpConfigurationUrl options:NSDataWritingAtomic error:NULL];
+                 
+                 [self setHelpConfiguration:value];
+             }];
+         }
+    }];
     
     return self;
 }
@@ -518,8 +558,16 @@ static NSString *const kScreenNameKey = @"screen_name";
         [request addMultipartData:[(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)status, CFSTR("!@#$%^*()-+/'\" "), CFSTR("&"), kCFStringEncodingUTF8) dataUsingEncoding:NSUTF8StringEncoding] withName:kStatusKey type:kMultipartFormDataKey filename:nil];
         
         for (UIImage *image in media) {
-            CGDataProviderRef dataProvider = CGImageGetDataProvider(image.CGImage);
-            NSData *data = (__bridge_transfer NSData *)CGDataProviderCopyData(dataProvider);
+            CGFloat compression = 1.0;
+            NSData *data = UIImageJPEGRepresentation(image, compression);
+            
+            if (data.length > [self.helpConfiguration[@"photo_size_limit"] unsignedIntegerValue]) {
+                while (data.length > [self.helpConfiguration[@"photo_size_limit"] unsignedIntegerValue]) {
+                    compression -= 0.1;
+                    
+                    data = UIImageJPEGRepresentation(image, compression);
+                }
+            }
             
             [request addMultipartData:data withName:kMediaKey type:kMultipartFormDataKey filename:[[NSUUID UUID] UUIDString]];
         }
@@ -533,25 +581,29 @@ static NSString *const kScreenNameKey = @"screen_name";
         if (placeIdentity)
             [request addMultipartData:[placeIdentity dataUsingEncoding:NSUTF8StringEncoding] withName:kPlaceIdKey type:kMultipartFormDataKey filename:nil];
         
-        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if (error) {
-                [subscriber sendError:error];
-            }
-            else {
-                [subscriber sendNext:responseObject];
+        [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+        
+        [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+            [[AFNetworkActivityIndicatorManager sharedManager] decrementActivityCount];
+            
+            if (urlResponse.statusCode == 200) {
+                [subscriber sendNext:[NSJSONSerialization JSONObjectWithData:responseData options:0 error:NULL]];
                 [subscriber sendCompleted];
             }
+            else {
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:NULL];
+                
+                [subscriber sendError:[NSError errorWithDomain:MERTwitterClientErrorDomain code:[json[@"errors"][0][@"code"] integerValue] userInfo:@{NSLocalizedDescriptionKey: json[@"errors"][0][@"message"]}]];
+            }
         }];
         
-        [task resume];
-        
-        return [RACDisposable disposableWithBlock:^{
-            [task cancel];
-        }];
+        return nil;
     }] flattenMap:^RACStream *(id value) {
         @strongify(self);
         
-        return [self _importTweetJSON:@[value]];
+        return [[self _importTweetJSON:@[value]] map:^id(NSArray *value) {
+            return value.firstObject;
+        }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark *** Private Methods ***
@@ -861,6 +913,38 @@ static NSString *const kCoordinatesKey = @"coordinates";
     [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
     
     return retval;
+}
+
+@end
+
+@implementation MERTwitterClient (Private)
+
+- (RACSignal *)requestHelpConfiguration; {
+    @weakify(self);
+    
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"help/configuration.json" relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }];
 }
 
 @end
