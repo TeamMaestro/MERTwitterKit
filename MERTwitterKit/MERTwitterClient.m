@@ -486,7 +486,16 @@ static NSString *const kScreenNameKey = @"screen_name";
     }];
 }
 
-- (RACSignal *)requestUpdateWithStatus:(NSString *)status inReplyToTweetWithIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status; {
+    return [self requestUpdateWithStatus:status media:nil replyIdentity:0 latitude:0 longitude:0 placeIdentity:nil];
+}
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity; {
+    return [self requestUpdateWithStatus:status media:nil replyIdentity:replyIdentity latitude:0 longitude:0 placeIdentity:nil];
+}
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
+    return [self requestUpdateWithStatus:status media:nil replyIdentity:replyIdentity latitude:latitude longitude:longitude placeIdentity:placeIdentity];
+}
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
     NSParameterAssert(status);
     
     @weakify(self);
@@ -500,12 +509,20 @@ static NSString *const kScreenNameKey = @"screen_name";
         NSString *const kLatitudeKey = @"lat";
         NSString *const kLongitudeKey = @"long";
         NSString *const kPlaceIdKey = @"place_id";
+        NSString *const kMediaKey = @"media[]";
         
-        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"statuses/update.json" relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:(media) ? @"statuses/update_with_media.json" : @"statuses/update.json" relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
         
         [request setAccount:self.selectedAccount];
         
         [request addMultipartData:[(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)status, CFSTR("!@#$%^*()-+/'\" "), CFSTR("&"), kCFStringEncodingUTF8) dataUsingEncoding:NSUTF8StringEncoding] withName:kStatusKey type:kMultipartFormDataKey filename:nil];
+        
+        for (UIImage *image in media) {
+            CGDataProviderRef dataProvider = CGImageGetDataProvider(image.CGImage);
+            NSData *data = (__bridge_transfer NSData *)CGDataProviderCopyData(dataProvider);
+            
+            [request addMultipartData:data withName:kMediaKey type:kMultipartFormDataKey filename:[[NSUUID UUID] UUIDString]];
+        }
         
         if (replyIdentity > 0)
             [request addMultipartData:[@(replyIdentity).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kInReplyToStatusIdKey type:kMultipartFormDataKey filename:nil];
