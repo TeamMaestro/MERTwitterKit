@@ -550,6 +550,7 @@ static NSString *const kScreenNameKey = @"screen_name";
         NSString *const kLongitudeKey = @"long";
         NSString *const kPlaceIdKey = @"place_id";
         NSString *const kMediaKey = @"media[]";
+        NSString *const kPhotoSizeLimitKey = @"photo_size_limit";
         
         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:(media) ? @"statuses/update_with_media.json" : @"statuses/update.json" relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
         
@@ -561,8 +562,8 @@ static NSString *const kScreenNameKey = @"screen_name";
             CGFloat compression = 1.0;
             NSData *data = UIImageJPEGRepresentation(image, compression);
             
-            if (data.length > [self.helpConfiguration[@"photo_size_limit"] unsignedIntegerValue]) {
-                while (data.length > [self.helpConfiguration[@"photo_size_limit"] unsignedIntegerValue]) {
+            if (data.length > [self.helpConfiguration[kPhotoSizeLimitKey] unsignedIntegerValue]) {
+                while (data.length > [self.helpConfiguration[kPhotoSizeLimitKey] unsignedIntegerValue]) {
                     compression -= 0.1;
                     
                     data = UIImageJPEGRepresentation(image, compression);
