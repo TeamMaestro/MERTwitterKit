@@ -144,4 +144,11 @@
     return [kDateFormatter stringFromDate:self.createdAt];
 }
 
+- (NSUInteger)favoriteCount {
+    return self.tweet.favoriteCount.unsignedIntegerValue;
+}
+- (NSUInteger)retweetCount {
+    return self.tweet.retweetCount.unsignedIntegerValue;
+}
+
 @end

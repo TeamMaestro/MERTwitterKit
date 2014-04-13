@@ -18,6 +18,14 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 
 @interface MERTweetDetailViewController ()
+@property (weak,nonatomic) IBOutlet UIImageView *imageView;
+@property (weak,nonatomic) IBOutlet UIImageView *mediaImageView;
+@property (weak,nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak,nonatomic) IBOutlet UILabel *screenNameLabel;
+@property (weak,nonatomic) IBOutlet UILabel *textLabel;
+@property (weak,nonatomic) IBOutlet UILabel *favoriteCountLabel;
+@property (weak,nonatomic) IBOutlet UILabel *retweetCountLabel;
+
 @property (strong,nonatomic) MERTwitterKitTweetViewModel *viewModel;
 @end
 
@@ -25,6 +33,23 @@
 
 - (NSString *)title {
     return @"Detail";
+}
+- (UINavigationItem *)navigationItem {
+    UINavigationItem *retval = [super navigationItem];
+    
+    UIBarButtonItem *retweetItem = [[UIBarButtonItem alloc] initWithTitle:@"Retweet" style:UIBarButtonItemStylePlain target:nil action:NULL];
+    
+    [retweetItem setRac_command:[[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            [subscriber sendCompleted];
+            
+            return nil;
+        }];
+    }]];
+    
+    [retval setRightBarButtonItems:@[retweetItem]];
+    
+    return retval;
 }
 
 - (NSArray *)toolbarItems {
@@ -65,6 +90,42 @@
     [super viewDidLoad];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    @weakify(self);
+    
+    RAC(self.imageView,image) = RACObserve(self, viewModel.userViewModel.profileImage);
+    RAC(self.mediaImageView,image) = RACObserve(self, viewModel.mediaThumbnailImage);
+    RAC(self.nameLabel,text) = RACObserve(self, viewModel.userViewModel.name);
+    RAC(self.screenNameLabel,text) = RACObserve(self, viewModel.userViewModel.screenName);
+    RAC(self.textLabel,attributedText) = [[RACObserve(self, viewModel) ignore:nil] map:^id(MERTwitterKitTweetViewModel *value) {
+        @strongify(self);
+        
+        NSMutableAttributedString *retval = [[NSMutableAttributedString alloc] initWithString:value.text attributes:@{NSFontAttributeName: self.textLabel.font,NSForegroundColorAttributeName: [UIColor blackColor]}];
+        
+        for (NSValue *hashtagRange in value.hashtagRanges) {
+            [retval addAttributes:@{NSForegroundColorAttributeName: [UIColor orangeColor]} range:hashtagRange.rangeValue];
+        }
+        for (NSValue *urlRange in value.urlRanges) {
+            [retval addAttributes:@{NSForegroundColorAttributeName: [UIColor blueColor]} range:urlRange.rangeValue];
+        }
+        for (NSValue *urlRange in value.mediaRanges) {
+            [retval addAttributes:@{NSForegroundColorAttributeName: [UIColor blueColor]} range:urlRange.rangeValue];
+        }
+        for (NSValue *urlRange in value.mentionRanges) {
+            [retval addAttributes:@{NSForegroundColorAttributeName: [UIColor purpleColor]} range:urlRange.rangeValue];
+        }
+        for (NSValue *urlRange in value.symbolRanges) {
+            [retval addAttributes:@{NSForegroundColorAttributeName: [UIColor magentaColor]} range:urlRange.rangeValue];
+        }
+        
+        return retval;
+    }];
+    RAC(self.favoriteCountLabel,text) = [RACObserve(self, viewModel.favoriteCount) map:^id(id value) {
+        return [NSString stringWithFormat:@"%@ favorite(s)",value];
+    }];
+    RAC(self.retweetCountLabel,text) = [RACObserve(self, viewModel.retweetCount) map:^id(id value) {
+        return [NSString stringWithFormat:@"%@ retweet(s)",value];
+    }];
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

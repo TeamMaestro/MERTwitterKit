@@ -607,6 +607,42 @@ static NSString *const kScreenNameKey = @"screen_name";
         }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+- (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:[NSString stringWithFormat:@"statuses/retweet/%@.json",@(identity)] relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [[self _importTweetJSON:@[value]] map:^id(NSArray *value) {
+            return value.firstObject;
+        }];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
     @weakify(self);
@@ -670,6 +706,11 @@ static NSString *const kCoordinatesKey = @"coordinates";
     NSString *const kMentionsKey = @"user_mentions";
     NSString *const kPlaceKey = @"place";
     NSString *const kSymbolsKey = @"symbols";
+    NSString *const kRetweetedStatusKey = @"retweeted_status";
+    NSString *const kRetweetedKey = @"retweeted";
+    NSString *const kRetweetCountKey = @"retweet_count";
+    NSString *const kFavoritedKey = @"favorited";
+    NSString *const kFavoriteCountKey = @"favorite_count";
     
     NSNumber *identity = dict[kIdKey];
     
@@ -730,8 +771,19 @@ static NSString *const kCoordinatesKey = @"coordinates";
             [retval setUser:user];
         }
         
+        if (dict[kRetweetedStatusKey]) {
+            TwitterKitTweet *retweet = [self _tweetWithDictionary:dict[kRetweetedStatusKey] context:context];
+            
+            [retval setRetweet:retweet];
+        }
+        
         MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
     }
+    
+    [retval setRetweeted:dict[kRetweetedKey]];
+    [retval setRetweetCount:dict[kRetweetCountKey]];
+    [retval setFavorited:dict[kFavoritedKey]];
+    [retval setFavoriteCount:dict[kFavoriteCountKey]];
     
     return retval;
 }

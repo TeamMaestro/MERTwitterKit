@@ -30,6 +30,9 @@
 @property (readonly,nonatomic) NSDate *createdAt;
 @property (readonly,nonatomic) NSString *relativeCreatedAtString;
 
+@property (readonly,nonatomic) NSUInteger favoriteCount;
+@property (readonly,nonatomic) NSUInteger retweetCount;
+
 @property (readonly,strong,nonatomic) UIImage *mediaThumbnailImage;
 
 @property (readonly,strong,nonatomic) MERTwitterKitUserViewModel *userViewModel;
