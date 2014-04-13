@@ -41,7 +41,13 @@
             MERTweetUpdateViewController *viewController = [[MERTweetUpdateViewController alloc] init];
             
             [viewController setCompletionBlock:^(MERTwitterKitTweetViewModel *viewModel, NSError *error) {
-                MELog(@"%@ %@",viewModel,error);
+                if (viewModel) {
+                    NSMutableArray *temp = [self.tableViewController.viewModels mutableCopy];
+                    
+                    [temp insertObject:viewModel atIndex:0];
+                    
+                    [self.tableViewController setViewModels:temp];
+                }
             }];
             
             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:viewController] animated:YES completion:nil];
