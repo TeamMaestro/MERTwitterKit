@@ -696,6 +696,21 @@ static NSString *const kPreviousCursorKey = @"previous_cursor";
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Search
+- (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSMutableArray *predicates = [[NSMutableArray alloc] init];
+    
+    [predicates addObject:[NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@",TwitterKitTweetAttributes.text,search]];
+    
+    if (afterIdentity > 0)
+        [predicates addObject:[NSPredicate predicateWithFormat:@"%K > %@",TwitterKitTweetAttributes.identity,@(afterIdentity)]];
+    if (beforeIdentity > 0)
+        [predicates addObject:[NSPredicate predicateWithFormat:@"%K < 0",TwitterKitTweetAttributes.identity]];
+    
+    return [[self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:count predicate:[NSCompoundPredicate andPredicateWithSubpredicates:predicates] sortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:TwitterKitTweetAttributes.identity ascending:NO]] error:NULL] MER_map:^id(id value) {
+        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
+    }];
+}
+
 static NSString *const kStatusesKey = @"statuses";
 
 - (RACSignal *)requestTweetsMatchingSearch:(NSString *)search type:(MERTwitterClientSearchType)type afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
