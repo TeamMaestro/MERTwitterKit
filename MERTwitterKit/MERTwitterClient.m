@@ -668,7 +668,7 @@ static NSString *const kPreviousCursorKey = @"previous_cursor";
         if (cursor != 0)
             [parameters setObject:@(cursor) forKey:kCursorKey];
         
-        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/retweeters/ids" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/retweeters/ids.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
         
         [request setAccount:self.selectedAccount];
         
@@ -693,6 +693,70 @@ static NSString *const kPreviousCursorKey = @"previous_cursor";
         return [[self _importUserIds:dict[kIdsKey]] map:^id(id value) {
             return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
         }];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+#pragma mark Search
+static NSString *const kStatusesKey = @"statuses";
+
+- (RACSignal *)requestTweetsMatchingSearch:(NSString *)search type:(MERTwitterClientSearchType)type afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSParameterAssert(search);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kQueryKey = @"q";
+        NSString *const kResultTypeKey = @"result_type";
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)search, NULL, NULL, kCFStringEncodingUTF8) forKey:kQueryKey];
+        
+        switch (type) {
+            case MERTwitterClientSearchTypeMixed:
+                [parameters setObject:@"mixed" forKey:kResultTypeKey];
+                break;
+            case MERTwitterClientSearchTypePopular:
+                [parameters setObject:@"popular" forKey:kResultTypeKey];
+                break;
+            case MERTwitterClientSearchTypeRecent:
+                [parameters setObject:@"recent" forKey:kResultTypeKey];
+                break;
+            default:
+                break;
+        }
+        
+        if (afterIdentity > 0)
+            [parameters setObject:@(afterIdentity) forKey:kSinceIdKey];
+        if (beforeIdentity > 0)
+            [parameters setObject:@(beforeIdentity) forKey:kMaxIdKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"search/tweets.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(NSDictionary *value) {
+        @strongify(self);
+        
+        return [self _importTweetJSON:value[kStatusesKey]];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark *** Private Methods ***

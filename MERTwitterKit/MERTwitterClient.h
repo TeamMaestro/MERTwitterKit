@@ -15,6 +15,12 @@
 #import <Accounts/Accounts.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
+    MERTwitterClientSearchTypeMixed,
+    MERTwitterClientSearchTypeRecent,
+    MERTwitterClientSearchTypePopular
+};
+
 extern int64_t const MERTwitterClientCursorInitial;
 
 extern NSString *const MERTwitterClientErrorDomain;
@@ -63,5 +69,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity;
 
 - (RACSignal *)requestRetweetersOfTweetWithIdentity:(int64_t)identity cursor:(int64_t)cursor;
+#pragma mark Search
+- (RACSignal *)requestTweetsMatchingSearch:(NSString *)search type:(MERTwitterClientSearchType)type afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 
 @end

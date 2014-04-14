@@ -88,7 +88,7 @@
        ignore:nil]
         take:1]
       flattenMap:^RACStream *(ACAccount *value) {
-          return [RACSignal return:[[MERTwitterClient sharedClient] fetchTweetsAfterIdentity:0 beforeIdentity:0 count:100]];
+          return [[MERTwitterClient sharedClient] requestTweetsMatchingSearch:@"#yolo" type:MERTwitterClientSearchTypeRecent afterIdentity:0 beforeIdentity:0 count:100];
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         
