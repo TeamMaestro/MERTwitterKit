@@ -15,6 +15,8 @@
 #import <Accounts/Accounts.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
+extern int64_t const MERTwitterClientCursorInitial;
+
 extern NSString *const MERTwitterClientErrorDomain;
 
 extern NSInteger const MERTwitterClientErrorCodeNoAccounts;
@@ -59,5 +61,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity;
 
 - (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity;
+
+- (RACSignal *)requestRetweetersOfTweetWithIdentity:(int64_t)identity cursor:(int64_t)cursor;
 
 @end

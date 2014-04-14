@@ -21,6 +21,7 @@
 #import <MEFoundation/MEDebugging.h>
 #import <MEReactiveFoundation/MEReactiveFoundation.h>
 #import "MERTwitterKitTweetViewModel+Private.h"
+#import "MERTwitterKitUserViewModel+Private.h"
 #import "TwitterKitMedia.h"
 #import "TwitterKitHashtag.h"
 #import "TwitterKitSymbol.h"
@@ -33,6 +34,8 @@
 #import <libextobjc/EXTKeyPathCoding.h>
 
 #import <Social/Social.h>
+
+int64_t const MERTwitterClientCursorInitial = -1;
 
 NSString *const MERTwitterClientErrorDomain = @"MERTwitterClientErrorDomain";
 NSInteger const MERTwitterClientErrorCodeNoAccounts = 1;
@@ -63,6 +66,7 @@ static NSString *const kMERTwitterClientHelpConfigurationName = @"MERTwitterKit.
 @property (copy,nonatomic) NSDictionary *helpConfiguration;
 
 - (RACSignal *)_importTweetJSON:(NSArray *)json;
+- (RACSignal *)_importUserIds:(NSArray *)ids;
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
@@ -643,7 +647,56 @@ static NSString *const kScreenNameKey = @"screen_name";
         }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+static NSString *const kCursorKey = @"cursor";
+static NSString *const kIdsKey = @"ids";
+static NSString *const kNextCursorKey = @"next_cursor";
+static NSString *const kPreviousCursorKey = @"previous_cursor";
+
+- (RACSignal *)requestRetweetersOfTweetWithIdentity:(int64_t)identity cursor:(int64_t)cursor; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:@(identity) forKey:kIdKey];
+        
+        if (cursor != 0)
+            [parameters setObject:@(cursor) forKey:kCursorKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/retweeters/ids" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(NSDictionary *dict) {
+        @strongify(self);
+        
+        return [[self _importUserIds:dict[kIdsKey]] map:^id(id value) {
+            return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
+        }];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
+#pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
     @weakify(self);
     
@@ -665,7 +718,8 @@ static NSString *const kScreenNameKey = @"screen_name";
                 [objectIds addObject:tweet.objectID];
             }
             
-            if ([context ME_saveRecursively:NULL]) {
+            NSError *outError;
+            if ([context ME_saveRecursively:&outError]) {
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
                         return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
@@ -676,15 +730,54 @@ static NSString *const kScreenNameKey = @"screen_name";
                 }];
             }
             else {
-                [subscriber sendNext:nil];
-                [subscriber sendCompleted];
+                [subscriber sendError:outError];
             }
         }];
         
         return nil;
     }];
 }
-
+- (RACSignal *)_importUserIds:(NSArray *)ids; {
+    @weakify(self);
+    
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        
+        [context setUndoManager:nil];
+        [context setParentContext:self.managedObjectContext];
+        [context performBlock:^{
+            @strongify(self);
+            
+            NSMutableArray *objectIds = [[NSMutableArray alloc] init];
+            
+            for (NSString *identity in ids) {
+                TwitterKitUser *user = [self _userWithDictionary:@{kIdKey: @(identity.longLongValue)} context:context];
+                
+                [objectIds addObject:user.objectID];
+            }
+            
+            NSError *outError;
+            if ([context ME_saveRecursively:&outError]) {
+                [self.managedObjectContext performBlock:^{
+                    NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
+                        return [MERTwitterKitUserViewModel viewModelWithUser:value];
+                    }];
+                    
+                    [subscriber sendNext:objects];
+                    [subscriber sendCompleted];
+                }];
+            }
+            else {
+                [subscriber sendError:outError];
+            }
+        }];
+        
+        return nil;
+    }];
+}
+#pragma mark Creation
 static NSString *const kIdKey = @"id";
 static NSString *const kTextKey = @"text";
 static NSString *const kIndicesKey = @"indices";
