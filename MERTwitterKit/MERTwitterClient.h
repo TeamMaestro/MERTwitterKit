@@ -94,4 +94,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 #pragma mark Favorites
 - (RACSignal *)requestFavoritesForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 
+- (RACSignal *)requestFavoriteCreateForTweetWithIdentity:(int64_t)identity;
+- (RACSignal *)requestFavoriteDestroyForTweetWithIdentity:(int64_t)identity;
+
 @end

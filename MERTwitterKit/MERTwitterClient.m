@@ -1148,6 +1148,97 @@ static NSString *const kUsersKey = @"users";
         return [self _importTweetJSON:value];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+- (RACSignal *)requestFavoriteCreateForTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [[[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:@(identity) forKey:kIdKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"favorites/create.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importTweetJSON:@[value]];
+    }] flattenMap:^RACStream *(MERTwitterKitTweetViewModel *value) {
+        @strongify(self);
+        
+        [value.tweet setFavorited:@YES];
+        
+        [self.managedObjectContext ME_saveRecursively:NULL];
+        
+        return [RACSignal return:value];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+- (RACSignal *)requestFavoriteDestroyForTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [[[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:@(identity) forKey:kIdKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"favorites/destroy.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importTweetJSON:@[value]];
+    }] flattenMap:^RACStream *(MERTwitterKitTweetViewModel *value) {
+        @strongify(self);
+        
+        [value.tweet setFavorited:@NO];
+        
+        [self.managedObjectContext ME_saveRecursively:NULL];
+        
+        return [RACSignal return:value];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 #pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
