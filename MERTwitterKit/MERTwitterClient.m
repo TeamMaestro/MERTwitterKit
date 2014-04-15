@@ -33,6 +33,7 @@
 #import <libextobjc/EXTScope.h>
 #import <libextobjc/EXTKeyPathCoding.h>
 #import <ReactiveCocoa/RACDelegateProxy.h>
+#import "MERTwitterKitPlaceViewModel+Private.h"
 
 #import <Social/Social.h>
 
@@ -68,6 +69,7 @@ static NSString *const kMERTwitterClientHelpConfigurationName = @"MERTwitterKit.
 
 - (RACSignal *)_importTweetJSON:(NSArray *)json;
 - (RACSignal *)_importUserJSON:(NSArray *)json;
+- (RACSignal *)_importPlaceJSON:(NSArray *)json;
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
@@ -541,6 +543,7 @@ static NSString *const kUserIdKey = @"user_id";
 }
 
 static NSString *const kMultipartFormDataKey = @"multipart/form-data";
+static NSString *const kPlaceIdKey = @"place_id";
 
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
     NSParameterAssert(status);
@@ -554,7 +557,6 @@ static NSString *const kMultipartFormDataKey = @"multipart/form-data";
         NSString *const kInReplyToStatusIdKey = @"in_reply_to_status_id";
         NSString *const kLatitudeKey = @"lat";
         NSString *const kLongitudeKey = @"long";
-        NSString *const kPlaceIdKey = @"place_id";
         NSString *const kMediaKey = @"media[]";
         NSString *const kPhotoSizeLimitKey = @"photo_size_limit";
         
@@ -1239,6 +1241,40 @@ static NSString *const kUsersKey = @"users";
         return [RACSignal return:value];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+#pragma mark Places & Geo
+- (RACSignal *)requestPlaceWithIdentity:(NSString *)identity; {
+    NSParameterAssert(identity);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:[NSString stringWithFormat:@"geo/id/%@.json",identity] relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importPlaceJSON:@[value]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 #pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
@@ -1308,6 +1344,46 @@ static NSString *const kUsersKey = @"users";
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
                         return [MERTwitterKitUserViewModel viewModelWithUser:value];
+                    }];
+                    
+                    [subscriber sendNext:objects];
+                    [subscriber sendCompleted];
+                }];
+            }
+            else {
+                [subscriber sendError:outError];
+            }
+        }];
+        
+        return nil;
+    }];
+}
+- (RACSignal *)_importPlaceJSON:(NSArray *)json; {
+    @weakify(self);
+    
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        
+        [context setUndoManager:nil];
+        [context setParentContext:self.managedObjectContext];
+        [context performBlock:^{
+            @strongify(self);
+            
+            NSMutableArray *objectIds = [[NSMutableArray alloc] init];
+            
+            for (NSDictionary *dict in json) {
+                TwitterKitPlace *place = [self _placeWithDictionary:dict context:context];
+                
+                [objectIds addObject:place.objectID];
+            }
+            
+            NSError *outError;
+            if ([context ME_saveRecursively:&outError]) {
+                [self.managedObjectContext performBlock:^{
+                    NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
+                        return [MERTwitterKitPlaceViewModel viewModelWithPlace:value];
                     }];
                     
                     [subscriber sendNext:objects];
@@ -1574,6 +1650,7 @@ static NSString *const kCoordinatesKey = @"coordinates";
     NSString *const kFullNameKey = @"full_name";
     NSString *const kNameKey = @"name";
     NSString *const kPlaceTypeKey = @"place_type";
+    NSString *const kContainedWithinKey = @"contained_within";
     
     NSString *identity = dict[kIdKey];
     
@@ -1593,6 +1670,12 @@ static NSString *const kCoordinatesKey = @"coordinates";
     [retval setFullName:dict[kFullNameKey]];
     [retval setName:dict[kNameKey]];
     [retval setType:dict[kPlaceTypeKey]];
+    
+    if ([dict[kContainedWithinKey] isKindOfClass:[NSArray class]]) {
+        [retval setContainedWithin:[[dict[kContainedWithinKey] MER_map:^id(id value) {
+            return [self _placeWithDictionary:value context:context];
+        }] ME_set]];
+    }
     
     return retval;
 }

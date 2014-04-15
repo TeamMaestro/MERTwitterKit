@@ -12,20 +12,22 @@ extern const struct TwitterKitPlaceAttributes {
 	__unsafe_unretained NSString *identity;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *type;
-	__unsafe_unretained NSString *url;
 } TwitterKitPlaceAttributes;
 
 extern const struct TwitterKitPlaceRelationships {
+	__unsafe_unretained NSString *containedWithin;
+	__unsafe_unretained NSString *contains;
 	__unsafe_unretained NSString *tweet;
 } TwitterKitPlaceRelationships;
 
 extern const struct TwitterKitPlaceFetchedProperties {
 } TwitterKitPlaceFetchedProperties;
 
+@class TwitterKitPlace;
+@class TwitterKitPlace;
 @class TwitterKitTweet;
 
 @class NSArray;
-
 
 
 
@@ -116,12 +118,16 @@ extern const struct TwitterKitPlaceFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* url;
+@property (nonatomic, strong) NSSet *containedWithin;
+
+- (NSMutableSet*)containedWithinSet;
 
 
 
-//- (BOOL)validateUrl:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSSet *contains;
+
+- (NSMutableSet*)containsSet;
 
 
 
@@ -137,6 +143,16 @@ extern const struct TwitterKitPlaceFetchedProperties {
 @end
 
 @interface _TwitterKitPlace (CoreDataGeneratedAccessors)
+
+- (void)addContainedWithin:(NSSet*)value_;
+- (void)removeContainedWithin:(NSSet*)value_;
+- (void)addContainedWithinObject:(TwitterKitPlace*)value_;
+- (void)removeContainedWithinObject:(TwitterKitPlace*)value_;
+
+- (void)addContains:(NSSet*)value_;
+- (void)removeContains:(NSSet*)value_;
+- (void)addContainsObject:(TwitterKitPlace*)value_;
+- (void)removeContainsObject:(TwitterKitPlace*)value_;
 
 @end
 
@@ -185,10 +201,14 @@ extern const struct TwitterKitPlaceFetchedProperties {
 
 
 
-- (NSString*)primitiveUrl;
-- (void)setPrimitiveUrl:(NSString*)value;
+
+- (NSMutableSet*)primitiveContainedWithin;
+- (void)setPrimitiveContainedWithin:(NSMutableSet*)value;
 
 
+
+- (NSMutableSet*)primitiveContains;
+- (void)setPrimitiveContains:(NSMutableSet*)value;
 
 
 

@@ -52,7 +52,8 @@
         <attribute name="identity" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="containedWithin" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitPlace" inverseName="contains" inverseEntity="TwitterKitPlace" syncable="YES"/>
+        <relationship name="contains" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitPlace" inverseName="containedWithin" inverseEntity="TwitterKitPlace" syncable="YES"/>
         <relationship name="tweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="place" inverseEntity="TwitterKitTweet" syncable="YES"/>
     </entity>
     <entity name="TwitterKitSymbol" representedClassName="TwitterKitSymbol" syncable="YES">
@@ -113,7 +114,7 @@
         <element name="TwitterKitMedia" positionX="-54" positionY="36" width="128" height="178"/>
         <element name="TwitterKitMediaSize" positionX="-45" positionY="45" width="128" height="118"/>
         <element name="TwitterKitMention" positionX="-27" positionY="117" width="128" height="88"/>
-        <element name="TwitterKitPlace" positionX="18" positionY="162" width="128" height="178"/>
+        <element name="TwitterKitPlace" positionX="18" positionY="162" width="128" height="193"/>
         <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="88"/>
         <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="298"/>
         <element name="TwitterKitUrl" positionX="-36" positionY="90" width="128" height="120"/>

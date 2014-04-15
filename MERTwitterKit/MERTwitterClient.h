@@ -96,5 +96,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 - (RACSignal *)requestFavoriteCreateForTweetWithIdentity:(int64_t)identity;
 - (RACSignal *)requestFavoriteDestroyForTweetWithIdentity:(int64_t)identity;
+#pragma mark Places & Geo
+- (RACSignal *)requestPlaceWithIdentity:(NSString *)identity;
 
 @end

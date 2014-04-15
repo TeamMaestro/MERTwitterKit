@@ -11,10 +11,11 @@ const struct TwitterKitPlaceAttributes TwitterKitPlaceAttributes = {
 	.identity = @"identity",
 	.name = @"name",
 	.type = @"type",
-	.url = @"url",
 };
 
 const struct TwitterKitPlaceRelationships TwitterKitPlaceRelationships = {
+	.containedWithin = @"containedWithin",
+	.contains = @"contains",
 	.tweet = @"tweet",
 };
 
@@ -103,12 +104,31 @@ const struct TwitterKitPlaceFetchedProperties TwitterKitPlaceFetchedProperties =
 
 
 
-@dynamic url;
+@dynamic containedWithin;
 
+	
+- (NSMutableSet*)containedWithinSet {
+	[self willAccessValueForKey:@"containedWithin"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"containedWithin"];
+  
+	[self didAccessValueForKey:@"containedWithin"];
+	return result;
+}
+	
 
+@dynamic contains;
 
-
-
+	
+- (NSMutableSet*)containsSet {
+	[self willAccessValueForKey:@"contains"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"contains"];
+  
+	[self didAccessValueForKey:@"contains"];
+	return result;
+}
+	
 
 @dynamic tweet;
 

@@ -27,6 +27,7 @@
 		791F838918F9F2CC00C0BB80 /* MERTweetUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F838818F9F2CC00C0BB80 /* MERTweetUpdateViewController.m */; };
 		791F838C18FA795600C0BB80 /* MERTweetUpdateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791F838A18FA795600C0BB80 /* MERTweetUpdateViewController.xib */; };
 		791F838E18FAA26900C0BB80 /* MERTweetDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791F838D18FAA26900C0BB80 /* MERTweetDetailViewController.xib */; };
+		7964DB2B18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB2A18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m */; };
 		79D8A4F818E600D30024F0D5 /* _TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */; };
 		79D8A4F918E600D30024F0D5 /* _TwitterKitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F318E600D30024F0D5 /* _TwitterKitUser.m */; };
 		79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F518E600D30024F0D5 /* TwitterKitTweet.m */; };
@@ -142,6 +143,9 @@
 		791F838818F9F2CC00C0BB80 /* MERTweetUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetUpdateViewController.m; sourceTree = "<group>"; };
 		791F838B18FA795600C0BB80 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MERTweetUpdateViewController.xib; sourceTree = "<group>"; };
 		791F838D18FAA26900C0BB80 /* MERTweetDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MERTweetDetailViewController.xib; sourceTree = "<group>"; };
+		7964DB2918FCFC0500331EAB /* MERTwitterKitPlaceViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterKitPlaceViewModel.h; sourceTree = "<group>"; };
+		7964DB2A18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterKitPlaceViewModel.m; sourceTree = "<group>"; };
+		7964DB2C18FCFC1A00331EAB /* MERTwitterKitPlaceViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitPlaceViewModel+Private.h"; sourceTree = "<group>"; };
 		79D8A4F018E600D30024F0D5 /* _TwitterKitTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitTweet.h; sourceTree = "<group>"; };
 		79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitTweet.m; sourceTree = "<group>"; };
 		79D8A4F218E600D30024F0D5 /* _TwitterKitUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUser.h; sourceTree = "<group>"; };
@@ -237,6 +241,7 @@
 			children = (
 				791F837B18F8FE1300C0BB80 /* MERTwitterKitTweetViewModel+Private.h */,
 				791F837E18F8FF1800C0BB80 /* MERTwitterKitUserViewModel+Private.h */,
+				7964DB2C18FCFC1A00331EAB /* MERTwitterKitPlaceViewModel+Private.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -438,6 +443,8 @@
 				79FCBF9E18E4D2C80005959A /* MERTwitterKitTweetViewModel.m */,
 				79D8A51618EA16AA0024F0D5 /* MERTwitterKitUserViewModel.h */,
 				79D8A51718EA16AA0024F0D5 /* MERTwitterKitUserViewModel.m */,
+				7964DB2918FCFC0500331EAB /* MERTwitterKitPlaceViewModel.h */,
+				7964DB2A18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -667,6 +674,7 @@
 				791F833318EB5E8200C0BB80 /* _TwitterKitMediaSize.m in Sources */,
 				79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */,
 				791F833018EB5D9700C0BB80 /* TwitterKitMedia.m in Sources */,
+				7964DB2B18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m in Sources */,
 				791F835718EBB9C000C0BB80 /* TwitterKitHashtag.m in Sources */,
 				791F834218EB627400C0BB80 /* _TwitterKitMention.m in Sources */,
 				79D8A4FB18E600D30024F0D5 /* TwitterKitUser.m in Sources */,
