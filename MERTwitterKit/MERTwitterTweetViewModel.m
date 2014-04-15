@@ -24,6 +24,7 @@
 #import "TwitterKitSymbol.h"
 #import "TwitterKitMedia.h"
 #import <SDWebImage/SDWebImageManager.h>
+#import "TwitterKitMediaRange.h"
 
 @interface MERTwitterTweetViewModel ()
 @property (readwrite,strong,nonatomic) TwitterKitTweet *tweet;
@@ -62,7 +63,7 @@
     
     @weakify(self);
     
-    RAC(self,mediaThumbnailImage) = [[[[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:[self.tweet.media.anyObject mediaUrl]]] reduce:^id(id _, NSString *value){
+    RAC(self,mediaThumbnailImage) = [[[[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:[[(TwitterKitMediaRange *)self.tweet.mediaRanges.anyObject media] mediaUrl]]] reduce:^id(id _, NSString *value){
         return value;
     }] filter:^BOOL(id value) {
         return (value != nil);
@@ -107,7 +108,7 @@
     }];
 }
 - (NSSet *)mediaRanges {
-    return [self.tweet.media MER_map:^id(TwitterKitMedia *value) {
+    return [self.tweet.mediaRanges MER_map:^id(TwitterKitMediaRange *value) {
         return value.range;
     }];
 }

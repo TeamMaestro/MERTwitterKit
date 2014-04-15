@@ -17,7 +17,7 @@ const struct TwitterKitTweetAttributes TwitterKitTweetAttributes = {
 
 const struct TwitterKitTweetRelationships TwitterKitTweetRelationships = {
 	.hashtags = @"hashtags",
-	.media = @"media",
+	.mediaRanges = @"mediaRanges",
 	.mentions = @"mentions",
 	.place = @"place",
 	.replies = @"replies",
@@ -285,15 +285,15 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 }
 	
 
-@dynamic media;
+@dynamic mediaRanges;
 
 	
-- (NSMutableSet*)mediaSet {
-	[self willAccessValueForKey:@"media"];
+- (NSMutableSet*)mediaRangesSet {
+	[self willAccessValueForKey:@"mediaRanges"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"media"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"mediaRanges"];
   
-	[self didAccessValueForKey:@"media"];
+	[self didAccessValueForKey:@"mediaRanges"];
 	return result;
 }
 	

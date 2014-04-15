@@ -35,6 +35,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ReactiveCocoa/RACDelegateProxy.h>
 #import "MERTwitterPlaceViewModel+Private.h"
+#import "TwitterKitMediaRange.h"
 
 #import <Social/Social.h>
 
@@ -78,6 +79,7 @@ static NSString *const kMERTwitterClientHelpConfigurationName = @"MERTwitterKit.
 - (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitHashtag *)_hashtagWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitUrl *)_urlWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
+- (TwitterKitMediaRange *)_mediaRangeWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitMedia *)_mediaWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitMediaSize *)_mediaSizeWithName:(NSString *)name dictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitMention *)_mentionWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
@@ -1722,8 +1724,8 @@ static NSString *const kCoordinatesKey = @"coordinates";
                 return [self _urlWithDictionary:value context:context];
             }] ME_set]];
             
-            [retval setMedia:[[dict[kEntitiesKey][kMediaKey] MER_map:^id(NSDictionary *value) {
-                return [self _mediaWithDictionary:value context:context];
+            [retval setMediaRanges:[[dict[kEntitiesKey][kMediaKey] MER_map:^id(NSDictionary *value) {
+                return [self _mediaRangeWithDictionary:value context:context];
             }] ME_set]];
             
             [retval setMentions:[[dict[kEntitiesKey][kMentionsKey] MER_map:^id(NSDictionary *value) {
@@ -1835,6 +1837,20 @@ static NSString *const kNameKey = @"name";
     
     return retval;
 }
+- (TwitterKitMediaRange *)_mediaRangeWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
+    NSParameterAssert(dict);
+    NSParameterAssert(context);
+    
+    TwitterKitMediaRange *retval = [NSEntityDescription insertNewObjectForEntityForName:[TwitterKitMediaRange entityName] inManagedObjectContext:context];
+    
+    [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
+    
+    [retval setMedia:[self _mediaWithDictionary:dict context:context]];
+    
+    MELog(@"created entity %@ with dict %@",retval.entity.name,dict);
+    
+    return retval;
+}
 - (TwitterKitMedia *)_mediaWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
     NSParameterAssert(dict);
     NSParameterAssert(context);
@@ -1858,7 +1874,6 @@ static NSString *const kNameKey = @"name";
         [retval setExpandedUrl:dict[kExpandedUrlKey]];
         [retval setMediaUrl:dict[kMediaUrlKey]];
         [retval setType:dict[kTypeKey]];
-        [retval setRange:[NSValue valueWithRange:NSMakeRange([dict[kIndicesKey][0] unsignedIntegerValue], [dict[kIndicesKey][1] unsignedIntegerValue] - [dict[kIndicesKey][0] unsignedIntegerValue])]];
         
         [dict[kSizesKey] enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSDictionary *value, BOOL *stop) {
             [retval.sizesSet addObject:[self _mediaSizeWithName:key dictionary:value context:context]];

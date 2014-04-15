@@ -18,7 +18,7 @@ extern const struct TwitterKitTweetAttributes {
 
 extern const struct TwitterKitTweetRelationships {
 	__unsafe_unretained NSString *hashtags;
-	__unsafe_unretained NSString *media;
+	__unsafe_unretained NSString *mediaRanges;
 	__unsafe_unretained NSString *mentions;
 	__unsafe_unretained NSString *place;
 	__unsafe_unretained NSString *replies;
@@ -34,7 +34,7 @@ extern const struct TwitterKitTweetFetchedProperties {
 } TwitterKitTweetFetchedProperties;
 
 @class TwitterKitHashtag;
-@class TwitterKitMedia;
+@class TwitterKitMediaRange;
 @class TwitterKitMention;
 @class TwitterKitPlace;
 @class TwitterKitTweet;
@@ -189,9 +189,9 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *media;
+@property (nonatomic, strong) NSSet *mediaRanges;
 
-- (NSMutableSet*)mediaSet;
+- (NSMutableSet*)mediaRangesSet;
 
 
 
@@ -269,10 +269,10 @@ extern const struct TwitterKitTweetFetchedProperties {
 - (void)addHashtagsObject:(TwitterKitHashtag*)value_;
 - (void)removeHashtagsObject:(TwitterKitHashtag*)value_;
 
-- (void)addMedia:(NSSet*)value_;
-- (void)removeMedia:(NSSet*)value_;
-- (void)addMediaObject:(TwitterKitMedia*)value_;
-- (void)removeMediaObject:(TwitterKitMedia*)value_;
+- (void)addMediaRanges:(NSSet*)value_;
+- (void)removeMediaRanges:(NSSet*)value_;
+- (void)addMediaRangesObject:(TwitterKitMediaRange*)value_;
+- (void)removeMediaRangesObject:(TwitterKitMediaRange*)value_;
 
 - (void)addMentions:(NSSet*)value_;
 - (void)removeMentions:(NSSet*)value_;
@@ -382,8 +382,8 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
-- (NSMutableSet*)primitiveMedia;
-- (void)setPrimitiveMedia:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveMediaRanges;
+- (void)setPrimitiveMediaRanges:(NSMutableSet*)value;
 
 
 

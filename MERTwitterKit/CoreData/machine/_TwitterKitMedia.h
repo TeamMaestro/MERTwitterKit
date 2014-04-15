@@ -9,27 +9,25 @@ extern const struct TwitterKitMediaAttributes {
 	__unsafe_unretained NSString *expandedUrl;
 	__unsafe_unretained NSString *identity;
 	__unsafe_unretained NSString *mediaUrl;
-	__unsafe_unretained NSString *range;
 	__unsafe_unretained NSString *type;
 	__unsafe_unretained NSString *url;
 } TwitterKitMediaAttributes;
 
 extern const struct TwitterKitMediaRelationships {
+	__unsafe_unretained NSString *ranges;
 	__unsafe_unretained NSString *sizes;
-	__unsafe_unretained NSString *tweet;
 } TwitterKitMediaRelationships;
 
 extern const struct TwitterKitMediaFetchedProperties {
 } TwitterKitMediaFetchedProperties;
 
+@class TwitterKitMediaRange;
 @class TwitterKitMediaSize;
-@class TwitterKitTweet;
 
 
 
 
 
-@class NSValue;
 
 
 
@@ -90,16 +88,6 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSValue* range;
-
-
-
-//- (BOOL)validateRange:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) NSString* type;
 
 
@@ -120,16 +108,16 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *ranges;
+
+- (NSMutableSet*)rangesSet;
+
+
+
+
 @property (nonatomic, strong) NSSet *sizes;
 
 - (NSMutableSet*)sizesSet;
-
-
-
-
-@property (nonatomic, strong) TwitterKitTweet *tweet;
-
-//- (BOOL)validateTweet:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -138,6 +126,11 @@ extern const struct TwitterKitMediaFetchedProperties {
 @end
 
 @interface _TwitterKitMedia (CoreDataGeneratedAccessors)
+
+- (void)addRanges:(NSSet*)value_;
+- (void)removeRanges:(NSSet*)value_;
+- (void)addRangesObject:(TwitterKitMediaRange*)value_;
+- (void)removeRangesObject:(TwitterKitMediaRange*)value_;
 
 - (void)addSizes:(NSSet*)value_;
 - (void)removeSizes:(NSSet*)value_;
@@ -176,12 +169,6 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
-- (NSValue*)primitiveRange;
-- (void)setPrimitiveRange:(NSValue*)value;
-
-
-
-
 - (NSString*)primitiveType;
 - (void)setPrimitiveType:(NSString*)value;
 
@@ -195,13 +182,13 @@ extern const struct TwitterKitMediaFetchedProperties {
 
 
 
+- (NSMutableSet*)primitiveRanges;
+- (void)setPrimitiveRanges:(NSMutableSet*)value;
+
+
+
 - (NSMutableSet*)primitiveSizes;
 - (void)setPrimitiveSizes:(NSMutableSet*)value;
-
-
-
-- (TwitterKitTweet*)primitiveTweet;
-- (void)setPrimitiveTweet:(TwitterKitTweet*)value;
 
 
 @end

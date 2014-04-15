@@ -29,6 +29,8 @@
 		791F838E18FAA26900C0BB80 /* MERTweetDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791F838D18FAA26900C0BB80 /* MERTweetDetailViewController.xib */; };
 		7964DB2B18FCFC0500331EAB /* MERTwitterPlaceViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB2A18FCFC0500331EAB /* MERTwitterPlaceViewModel.m */; };
 		7964DB2F18FD11FF00331EAB /* MERTwitterPlaceViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB2918FCFC0500331EAB /* MERTwitterPlaceViewModel.h */; };
+		7964DB3218FDFCE100331EAB /* TwitterKitMediaRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB3118FDFCE100331EAB /* TwitterKitMediaRange.m */; };
+		7964DB3518FDFCE800331EAB /* _TwitterKitMediaRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB3418FDFCE800331EAB /* _TwitterKitMediaRange.m */; };
 		79D8A4F818E600D30024F0D5 /* _TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */; };
 		79D8A4F918E600D30024F0D5 /* _TwitterKitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F318E600D30024F0D5 /* _TwitterKitUser.m */; };
 		79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F518E600D30024F0D5 /* TwitterKitTweet.m */; };
@@ -148,6 +150,10 @@
 		7964DB2918FCFC0500331EAB /* MERTwitterPlaceViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterPlaceViewModel.h; sourceTree = "<group>"; };
 		7964DB2A18FCFC0500331EAB /* MERTwitterPlaceViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterPlaceViewModel.m; sourceTree = "<group>"; };
 		7964DB2C18FCFC1A00331EAB /* MERTwitterPlaceViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterPlaceViewModel+Private.h"; sourceTree = "<group>"; };
+		7964DB3018FDFCE100331EAB /* TwitterKitMediaRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterKitMediaRange.h; sourceTree = "<group>"; };
+		7964DB3118FDFCE100331EAB /* TwitterKitMediaRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterKitMediaRange.m; sourceTree = "<group>"; };
+		7964DB3318FDFCE800331EAB /* _TwitterKitMediaRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitMediaRange.h; sourceTree = "<group>"; };
+		7964DB3418FDFCE800331EAB /* _TwitterKitMediaRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitMediaRange.m; sourceTree = "<group>"; };
 		79D8A4F018E600D30024F0D5 /* _TwitterKitTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitTweet.h; sourceTree = "<group>"; };
 		79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitTweet.m; sourceTree = "<group>"; };
 		79D8A4F218E600D30024F0D5 /* _TwitterKitUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUser.h; sourceTree = "<group>"; };
@@ -251,6 +257,8 @@
 		79D8A4EE18E600D30024F0D5 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				7964DB3018FDFCE100331EAB /* TwitterKitMediaRange.h */,
+				7964DB3118FDFCE100331EAB /* TwitterKitMediaRange.m */,
 				791F836018EBBCD600C0BB80 /* TwitterKitUrl.h */,
 				791F835B18EBBC9300C0BB80 /* TwitterKitUrl.m */,
 				791F835518EBB9C000C0BB80 /* TwitterKitHashtag.h */,
@@ -277,6 +285,8 @@
 		79D8A4EF18E600D30024F0D5 /* machine */ = {
 			isa = PBXGroup;
 			children = (
+				7964DB3318FDFCE800331EAB /* _TwitterKitMediaRange.h */,
+				7964DB3418FDFCE800331EAB /* _TwitterKitMediaRange.m */,
 				791F835D18EBBC9900C0BB80 /* _TwitterKitUrl.h */,
 				791F835E18EBBC9900C0BB80 /* _TwitterKitUrl.m */,
 				791F835818EBB9C600C0BB80 /* _TwitterKitHashtag.h */,
@@ -677,7 +687,9 @@
 				79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */,
 				791F833018EB5D9700C0BB80 /* TwitterKitMedia.m in Sources */,
 				7964DB2B18FCFC0500331EAB /* MERTwitterPlaceViewModel.m in Sources */,
+				7964DB3218FDFCE100331EAB /* TwitterKitMediaRange.m in Sources */,
 				791F835718EBB9C000C0BB80 /* TwitterKitHashtag.m in Sources */,
+				7964DB3518FDFCE800331EAB /* _TwitterKitMediaRange.m in Sources */,
 				791F834218EB627400C0BB80 /* _TwitterKitMention.m in Sources */,
 				79D8A4FB18E600D30024F0D5 /* TwitterKitUser.m in Sources */,
 				79D8A51818EA16AA0024F0D5 /* MERTwitterUserViewModel.m in Sources */,

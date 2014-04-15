@@ -8,14 +8,13 @@ const struct TwitterKitMediaAttributes TwitterKitMediaAttributes = {
 	.expandedUrl = @"expandedUrl",
 	.identity = @"identity",
 	.mediaUrl = @"mediaUrl",
-	.range = @"range",
 	.type = @"type",
 	.url = @"url",
 };
 
 const struct TwitterKitMediaRelationships TwitterKitMediaRelationships = {
+	.ranges = @"ranges",
 	.sizes = @"sizes",
-	.tweet = @"tweet",
 };
 
 const struct TwitterKitMediaFetchedProperties TwitterKitMediaFetchedProperties = {
@@ -106,13 +105,6 @@ const struct TwitterKitMediaFetchedProperties TwitterKitMediaFetchedProperties =
 
 
 
-@dynamic range;
-
-
-
-
-
-
 @dynamic type;
 
 
@@ -127,6 +119,19 @@ const struct TwitterKitMediaFetchedProperties TwitterKitMediaFetchedProperties =
 
 
 
+@dynamic ranges;
+
+	
+- (NSMutableSet*)rangesSet {
+	[self willAccessValueForKey:@"ranges"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"ranges"];
+  
+	[self didAccessValueForKey:@"ranges"];
+	return result;
+}
+	
+
 @dynamic sizes;
 
 	
@@ -138,10 +143,6 @@ const struct TwitterKitMediaFetchedProperties TwitterKitMediaFetchedProperties =
 	[self didAccessValueForKey:@"sizes"];
 	return result;
 }
-	
-
-@dynamic tweet;
-
 	
 
 
