@@ -13,5 +13,6 @@
 
 #import <MERTwitterKit/MERTwitterKitTweetViewModel.h>
 #import <MERTwitterKit/MERTwitterKitUserViewModel.h>
+#import <MERTwitterKit/MERTwitterKitPlaceViewModel.h>
 
 #endif

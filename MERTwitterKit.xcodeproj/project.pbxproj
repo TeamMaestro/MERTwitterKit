@@ -28,6 +28,7 @@
 		791F838C18FA795600C0BB80 /* MERTweetUpdateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791F838A18FA795600C0BB80 /* MERTweetUpdateViewController.xib */; };
 		791F838E18FAA26900C0BB80 /* MERTweetDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791F838D18FAA26900C0BB80 /* MERTweetDetailViewController.xib */; };
 		7964DB2B18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB2A18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m */; };
+		7964DB2F18FD11FF00331EAB /* MERTwitterKitPlaceViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB2918FCFC0500331EAB /* MERTwitterKitPlaceViewModel.h */; };
 		79D8A4F818E600D30024F0D5 /* _TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */; };
 		79D8A4F918E600D30024F0D5 /* _TwitterKitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F318E600D30024F0D5 /* _TwitterKitUser.m */; };
 		79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F518E600D30024F0D5 /* TwitterKitTweet.m */; };
@@ -98,6 +99,7 @@
 				79FCBF3E18E49EF30005959A /* MERTwitterClient.h in CopyFiles */,
 				79FCBFA518E4DA2E0005959A /* MERTwitterKitTweetViewModel.h in CopyFiles */,
 				79D8A51918EA1CD00024F0D5 /* MERTwitterKitUserViewModel.h in CopyFiles */,
+				7964DB2F18FD11FF00331EAB /* MERTwitterKitPlaceViewModel.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
