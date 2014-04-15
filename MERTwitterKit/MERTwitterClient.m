@@ -837,8 +837,11 @@ static NSString *const kStatusesKey = @"statuses";
                      [json addObject:chunkJson];
              }
              
-             if (json.count > 0)
-                 [[self _importTweetJSON:json] subscribe:subscriber];
+             if (json.count > 0) {
+                 [[self _importTweetJSON:json] subscribeNext:^(id x) {
+                     [subscriber sendNext:x];
+                 }];
+             }
          }];
         
         NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:[request preparedURLRequest] delegate:proxy startImmediately:NO];
