@@ -68,7 +68,6 @@ static NSString *const kMERTwitterClientHelpConfigurationName = @"MERTwitterKit.
 
 - (RACSignal *)_importTweetJSON:(NSArray *)json;
 - (RACSignal *)_importUserJSON:(NSArray *)json;
-- (RACSignal *)_importUserIds:(NSArray *)ids;
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
 - (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
@@ -668,7 +667,7 @@ static NSString *const kPreviousCursorKey = @"previous_cursor";
         
         [parameters setObject:@(identity) forKey:kIdKey];
         
-        if (cursor != 0)
+        if (cursor != MERTwitterClientCursorInitial)
             [parameters setObject:@(cursor) forKey:kCursorKey];
         
         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/retweeters/ids.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
@@ -693,7 +692,11 @@ static NSString *const kPreviousCursorKey = @"previous_cursor";
     }] flattenMap:^RACStream *(NSDictionary *dict) {
         @strongify(self);
         
-        return [[self _importUserIds:dict[kIdsKey]] map:^id(id value) {
+        NSArray *ids = dict[kIdsKey];
+        
+        return [[self _importUserJSON:[ids MER_map:^id(NSNumber *value) {
+            return @{kIdKey: @(value.longLongValue)};
+        }]] map:^id(id value) {
             return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
         }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
@@ -855,35 +858,26 @@ static NSString *const kStatusesKey = @"statuses";
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Friends & Followers
-- (RACSignal *)requestFriendshipStatusForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName; {
-    return [self requestFriendshipStatusForUsersWithIdentities:(identity > 0) ? @[@(identity)] : nil screenNames:(screenName) ? @[screenName] : nil];
-}
-- (RACSignal *)requestFriendshipStatusForUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames; {
-    NSParameterAssert(identities || screenNames);
+- (RACSignal *)requestFriendsForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor; {
+    NSParameterAssert(identity > 0 || screenName);
     
     @weakify(self);
     
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        
-        NSString *const kConnectionsKey = @"connections";
-        NSString *const kFollowingKey = @"following";
-        NSString *const kFollowingRequestedKey = @"following_requested";
-        NSString *const kFollowedBy = @"followed_by";
-        NSString *const kNoneKey = @"none";
-        NSString *const kBlockingKey = @"blocking";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
-        if (identities) {
-            [parameters setObject:[[identities MER_map:^id(NSNumber *value) {
-                return value.stringValue;
-            }] componentsJoinedByString:@","] forKey:kUserIdKey];
-        }
-        if (screenNames)
-            [parameters setObject:[screenNames componentsJoinedByString:@","] forKey:kUserIdKey];
+        if (identity > 0)
+            [parameters setObject:@(identity) forKey:kUserIdKey];
+        if (screenName)
+            [parameters setObject:screenName forKey:kScreenNameKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        if (cursor != MERTwitterClientCursorInitial)
+            [parameters setObject:@(cursor) forKey:kCursorKey];
         
-        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"friendships/lookup.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"friends/list.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
         
         [request setAccount:self.selectedAccount];
         
@@ -892,26 +886,8 @@ static NSString *const kStatusesKey = @"statuses";
                 [subscriber sendError:error];
             }
             else {
-                NSArray *json = responseObject;
-                
-                [[[self _importUserJSON:json] zipWith:[RACSignal return:[json MER_map:^id(NSDictionary *value) {
-                    NSArray *connections = value[kConnectionsKey];
-                    NSSet *connectionsSet = [connections ME_set];
-                    MERTwitterClientFriendshipStatus status = MERTwitterClientFriendshipStatusNone;
-                    
-                    if ([connectionsSet containsObject:kFollowedBy])
-                        status |= MERTwitterClientFriendshipStatusFollowedBy;
-                    if ([connectionsSet containsObject:kFollowingKey])
-                        status |= MERTwitterClientFriendshipStatusFollowing;
-                    if ([connectionsSet containsObject:kFollowingRequestedKey])
-                        status |= MERTwitterClientFriendshipStatusFollowingRequested;
-                    if ([connectionsSet containsObject:kBlockingKey])
-                        status |= MERTwitterClientFriendshipStatusBlocking;
-                    if ([connectionsSet containsObject:kNoneKey])
-                        status |= MERTwitterClientFriendshipStatusNone;
-                    
-                    return @(status);
-                }]]] subscribe:subscriber];
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
             }
         }];
         
@@ -920,8 +896,15 @@ static NSString *const kStatusesKey = @"statuses";
         return [RACDisposable disposableWithBlock:^{
             [task cancel];
         }];
-    }];
+    }] flattenMap:^RACStream *(NSDictionary *dict) {
+        @strongify(self);
+        
+        return [[self _importUserJSON:dict[kStatusesKey]] map:^id(id value) {
+            return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
+        }];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
 - (RACSignal *)requestFriendshipCreateForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName; {
     NSParameterAssert(identity > 0 || screenName);
     
@@ -1002,6 +985,74 @@ static NSString *const kStatusesKey = @"statuses";
         return [self _importUserJSON:@[value]];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+- (RACSignal *)requestFriendshipStatusForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName; {
+    return [self requestFriendshipStatusForUsersWithIdentities:(identity > 0) ? @[@(identity)] : nil screenNames:(screenName) ? @[screenName] : nil];
+}
+- (RACSignal *)requestFriendshipStatusForUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames; {
+    NSParameterAssert(identities || screenNames);
+    
+    @weakify(self);
+    
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kConnectionsKey = @"connections";
+        NSString *const kFollowingKey = @"following";
+        NSString *const kFollowingRequestedKey = @"following_requested";
+        NSString *const kFollowedBy = @"followed_by";
+        NSString *const kNoneKey = @"none";
+        NSString *const kBlockingKey = @"blocking";
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (identities) {
+            [parameters setObject:[[identities MER_map:^id(NSNumber *value) {
+                return value.stringValue;
+            }] componentsJoinedByString:@","] forKey:kUserIdKey];
+        }
+        if (screenNames)
+            [parameters setObject:[screenNames componentsJoinedByString:@","] forKey:kUserIdKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"friendships/lookup.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                NSArray *json = responseObject;
+                
+                [[[self _importUserJSON:json] zipWith:[RACSignal return:[json MER_map:^id(NSDictionary *value) {
+                    NSArray *connections = value[kConnectionsKey];
+                    NSSet *connectionsSet = [connections ME_set];
+                    MERTwitterClientFriendshipStatus status = MERTwitterClientFriendshipStatusNone;
+                    
+                    if ([connectionsSet containsObject:kFollowedBy])
+                        status |= MERTwitterClientFriendshipStatusFollowedBy;
+                    if ([connectionsSet containsObject:kFollowingKey])
+                        status |= MERTwitterClientFriendshipStatusFollowing;
+                    if ([connectionsSet containsObject:kFollowingRequestedKey])
+                        status |= MERTwitterClientFriendshipStatusFollowingRequested;
+                    if ([connectionsSet containsObject:kBlockingKey])
+                        status |= MERTwitterClientFriendshipStatusBlocking;
+                    if ([connectionsSet containsObject:kNoneKey])
+                        status |= MERTwitterClientFriendshipStatusNone;
+                    
+                    return @(status);
+                }]]] subscribe:subscriber];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }];
+}
 #pragma mark *** Private Methods ***
 #pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
@@ -1062,46 +1113,6 @@ static NSString *const kStatusesKey = @"statuses";
             
             for (NSDictionary *dict in json) {
                 TwitterKitUser *user = [self _userWithDictionary:dict context:context];
-                
-                [objectIds addObject:user.objectID];
-            }
-            
-            NSError *outError;
-            if ([context ME_saveRecursively:&outError]) {
-                [self.managedObjectContext performBlock:^{
-                    NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
-                        return [MERTwitterKitUserViewModel viewModelWithUser:value];
-                    }];
-                    
-                    [subscriber sendNext:objects];
-                    [subscriber sendCompleted];
-                }];
-            }
-            else {
-                [subscriber sendError:outError];
-            }
-        }];
-        
-        return nil;
-    }];
-}
-- (RACSignal *)_importUserIds:(NSArray *)ids; {
-    @weakify(self);
-    
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        @strongify(self);
-        
-        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        
-        [context setUndoManager:nil];
-        [context setParentContext:self.managedObjectContext];
-        [context performBlock:^{
-            @strongify(self);
-            
-            NSMutableArray *objectIds = [[NSMutableArray alloc] init];
-            
-            for (NSString *identity in ids) {
-                TwitterKitUser *user = [self _userWithDictionary:@{kIdKey: @(identity.longLongValue)} context:context];
                 
                 [objectIds addObject:user.objectID];
             }
