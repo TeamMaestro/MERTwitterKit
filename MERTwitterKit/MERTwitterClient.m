@@ -1384,6 +1384,48 @@ static NSString *const kGranularityKey = @"granularity";
         return [self _importPlaceJSON:value[kResultKey][kPlacesKey]];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+- (RACSignal *)requestPlacesSimilarToPlaceWithName:(NSString *)name location:(CLLocationCoordinate2D)location containedWithinPlaceWithIdentity:(NSString *)placeIdentity; {
+    NSParameterAssert(name && CLLocationCoordinate2DIsValid(location));
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)name, NULL, NULL, kCFStringEncodingUTF8) forKey:kNameKey];
+        [parameters setObject:@(location.latitude) forKey:kLatitudeKey];
+        [parameters setObject:@(location.longitude) forKey:kLongitudeKey];
+        
+        if (placeIdentity)
+            [parameters setObject:placeIdentity forKey:kContainedWithinKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"geo/similar_places.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importPlaceJSON:value[kResultKey][kPlacesKey]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 #pragma mark Class
 + (NSDictionary *)_geoGranularityEnumsToGranularityStrings; {
@@ -1623,12 +1665,14 @@ static NSString *const kCoordinatesKey = @"coordinates";
     
     return retval;
 }
+
+static NSString *const kNameKey = @"name";
+
 - (TwitterKitUser *)_userWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
     NSParameterAssert(dict);
     NSParameterAssert(context);
     
     NSString *const kProfileImageUrlKey = @"profile_image_url_https";
-    NSString *const kNameKey = @"name";
     NSString *const kFollowersCountKey = @"followers_count";
     NSString *const kFriendsCountKey = @"friends_count";
     

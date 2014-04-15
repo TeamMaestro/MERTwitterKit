@@ -109,5 +109,6 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestPlaceWithIdentity:(NSString *)identity;
 - (RACSignal *)requestPlacesWithLocation:(CLLocationCoordinate2D)location accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
 - (RACSignal *)requestPlacesMatchingLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude ipAddress:(NSString *)ipAddress query:(NSString *)query containedWithinPlaceWithIdentity:(NSString *)placeIdentity accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
+- (RACSignal *)requestPlacesSimilarToPlaceWithName:(NSString *)name location:(CLLocationCoordinate2D)location containedWithinPlaceWithIdentity:(NSString *)placeIdentity;
 
 @end
