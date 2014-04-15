@@ -660,52 +660,6 @@ static NSString *const kIdsKey = @"ids";
 static NSString *const kNextCursorKey = @"next_cursor";
 static NSString *const kPreviousCursorKey = @"previous_cursor";
 
-- (RACSignal *)requestRetweetersOfTweetWithIdentity:(int64_t)identity cursor:(int64_t)cursor; {
-    NSParameterAssert(identity > 0);
-    
-    @weakify(self);
-    
-    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        @strongify(self);
-        
-        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-        
-        [parameters setObject:@(identity) forKey:kIdKey];
-        
-        if (cursor != MERTwitterClientCursorInitial)
-            [parameters setObject:@(cursor) forKey:kCursorKey];
-        
-        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/retweeters/ids.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
-        
-        [request setAccount:self.selectedAccount];
-        
-        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if (error) {
-                [subscriber sendError:error];
-            }
-            else {
-                [subscriber sendNext:responseObject];
-                [subscriber sendCompleted];
-            }
-        }];
-        
-        [task resume];
-        
-        return [RACDisposable disposableWithBlock:^{
-            [task cancel];
-        }];
-    }] flattenMap:^RACStream *(NSDictionary *dict) {
-        @strongify(self);
-        
-        NSArray *ids = dict[kIdsKey];
-        
-        return [[self _importUserJSON:[ids MER_map:^id(NSNumber *value) {
-            return @{kIdKey: @(value.longLongValue)};
-        }]] map:^id(id value) {
-            return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
-        }];
-    }] deliverOn:[RACScheduler mainThreadScheduler]];
-}
 #pragma mark Search
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     NSMutableArray *predicates = [[NSMutableArray alloc] init];
@@ -1065,7 +1019,7 @@ static NSString *const kUsersKey = @"users";
             }] componentsJoinedByString:@","] forKey:kUserIdKey];
         }
         if (screenNames)
-            [parameters setObject:[screenNames componentsJoinedByString:@","] forKey:kUserIdKey];
+            [parameters setObject:[screenNames componentsJoinedByString:@","] forKey:kScreenNameKey];
         
         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"friendships/lookup.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
         
@@ -1106,6 +1060,97 @@ static NSString *const kUsersKey = @"users";
         }];
     }];
 }
+#pragma mark Users
+- (RACSignal *)requestUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames; {
+    NSParameterAssert(identities || screenNames);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (identities) {
+            [parameters setObject:[[identities MER_map:^id(NSNumber *value) {
+                return value.stringValue;
+            }] componentsJoinedByString:@","] forKey:kScreenNameKey];
+        }
+        if (screenNames) {
+            [parameters setObject:[screenNames componentsJoinedByString:@","] forKey:kScreenNameKey];
+        }
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"users/lookup.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importUserJSON:value];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+
+- (RACSignal *)requestUsersMatchingSearch:(NSString *)search page:(NSUInteger)page count:(NSUInteger)count; {
+    NSParameterAssert(search);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kQueryKey = @"q";
+        NSString *const kPageKey = @"page";
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)search, NULL, NULL, kCFStringEncodingUTF8) forKey:kQueryKey];
+        
+        if (page > 0)
+            [parameters setObject:@(page) forKey:kPageKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"users/search.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importUserJSON:value];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark Favorites
 - (RACSignal *)requestFavoritesForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     NSParameterAssert(identity > 0 || screenName);
@@ -1118,7 +1163,7 @@ static NSString *const kUsersKey = @"users";
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
         if (identity > 0)
-            [parameters setObject:@(identity) forKey:kIdKey];
+            [parameters setObject:@(identity) forKey:kUserIdKey];
         if (screenName)
             [parameters setObject:screenName forKey:kScreenNameKey];
         if (afterIdentity > 0)

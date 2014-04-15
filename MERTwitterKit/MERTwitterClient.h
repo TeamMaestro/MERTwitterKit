@@ -84,8 +84,6 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity location:(CLLocationCoordinate2D)location placeIdentity:(NSString *)placeIdentity;
 
 - (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity;
-
-- (RACSignal *)requestRetweetersOfTweetWithIdentity:(int64_t)identity cursor:(int64_t)cursor;
 #pragma mark Search
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 - (RACSignal *)requestTweetsMatchingSearch:(NSString *)search type:(MERTwitterClientSearchType)type afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
@@ -100,6 +98,10 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 - (RACSignal *)requestFriendshipStatusForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
 - (RACSignal *)requestFriendshipStatusForUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames;
+#pragma mark Users
+- (RACSignal *)requestUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames;
+
+- (RACSignal *)requestUsersMatchingSearch:(NSString *)search page:(NSUInteger)page count:(NSUInteger)count;
 #pragma mark Favorites
 - (RACSignal *)requestFavoritesForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 
