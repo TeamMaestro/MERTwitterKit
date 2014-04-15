@@ -892,6 +892,46 @@ static NSString *const kStatusesKey = @"statuses";
         return [self _importUserJSON:@[value]];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+- (RACSignal *)requestFriendshipDestroyForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName; {
+    NSParameterAssert(identity > 0 || screenName);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (identity > 0)
+            [parameters setObject:@(identity) forKey:kUserIdKey];
+        if (screenName)
+            [parameters setObject:screenName forKey:kScreenNameKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"friendships/destroy.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importUserJSON:@[value]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 #pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
@@ -971,6 +1011,8 @@ static NSString *const kStatusesKey = @"statuses";
                 [subscriber sendError:outError];
             }
         }];
+        
+        return nil;
     }];
 }
 - (RACSignal *)_importUserIds:(NSArray *)ids; {
