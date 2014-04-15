@@ -87,6 +87,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestFriendshipDestroyForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
 
 - (RACSignal *)requestFriendsForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor;
+- (RACSignal *)requestFollowersForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor;
 
 - (RACSignal *)requestFriendshipStatusForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
 - (RACSignal *)requestFriendshipStatusForUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames;

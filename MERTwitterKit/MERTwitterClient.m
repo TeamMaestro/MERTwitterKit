@@ -858,53 +858,6 @@ static NSString *const kStatusesKey = @"statuses";
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Friends & Followers
-- (RACSignal *)requestFriendsForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor; {
-    NSParameterAssert(identity > 0 || screenName);
-    
-    @weakify(self);
-    
-    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        @strongify(self);
-        
-        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-        
-        if (identity > 0)
-            [parameters setObject:@(identity) forKey:kUserIdKey];
-        if (screenName)
-            [parameters setObject:screenName forKey:kScreenNameKey];
-        if (count > 0)
-            [parameters setObject:@(count) forKey:kCountKey];
-        if (cursor != MERTwitterClientCursorInitial)
-            [parameters setObject:@(cursor) forKey:kCursorKey];
-        
-        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"friends/list.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
-        
-        [request setAccount:self.selectedAccount];
-        
-        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-            if (error) {
-                [subscriber sendError:error];
-            }
-            else {
-                [subscriber sendNext:responseObject];
-                [subscriber sendCompleted];
-            }
-        }];
-        
-        [task resume];
-        
-        return [RACDisposable disposableWithBlock:^{
-            [task cancel];
-        }];
-    }] flattenMap:^RACStream *(NSDictionary *dict) {
-        @strongify(self);
-        
-        return [[self _importUserJSON:dict[kStatusesKey]] map:^id(id value) {
-            return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
-        }];
-    }] deliverOn:[RACScheduler mainThreadScheduler]];
-}
-
 - (RACSignal *)requestFriendshipCreateForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName; {
     NSParameterAssert(identity > 0 || screenName);
     
@@ -983,6 +936,101 @@ static NSString *const kStatusesKey = @"statuses";
         @strongify(self);
         
         return [self _importUserJSON:@[value]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+
+static NSString *const kUsersKey = @"users";
+
+- (RACSignal *)requestFriendsForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor; {
+    NSParameterAssert(identity > 0 || screenName);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (identity > 0)
+            [parameters setObject:@(identity) forKey:kUserIdKey];
+        if (screenName)
+            [parameters setObject:screenName forKey:kScreenNameKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        if (cursor != MERTwitterClientCursorInitial)
+            [parameters setObject:@(cursor) forKey:kCursorKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"friends/list.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(NSDictionary *dict) {
+        @strongify(self);
+        
+        return [[self _importUserJSON:dict[kUsersKey]] map:^id(id value) {
+            return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
+        }];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+- (RACSignal *)requestFollowersForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor; {
+    NSParameterAssert(identity > 0 || screenName);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (identity > 0)
+            [parameters setObject:@(identity) forKey:kUserIdKey];
+        if (screenName)
+            [parameters setObject:screenName forKey:kScreenNameKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        if (cursor != MERTwitterClientCursorInitial)
+            [parameters setObject:@(cursor) forKey:kCursorKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"followers/list.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(NSDictionary *dict) {
+        @strongify(self);
+        
+        return [[self _importUserJSON:dict[kUsersKey]] map:^id(id value) {
+            return RACTuplePack(value,dict[kNextCursorKey],dict[kPreviousCursorKey]);
+        }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 
