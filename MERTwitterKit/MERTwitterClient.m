@@ -1282,6 +1282,8 @@ static NSString *const kUsersKey = @"users";
 static NSString *const kMaxResultsKey = @"max_results";
 static NSString *const kResultKey = @"result";
 static NSString *const kPlacesKey = @"places";
+static NSString *const kAccuracyKey = @"accuracy";
+static NSString *const kGranularityKey = @"granularity";
 
 - (RACSignal *)requestPlacesWithLocation:(CLLocationCoordinate2D)location accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count; {
     NSParameterAssert(CLLocationCoordinate2DIsValid(location));
@@ -1290,9 +1292,6 @@ static NSString *const kPlacesKey = @"places";
     
     return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        
-        NSString *const kAccuracyKey = @"accuracy";
-        NSString *const kGranularityKey = @"granularity";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
@@ -1306,6 +1305,61 @@ static NSString *const kPlacesKey = @"places";
             [parameters setObject:@(count) forKey:kMaxResultsKey];
         
         SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"geo/reverse_geocode.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(NSDictionary *value) {
+        @strongify(self);
+        
+        return [self _importPlaceJSON:value[kResultKey][kPlacesKey]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+- (RACSignal *)requestPlacesMatchingLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude ipAddress:(NSString *)ipAddress query:(NSString *)query containedWithinPlaceWithIdentity:(NSString *)placeIdentity accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count; {
+    NSParameterAssert(latitude != 0.0 || longitude != 0.0 || ipAddress || query);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kQueryKey = @"query";
+        NSString *const kIpKey = @"ip";
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:[self.class _geoGranularityEnumsToGranularityStrings][@(granularity)] forKey:kGranularityKey];
+        
+        if (latitude != 0.0)
+            [parameters setObject:@(latitude) forKey:kLatitudeKey];
+        if (longitude != 0.0)
+            [parameters setObject:@(longitude) forKey:kLongitudeKey];
+        if (query)
+            [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)query, NULL, NULL, kCFStringEncodingUTF8) forKey:kQueryKey];
+        if (ipAddress)
+            [parameters setObject:ipAddress forKey:kIpKey];
+        if (placeIdentity)
+            [parameters setObject:placeIdentity forKey:kContainedWithinKey];
+        if (accuracy > 0)
+            [parameters setObject:@(accuracy) forKey:kAccuracyKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kMaxResultsKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"geo/search.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
         
         [request setAccount:self.selectedAccount];
         
@@ -1708,6 +1762,9 @@ static NSString *const kCoordinatesKey = @"coordinates";
     
     return retval;
 }
+
+static NSString *const kContainedWithinKey = @"contained_within";
+
 - (TwitterKitPlace *)_placeWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context; {
     NSParameterAssert(dict);
     NSParameterAssert(context);
@@ -1718,7 +1775,6 @@ static NSString *const kCoordinatesKey = @"coordinates";
     NSString *const kFullNameKey = @"full_name";
     NSString *const kNameKey = @"name";
     NSString *const kPlaceTypeKey = @"place_type";
-    NSString *const kContainedWithinKey = @"contained_within";
     
     NSString *identity = dict[kIdKey];
     
