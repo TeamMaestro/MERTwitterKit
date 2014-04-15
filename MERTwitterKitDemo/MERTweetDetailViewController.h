@@ -13,10 +13,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class MERTwitterKitTweetViewModel;
+@class MERTwitterTweetViewModel;
 
 @interface MERTweetDetailViewController : UIViewController
 
-- (instancetype)initWithViewModel:(MERTwitterKitTweetViewModel *)viewModel;
+- (instancetype)initWithViewModel:(MERTwitterTweetViewModel *)viewModel;
 
 @end

@@ -27,7 +27,7 @@
 @property (weak,nonatomic) IBOutlet UILabel *favoriteCountLabel;
 @property (weak,nonatomic) IBOutlet UILabel *retweetCountLabel;
 
-@property (strong,nonatomic) MERTwitterKitTweetViewModel *viewModel;
+@property (strong,nonatomic) MERTwitterTweetViewModel *viewModel;
 @end
 
 @implementation MERTweetDetailViewController
@@ -98,7 +98,7 @@
     RAC(self.mediaImageView,image) = RACObserve(self, viewModel.mediaThumbnailImage);
     RAC(self.nameLabel,text) = RACObserve(self, viewModel.userViewModel.name);
     RAC(self.screenNameLabel,text) = RACObserve(self, viewModel.userViewModel.screenName);
-    RAC(self.textLabel,attributedText) = [[RACObserve(self, viewModel) ignore:nil] map:^id(MERTwitterKitTweetViewModel *value) {
+    RAC(self.textLabel,attributedText) = [[RACObserve(self, viewModel) ignore:nil] map:^id(MERTwitterTweetViewModel *value) {
         @strongify(self);
         
         NSMutableAttributedString *retval = [[NSMutableAttributedString alloc] initWithString:value.text attributes:@{NSFontAttributeName: self.textLabel.font,NSForegroundColorAttributeName: [UIColor blackColor]}];
@@ -139,7 +139,7 @@
     [self.navigationController setToolbarHidden:YES animated:animated];
 }
 
-- (instancetype)initWithViewModel:(MERTwitterKitTweetViewModel *)viewModel; {
+- (instancetype)initWithViewModel:(MERTwitterTweetViewModel *)viewModel; {
     if (!(self = [super init]))
         return nil;
     

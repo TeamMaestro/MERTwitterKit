@@ -27,14 +27,14 @@
 		791F838918F9F2CC00C0BB80 /* MERTweetUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F838818F9F2CC00C0BB80 /* MERTweetUpdateViewController.m */; };
 		791F838C18FA795600C0BB80 /* MERTweetUpdateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791F838A18FA795600C0BB80 /* MERTweetUpdateViewController.xib */; };
 		791F838E18FAA26900C0BB80 /* MERTweetDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 791F838D18FAA26900C0BB80 /* MERTweetDetailViewController.xib */; };
-		7964DB2B18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB2A18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m */; };
-		7964DB2F18FD11FF00331EAB /* MERTwitterKitPlaceViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB2918FCFC0500331EAB /* MERTwitterKitPlaceViewModel.h */; };
+		7964DB2B18FCFC0500331EAB /* MERTwitterPlaceViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB2A18FCFC0500331EAB /* MERTwitterPlaceViewModel.m */; };
+		7964DB2F18FD11FF00331EAB /* MERTwitterPlaceViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB2918FCFC0500331EAB /* MERTwitterPlaceViewModel.h */; };
 		79D8A4F818E600D30024F0D5 /* _TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */; };
 		79D8A4F918E600D30024F0D5 /* _TwitterKitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F318E600D30024F0D5 /* _TwitterKitUser.m */; };
 		79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F518E600D30024F0D5 /* TwitterKitTweet.m */; };
 		79D8A4FB18E600D30024F0D5 /* TwitterKitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F718E600D30024F0D5 /* TwitterKitUser.m */; };
-		79D8A51818EA16AA0024F0D5 /* MERTwitterKitUserViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A51718EA16AA0024F0D5 /* MERTwitterKitUserViewModel.m */; };
-		79D8A51918EA1CD00024F0D5 /* MERTwitterKitUserViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79D8A51618EA16AA0024F0D5 /* MERTwitterKitUserViewModel.h */; };
+		79D8A51818EA16AA0024F0D5 /* MERTwitterUserViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A51718EA16AA0024F0D5 /* MERTwitterUserViewModel.m */; };
+		79D8A51918EA1CD00024F0D5 /* MERTwitterUserViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79D8A51618EA16AA0024F0D5 /* MERTwitterUserViewModel.h */; };
 		79FCBF1118E49E6E0005959A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1018E49E6E0005959A /* Foundation.framework */; };
 		79FCBF1F18E49E6E0005959A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1E18E49E6E0005959A /* XCTest.framework */; };
 		79FCBF2018E49E6E0005959A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF1018E49E6E0005959A /* Foundation.framework */; };
@@ -58,9 +58,9 @@
 		79FCBF8D18E4A2EC0005959A /* MERTwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBF7B18E4A2B00005959A /* MERTwitterKitResources.bundle */; };
 		79FCBF8E18E4AC510005959A /* libMERTwitterKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FCBF0D18E49E6E0005959A /* libMERTwitterKit.a */; };
 		79FCBF9118E4D0BE0005959A /* MERTwitterKit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF8F18E4D0BE0005959A /* MERTwitterKit.xcdatamodeld */; };
-		79FCBF9F18E4D2C80005959A /* MERTwitterKitTweetViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF9E18E4D2C80005959A /* MERTwitterKitTweetViewModel.m */; };
+		79FCBF9F18E4D2C80005959A /* MERTwitterTweetViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBF9E18E4D2C80005959A /* MERTwitterTweetViewModel.m */; };
 		79FCBFA218E4D9C60005959A /* MERTweetTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 79FCBFA118E4D9C60005959A /* MERTweetTableViewCell.m */; };
-		79FCBFA518E4DA2E0005959A /* MERTwitterKitTweetViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF9D18E4D2C80005959A /* MERTwitterKitTweetViewModel.h */; };
+		79FCBFA518E4DA2E0005959A /* MERTwitterTweetViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79FCBF9D18E4D2C80005959A /* MERTwitterTweetViewModel.h */; };
 		79FCBFA718E4DABA0005959A /* MERTweetTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79FCBFA618E4DABA0005959A /* MERTweetTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
@@ -97,9 +97,9 @@
 			files = (
 				79FCBF3D18E49EF10005959A /* MERTwitterKit.h in CopyFiles */,
 				79FCBF3E18E49EF30005959A /* MERTwitterClient.h in CopyFiles */,
-				79FCBFA518E4DA2E0005959A /* MERTwitterKitTweetViewModel.h in CopyFiles */,
-				79D8A51918EA1CD00024F0D5 /* MERTwitterKitUserViewModel.h in CopyFiles */,
-				7964DB2F18FD11FF00331EAB /* MERTwitterKitPlaceViewModel.h in CopyFiles */,
+				79FCBFA518E4DA2E0005959A /* MERTwitterTweetViewModel.h in CopyFiles */,
+				79D8A51918EA1CD00024F0D5 /* MERTwitterUserViewModel.h in CopyFiles */,
+				7964DB2F18FD11FF00331EAB /* MERTwitterPlaceViewModel.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,8 +135,8 @@
 		791F835D18EBBC9900C0BB80 /* _TwitterKitUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUrl.h; sourceTree = "<group>"; };
 		791F835E18EBBC9900C0BB80 /* _TwitterKitUrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitUrl.m; sourceTree = "<group>"; };
 		791F836018EBBCD600C0BB80 /* TwitterKitUrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterKitUrl.h; sourceTree = "<group>"; };
-		791F837B18F8FE1300C0BB80 /* MERTwitterKitTweetViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitTweetViewModel+Private.h"; sourceTree = "<group>"; };
-		791F837E18F8FF1800C0BB80 /* MERTwitterKitUserViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitUserViewModel+Private.h"; sourceTree = "<group>"; };
+		791F837B18F8FE1300C0BB80 /* MERTwitterTweetViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterTweetViewModel+Private.h"; sourceTree = "<group>"; };
+		791F837E18F8FF1800C0BB80 /* MERTwitterUserViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterUserViewModel+Private.h"; sourceTree = "<group>"; };
 		791F838118F9160D00C0BB80 /* MERTweetsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweetsTableViewController.h; sourceTree = "<group>"; };
 		791F838218F9160D00C0BB80 /* MERTweetsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetsTableViewController.m; sourceTree = "<group>"; };
 		791F838418F919C700C0BB80 /* MERTweetDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweetDetailViewController.h; sourceTree = "<group>"; };
@@ -145,9 +145,9 @@
 		791F838818F9F2CC00C0BB80 /* MERTweetUpdateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetUpdateViewController.m; sourceTree = "<group>"; };
 		791F838B18FA795600C0BB80 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MERTweetUpdateViewController.xib; sourceTree = "<group>"; };
 		791F838D18FAA26900C0BB80 /* MERTweetDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MERTweetDetailViewController.xib; sourceTree = "<group>"; };
-		7964DB2918FCFC0500331EAB /* MERTwitterKitPlaceViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterKitPlaceViewModel.h; sourceTree = "<group>"; };
-		7964DB2A18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterKitPlaceViewModel.m; sourceTree = "<group>"; };
-		7964DB2C18FCFC1A00331EAB /* MERTwitterKitPlaceViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitPlaceViewModel+Private.h"; sourceTree = "<group>"; };
+		7964DB2918FCFC0500331EAB /* MERTwitterPlaceViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterPlaceViewModel.h; sourceTree = "<group>"; };
+		7964DB2A18FCFC0500331EAB /* MERTwitterPlaceViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterPlaceViewModel.m; sourceTree = "<group>"; };
+		7964DB2C18FCFC1A00331EAB /* MERTwitterPlaceViewModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterPlaceViewModel+Private.h"; sourceTree = "<group>"; };
 		79D8A4F018E600D30024F0D5 /* _TwitterKitTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitTweet.h; sourceTree = "<group>"; };
 		79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitTweet.m; sourceTree = "<group>"; };
 		79D8A4F218E600D30024F0D5 /* _TwitterKitUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUser.h; sourceTree = "<group>"; };
@@ -156,8 +156,8 @@
 		79D8A4F518E600D30024F0D5 /* TwitterKitTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterKitTweet.m; sourceTree = "<group>"; };
 		79D8A4F618E600D30024F0D5 /* TwitterKitUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterKitUser.h; sourceTree = "<group>"; };
 		79D8A4F718E600D30024F0D5 /* TwitterKitUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterKitUser.m; sourceTree = "<group>"; };
-		79D8A51618EA16AA0024F0D5 /* MERTwitterKitUserViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterKitUserViewModel.h; sourceTree = "<group>"; };
-		79D8A51718EA16AA0024F0D5 /* MERTwitterKitUserViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterKitUserViewModel.m; sourceTree = "<group>"; };
+		79D8A51618EA16AA0024F0D5 /* MERTwitterUserViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterUserViewModel.h; sourceTree = "<group>"; };
+		79D8A51718EA16AA0024F0D5 /* MERTwitterUserViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterUserViewModel.m; sourceTree = "<group>"; };
 		79FCBF0D18E49E6E0005959A /* libMERTwitterKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMERTwitterKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79FCBF1018E49E6E0005959A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		79FCBF1418E49E6E0005959A /* MERTwitterKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKit-Prefix.pch"; sourceTree = "<group>"; };
@@ -187,8 +187,8 @@
 		79FCBF8218E4A2B00005959A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		79FCBF8418E4A2B00005959A /* MERTwitterKitResources-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MERTwitterKitResources-Prefix.pch"; sourceTree = "<group>"; };
 		79FCBF9018E4D0BE0005959A /* MERTwitterKit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MERTwitterKit.xcdatamodel; sourceTree = "<group>"; };
-		79FCBF9D18E4D2C80005959A /* MERTwitterKitTweetViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterKitTweetViewModel.h; sourceTree = "<group>"; };
-		79FCBF9E18E4D2C80005959A /* MERTwitterKitTweetViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterKitTweetViewModel.m; sourceTree = "<group>"; };
+		79FCBF9D18E4D2C80005959A /* MERTwitterTweetViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTwitterTweetViewModel.h; sourceTree = "<group>"; };
+		79FCBF9E18E4D2C80005959A /* MERTwitterTweetViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTwitterTweetViewModel.m; sourceTree = "<group>"; };
 		79FCBFA018E4D9C60005959A /* MERTweetTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MERTweetTableViewCell.h; sourceTree = "<group>"; };
 		79FCBFA118E4D9C60005959A /* MERTweetTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MERTweetTableViewCell.m; sourceTree = "<group>"; };
 		79FCBFA618E4DABA0005959A /* MERTweetTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MERTweetTableViewCell.xib; sourceTree = "<group>"; };
@@ -241,9 +241,9 @@
 		791F837A18F8FE0100C0BB80 /* Private */ = {
 			isa = PBXGroup;
 			children = (
-				791F837B18F8FE1300C0BB80 /* MERTwitterKitTweetViewModel+Private.h */,
-				791F837E18F8FF1800C0BB80 /* MERTwitterKitUserViewModel+Private.h */,
-				7964DB2C18FCFC1A00331EAB /* MERTwitterKitPlaceViewModel+Private.h */,
+				791F837B18F8FE1300C0BB80 /* MERTwitterTweetViewModel+Private.h */,
+				791F837E18F8FF1800C0BB80 /* MERTwitterUserViewModel+Private.h */,
+				7964DB2C18FCFC1A00331EAB /* MERTwitterPlaceViewModel+Private.h */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -441,12 +441,12 @@
 		79FCBF9C18E4D26A0005959A /* View Models */ = {
 			isa = PBXGroup;
 			children = (
-				79FCBF9D18E4D2C80005959A /* MERTwitterKitTweetViewModel.h */,
-				79FCBF9E18E4D2C80005959A /* MERTwitterKitTweetViewModel.m */,
-				79D8A51618EA16AA0024F0D5 /* MERTwitterKitUserViewModel.h */,
-				79D8A51718EA16AA0024F0D5 /* MERTwitterKitUserViewModel.m */,
-				7964DB2918FCFC0500331EAB /* MERTwitterKitPlaceViewModel.h */,
-				7964DB2A18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m */,
+				79FCBF9D18E4D2C80005959A /* MERTwitterTweetViewModel.h */,
+				79FCBF9E18E4D2C80005959A /* MERTwitterTweetViewModel.m */,
+				79D8A51618EA16AA0024F0D5 /* MERTwitterUserViewModel.h */,
+				79D8A51718EA16AA0024F0D5 /* MERTwitterUserViewModel.m */,
+				7964DB2918FCFC0500331EAB /* MERTwitterPlaceViewModel.h */,
+				7964DB2A18FCFC0500331EAB /* MERTwitterPlaceViewModel.m */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -669,18 +669,18 @@
 				79D8A4F918E600D30024F0D5 /* _TwitterKitUser.m in Sources */,
 				791F833F18EB626D00C0BB80 /* TwitterKitMention.m in Sources */,
 				79FCBF3B18E49ED20005959A /* MERTwitterClient.m in Sources */,
-				79FCBF9F18E4D2C80005959A /* MERTwitterKitTweetViewModel.m in Sources */,
+				79FCBF9F18E4D2C80005959A /* MERTwitterTweetViewModel.m in Sources */,
 				791F835C18EBBC9300C0BB80 /* TwitterKitUrl.m in Sources */,
 				791F835A18EBB9C600C0BB80 /* _TwitterKitHashtag.m in Sources */,
 				791F835F18EBBC9900C0BB80 /* _TwitterKitUrl.m in Sources */,
 				791F833318EB5E8200C0BB80 /* _TwitterKitMediaSize.m in Sources */,
 				79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */,
 				791F833018EB5D9700C0BB80 /* TwitterKitMedia.m in Sources */,
-				7964DB2B18FCFC0500331EAB /* MERTwitterKitPlaceViewModel.m in Sources */,
+				7964DB2B18FCFC0500331EAB /* MERTwitterPlaceViewModel.m in Sources */,
 				791F835718EBB9C000C0BB80 /* TwitterKitHashtag.m in Sources */,
 				791F834218EB627400C0BB80 /* _TwitterKitMention.m in Sources */,
 				79D8A4FB18E600D30024F0D5 /* TwitterKitUser.m in Sources */,
-				79D8A51818EA16AA0024F0D5 /* MERTwitterKitUserViewModel.m in Sources */,
+				79D8A51818EA16AA0024F0D5 /* MERTwitterUserViewModel.m in Sources */,
 				791F835418EB67AD00C0BB80 /* _TwitterKitPlace.m in Sources */,
 				791F834518EB659100C0BB80 /* TwitterKitSymbol.m in Sources */,
 				791F832D18EB5D8F00C0BB80 /* _TwitterKitMedia.m in Sources */,

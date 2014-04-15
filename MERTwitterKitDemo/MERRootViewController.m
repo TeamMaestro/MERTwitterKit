@@ -41,7 +41,7 @@
             
             MERTweetUpdateViewController *viewController = [[MERTweetUpdateViewController alloc] init];
             
-            [viewController setCompletionBlock:^(MERTwitterKitTweetViewModel *viewModel, NSError *error) {
+            [viewController setCompletionBlock:^(MERTwitterTweetViewModel *viewModel, NSError *error) {
                 if (viewModel) {
                     NSMutableArray *temp = [self.tableViewController.viewModels mutableCopy];
                     

@@ -1,5 +1,5 @@
 //
-//  MERTwitterKitUserViewModel.h
+//  MERTwitterUserViewModel.h
 //  MERTwitterKit
 //
 //  Created by William Towe on 3/31/14.
@@ -14,7 +14,7 @@
 #import "RVMViewModel.h"
 #import <UIKit/UIImage.h>
 
-@interface MERTwitterKitUserViewModel : RVMViewModel
+@interface MERTwitterUserViewModel : RVMViewModel
 
 @property (readonly,nonatomic) int64_t identity;
 

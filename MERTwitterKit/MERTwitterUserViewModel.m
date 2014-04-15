@@ -1,5 +1,5 @@
 //
-//  MERTwitterKitUserViewModel.m
+//  MERTwitterUserViewModel.m
 //  MERTwitterKit
 //
 //  Created by William Towe on 3/31/14.
@@ -11,14 +11,14 @@
 //
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "MERTwitterKitUserViewModel.h"
-#import "MERTwitterKitUserViewModel+Private.h"
+#import "MERTwitterUserViewModel.h"
+#import "MERTwitterUserViewModel+Private.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
 #import <SDWebImage/SDWebImageManager.h>
 #import "MERTwitterClient.h"
 
-@interface MERTwitterKitUserViewModel ()
+@interface MERTwitterUserViewModel ()
 @property (readwrite,strong,nonatomic) TwitterKitUser *user;
 
 @property (readwrite,strong,nonatomic) UIImage *profileImage;
@@ -28,7 +28,7 @@
 - (instancetype)initWithUser:(TwitterKitUser *)user;
 @end
 
-@implementation MERTwitterKitUserViewModel
+@implementation MERTwitterUserViewModel
 
 - (NSUInteger)hash {
     return self.user.hash;
@@ -44,10 +44,10 @@
         kCache = [[NSCache alloc] init];
     });
     
-    MERTwitterKitUserViewModel *retval = [kCache objectForKey:user.identity];
+    MERTwitterUserViewModel *retval = [kCache objectForKey:user.identity];
     
     if (!retval) {
-        retval = [[MERTwitterKitUserViewModel alloc] initWithUser:user];
+        retval = [[MERTwitterUserViewModel alloc] initWithUser:user];
         
         [kCache setObject:retval forKey:user.identity];
     }

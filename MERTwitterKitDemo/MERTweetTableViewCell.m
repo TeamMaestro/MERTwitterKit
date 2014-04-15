@@ -32,7 +32,7 @@
     
     @weakify(self);
     
-    RAC(self.tweetTextLabel,attributedText) = [[RACObserve(self, viewModel) ignore:nil] map:^id(MERTwitterKitTweetViewModel *value) {
+    RAC(self.tweetTextLabel,attributedText) = [[RACObserve(self, viewModel) ignore:nil] map:^id(MERTwitterTweetViewModel *value) {
         @strongify(self);
         
         NSMutableAttributedString *retval = [[NSMutableAttributedString alloc] initWithString:value.text attributes:@{NSFontAttributeName: self.tweetTextLabel.font,NSForegroundColorAttributeName: [UIColor blackColor]}];
@@ -73,7 +73,7 @@
     return 44;
 }
 
-- (void)setViewModel:(MERTwitterKitTweetViewModel *)viewModel {
+- (void)setViewModel:(MERTwitterTweetViewModel *)viewModel {
     _viewModel = viewModel;
     
     [viewModel setActive:YES];

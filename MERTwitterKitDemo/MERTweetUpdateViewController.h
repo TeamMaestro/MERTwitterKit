@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class MERTwitterKitTweetViewModel;
+@class MERTwitterTweetViewModel;
 
-typedef void(^MERTweetUpdateViewControllerCompletionBlock)(MERTwitterKitTweetViewModel *viewModel, NSError *error);
+typedef void(^MERTweetUpdateViewControllerCompletionBlock)(MERTwitterTweetViewModel *viewModel, NSError *error);
 
 @interface MERTweetUpdateViewController : UIViewController
 

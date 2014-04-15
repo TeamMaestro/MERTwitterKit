@@ -81,7 +81,7 @@
                 [SVProgressHUD show];
             }] finally:^{
                 [SVProgressHUD dismiss];
-            }] subscribeNext:^(MERTwitterKitTweetViewModel *value) {
+            }] subscribeNext:^(MERTwitterTweetViewModel *value) {
                 [subscriber sendNext:RACTuplePack(value,nil)];
                 [subscriber sendCompleted];
             } error:^(NSError *error) {
@@ -120,7 +120,7 @@
      subscribeNext:^(RACTuple *value) {
          @strongify(self);
          
-         RACTupleUnpack(MERTwitterKitTweetViewModel *viewModel, NSError *error) = value;
+         RACTupleUnpack(MERTwitterTweetViewModel *viewModel, NSError *error) = value;
          
          [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
              @strongify(self);

@@ -16,7 +16,7 @@
 
 @interface MERTweetTableViewCell : UITableViewCell
 
-@property (strong,nonatomic) MERTwitterKitTweetViewModel *viewModel;
+@property (strong,nonatomic) MERTwitterTweetViewModel *viewModel;
 
 + (CGFloat)estimatedRowHeight;
 

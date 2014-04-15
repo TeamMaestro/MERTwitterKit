@@ -51,7 +51,7 @@ extern NSString *const MERTwitterKitResourcesBundleName;
 extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 @class RACSignal;
-@class MERTwitterKitTweetViewModel;
+@class MERTwitterTweetViewModel;
 
 @interface MERTwitterClient : NSObject
 
@@ -73,7 +73,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 - (RACSignal *)requestRetweetsOfTweetWithIdentity:(int64_t)identity count:(NSUInteger)count;
 
-- (MERTwitterKitTweetViewModel *)fetchTweetWithIdentity:(int64_t)identity;
+- (MERTwitterTweetViewModel *)fetchTweetWithIdentity:(int64_t)identity;
 - (RACSignal *)requestTweetWithIdentity:(int64_t)identity;
 
 - (RACSignal *)requestDestroyTweetWithIdentity:(int16_t)identity;

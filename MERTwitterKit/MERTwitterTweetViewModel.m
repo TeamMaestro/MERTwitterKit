@@ -11,12 +11,12 @@
 //
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "MERTwitterKitTweetViewModel.h"
-#import "MERTwitterKitTweetViewModel+Private.h"
-#import "MERTwitterKitUserViewModel+Private.h"
+#import "MERTwitterTweetViewModel.h"
+#import "MERTwitterTweetViewModel+Private.h"
+#import "MERTwitterUserViewModel+Private.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
-#import "MERTwitterKitUserViewModel.h"
+#import "MERTwitterUserViewModel.h"
 #import "TwitterKitUrl.h"
 #import <MEReactiveFoundation/MEReactiveFoundation.h>
 #import "TwitterKitMention.h"
@@ -25,16 +25,16 @@
 #import "TwitterKitMedia.h"
 #import <SDWebImage/SDWebImageManager.h>
 
-@interface MERTwitterKitTweetViewModel ()
+@interface MERTwitterTweetViewModel ()
 @property (readwrite,strong,nonatomic) TwitterKitTweet *tweet;
 
 @property (readwrite,strong,nonatomic) UIImage *mediaThumbnailImage;
 @property (strong,nonatomic) id<SDWebImageOperation> mediaThumbnailImageOperation;
 
-@property (readwrite,strong,nonatomic) MERTwitterKitUserViewModel *userViewModel;
+@property (readwrite,strong,nonatomic) MERTwitterUserViewModel *userViewModel;
 @end
 
-@implementation MERTwitterKitTweetViewModel
+@implementation MERTwitterTweetViewModel
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"identity: %@ text: %@",self.tweet.identity,self.tweet.text];
@@ -58,7 +58,7 @@
     NSParameterAssert(tweet);
     
     [self setTweet:tweet];
-    [self setUserViewModel:[MERTwitterKitUserViewModel viewModelWithUser:self.tweet.user]];
+    [self setUserViewModel:[MERTwitterUserViewModel viewModelWithUser:self.tweet.user]];
     
     @weakify(self);
     

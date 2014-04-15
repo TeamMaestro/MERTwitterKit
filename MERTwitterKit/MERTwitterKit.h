@@ -11,8 +11,8 @@
 
 #import <MERTwitterKit/MERTwitterClient.h>
 
-#import <MERTwitterKit/MERTwitterKitTweetViewModel.h>
-#import <MERTwitterKit/MERTwitterKitUserViewModel.h>
-#import <MERTwitterKit/MERTwitterKitPlaceViewModel.h>
+#import <MERTwitterKit/MERTwitterTweetViewModel.h>
+#import <MERTwitterKit/MERTwitterUserViewModel.h>
+#import <MERTwitterKit/MERTwitterPlaceViewModel.h>
 
 #endif

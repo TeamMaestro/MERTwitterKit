@@ -20,8 +20,8 @@
 #import <MEFoundation/NSFileManager+MEExtensions.h>
 #import <MEFoundation/MEDebugging.h>
 #import <MEReactiveFoundation/MEReactiveFoundation.h>
-#import "MERTwitterKitTweetViewModel+Private.h"
-#import "MERTwitterKitUserViewModel+Private.h"
+#import "MERTwitterTweetViewModel+Private.h"
+#import "MERTwitterUserViewModel+Private.h"
 #import "TwitterKitMedia.h"
 #import "TwitterKitHashtag.h"
 #import "TwitterKitSymbol.h"
@@ -34,7 +34,7 @@
 #import <libextobjc/EXTKeyPathCoding.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ReactiveCocoa/RACDelegateProxy.h>
-#import "MERTwitterKitPlaceViewModel+Private.h"
+#import "MERTwitterPlaceViewModel+Private.h"
 
 #import <Social/Social.h>
 
@@ -308,7 +308,7 @@ static NSString *const kUserIdKey = @"user_id";
         [predicates addObject:[NSPredicate predicateWithFormat:@"%K < 0",TwitterKitTweetAttributes.identity]];
     
     return [[self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:count predicate:[NSCompoundPredicate andPredicateWithSubpredicates:predicates] sortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:TwitterKitUserAttributes.identity ascending:NO]] error:NULL] MER_map:^id(id value) {
-        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
+        return [MERTwitterTweetViewModel viewModelWithTweet:value];
     }];
 }
 - (RACSignal *)requestHomeTimelineTweetsAfterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
@@ -402,7 +402,7 @@ static NSString *const kUserIdKey = @"user_id";
         [predicates addObject:[NSPredicate predicateWithFormat:@"%K < 0",TwitterKitTweetAttributes.identity]];
     
     return [[self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:count predicate:[NSCompoundPredicate andPredicateWithSubpredicates:predicates] sortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:TwitterKitUserAttributes.identity ascending:NO]] error:NULL] MER_map:^id(id value) {
-        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
+        return [MERTwitterTweetViewModel viewModelWithTweet:value];
     }];
 }
 
@@ -445,12 +445,12 @@ static NSString *const kUserIdKey = @"user_id";
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 
-- (MERTwitterKitTweetViewModel *)fetchTweetWithIdentity:(int64_t)identity; {
+- (MERTwitterTweetViewModel *)fetchTweetWithIdentity:(int64_t)identity; {
     NSParameterAssert(identity > 0);
     
     TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
     
-    return (tweet) ? [MERTwitterKitTweetViewModel viewModelWithTweet:tweet] : nil;
+    return (tweet) ? [MERTwitterTweetViewModel viewModelWithTweet:tweet] : nil;
 }
 - (RACSignal *)requestTweetWithIdentity:(int64_t)identity; {
     NSParameterAssert(identity > 0);
@@ -660,7 +660,7 @@ static NSString *const kLongitudeKey = @"long";
     
     @weakify(self);
     
-    return [[[[self requestTweetWithIdentity:identity] map:^id(MERTwitterKitTweetViewModel *value) {
+    return [[[[self requestTweetWithIdentity:identity] map:^id(MERTwitterTweetViewModel *value) {
         return value.tweet.replyIdentity;
     }] flattenMap:^RACStream *(NSNumber *value) {
         @strongify(self);
@@ -676,7 +676,7 @@ static NSString *const kLongitudeKey = @"long";
                     @strongify(self);
                     
                     [[self requestTweetWithIdentity:replyIdentity.longLongValue]
-                     subscribeNext:^(MERTwitterKitTweetViewModel *value) {
+                     subscribeNext:^(MERTwitterTweetViewModel *value) {
                          [objects addObject:value];
                          
                          if (value.tweet.replyIdentity) {
@@ -719,7 +719,7 @@ static NSString *const kPreviousCursorKey = @"previous_cursor";
         [predicates addObject:[NSPredicate predicateWithFormat:@"%K < 0",TwitterKitTweetAttributes.identity]];
     
     return [[self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:count predicate:[NSCompoundPredicate andPredicateWithSubpredicates:predicates] sortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:TwitterKitTweetAttributes.identity ascending:NO]] error:NULL] MER_map:^id(id value) {
-        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
+        return [MERTwitterTweetViewModel viewModelWithTweet:value];
     }];
 }
 
@@ -1281,7 +1281,7 @@ static NSString *const kUsersKey = @"users";
         @strongify(self);
         
         return [self _importTweetJSON:@[value]];
-    }] flattenMap:^RACStream *(MERTwitterKitTweetViewModel *value) {
+    }] flattenMap:^RACStream *(MERTwitterTweetViewModel *value) {
         @strongify(self);
         
         [value.tweet setFavorited:@YES];
@@ -1326,7 +1326,7 @@ static NSString *const kUsersKey = @"users";
         @strongify(self);
         
         return [self _importTweetJSON:@[value]];
-    }] flattenMap:^RACStream *(MERTwitterKitTweetViewModel *value) {
+    }] flattenMap:^RACStream *(MERTwitterTweetViewModel *value) {
         @strongify(self);
         
         [value.tweet setFavorited:@NO];
@@ -1558,7 +1558,7 @@ static NSString *const kGranularityKey = @"granularity";
             if ([context ME_saveRecursively:&outError]) {
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
-                        return [MERTwitterKitTweetViewModel viewModelWithTweet:value];
+                        return [MERTwitterTweetViewModel viewModelWithTweet:value];
                     }];
                     
                     [subscriber sendNext:objects];
@@ -1599,7 +1599,7 @@ static NSString *const kGranularityKey = @"granularity";
             if ([context ME_saveRecursively:&outError]) {
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
-                        return [MERTwitterKitUserViewModel viewModelWithUser:value];
+                        return [MERTwitterUserViewModel viewModelWithUser:value];
                     }];
                     
                     [subscriber sendNext:objects];
@@ -1639,7 +1639,7 @@ static NSString *const kGranularityKey = @"granularity";
             if ([context ME_saveRecursively:&outError]) {
                 [self.managedObjectContext performBlock:^{
                     NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
-                        return [MERTwitterKitPlaceViewModel viewModelWithPlace:value];
+                        return [MERTwitterPlaceViewModel viewModelWithPlace:value];
                     }];
                     
                     [subscriber sendNext:objects];

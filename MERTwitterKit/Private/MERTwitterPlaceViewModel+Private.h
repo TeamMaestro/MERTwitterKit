@@ -1,5 +1,5 @@
 //
-//  MERTwitterKitPlaceViewModel.h
+//  MERTwitterPlaceViewModel+Private.h
 //  MERTwitterKit
 //
 //  Created by William Towe on 4/15/14.
@@ -11,16 +11,13 @@
 //
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#import "RVMViewModel.h"
+#import "MERTwitterPlaceViewModel.h"
+#import "TwitterKitPlace.h"
 
-@interface MERTwitterKitPlaceViewModel : RVMViewModel
+@interface MERTwitterPlaceViewModel (Private)
 
-@property (readonly,nonatomic) NSString *identity;
+@property (readonly,strong,nonatomic) TwitterKitPlace *place;
 
-@property (readonly,nonatomic) NSString *type;
-@property (readonly,nonatomic) NSString *country;
-@property (readonly,nonatomic) NSString *countryCode;
-@property (readonly,nonatomic) NSString *name;
-@property (readonly,nonatomic) NSString *fullName;
++ (instancetype)viewModelWithPlace:(TwitterKitPlace *)place;
 
 @end
