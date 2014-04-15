@@ -13,7 +13,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Accounts/Accounts.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <CoreLocation/CoreLocation.h>
 
 typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
     MERTwitterClientSearchTypeMixed,
@@ -29,6 +29,14 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
     MERTwitterClientFriendshipStatusBlocking = 1 << 3
 };
 
+typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
+    MERTwitterClientGeoGranularityNeighborhood,
+    MERTwitterClientGeoGranularityPOI,
+    MERTwitterClientGeoGranularityCity,
+    MERTwitterClientGeoGranularityAdmin,
+    MERTwitterClientGeoGranularityCountry
+};
+
 extern int64_t const MERTwitterClientCursorInitial;
 
 extern NSString *const MERTwitterClientErrorDomain;
@@ -42,6 +50,7 @@ extern NSString *const MERTwitterClientErrorUserInfoKeyAlertCancelButtonTitle;
 extern NSString *const MERTwitterKitResourcesBundleName;
 extern NSBundle *MERTwitterKitResourcesBundle(void);
 
+@class RACSignal;
 @class MERTwitterKitTweetViewModel;
 
 @interface MERTwitterClient : NSObject
@@ -71,8 +80,8 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status;
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity;
-- (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity;
-- (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity;
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity location:(CLLocationCoordinate2D)location placeIdentity:(NSString *)placeIdentity;
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity location:(CLLocationCoordinate2D)location placeIdentity:(NSString *)placeIdentity;
 
 - (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity;
 
@@ -98,5 +107,6 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestFavoriteDestroyForTweetWithIdentity:(int64_t)identity;
 #pragma mark Places & Geo
 - (RACSignal *)requestPlaceWithIdentity:(NSString *)identity;
+- (RACSignal *)requestPlacesWithLocation:(CLLocationCoordinate2D)location accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
 
 @end

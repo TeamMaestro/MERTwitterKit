@@ -32,6 +32,7 @@
 #import <MEFoundation/NSArray+MEExtensions.h>
 #import <libextobjc/EXTScope.h>
 #import <libextobjc/EXTKeyPathCoding.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 #import <ReactiveCocoa/RACDelegateProxy.h>
 #import "MERTwitterKitPlaceViewModel+Private.h"
 
@@ -66,6 +67,8 @@ static NSString *const kMERTwitterClientHelpConfigurationName = @"MERTwitterKit.
 @property (strong,nonatomic) NSManagedObjectContext *writeManagedObjectContext;
 
 @property (copy,nonatomic) NSDictionary *helpConfiguration;
+
++ (NSDictionary *)_geoGranularityEnumsToGranularityStrings;
 
 - (RACSignal *)_importTweetJSON:(NSArray *)json;
 - (RACSignal *)_importUserJSON:(NSArray *)json;
@@ -533,19 +536,21 @@ static NSString *const kUserIdKey = @"user_id";
 }
 
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status; {
-    return [self requestUpdateWithStatus:status media:nil replyIdentity:0 latitude:0 longitude:0 placeIdentity:nil];
+    return [self requestUpdateWithStatus:status media:nil replyIdentity:0 location:kCLLocationCoordinate2DInvalid placeIdentity:nil];
 }
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity; {
-    return [self requestUpdateWithStatus:status media:nil replyIdentity:replyIdentity latitude:0 longitude:0 placeIdentity:nil];
+    return [self requestUpdateWithStatus:status media:nil replyIdentity:replyIdentity location:kCLLocationCoordinate2DInvalid placeIdentity:nil];
 }
-- (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
-    return [self requestUpdateWithStatus:status media:nil replyIdentity:replyIdentity latitude:latitude longitude:longitude placeIdentity:placeIdentity];
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity location:(CLLocationCoordinate2D)location placeIdentity:(NSString *)placeIdentity; {
+    return [self requestUpdateWithStatus:status media:nil replyIdentity:replyIdentity location:location placeIdentity:placeIdentity];
 }
 
 static NSString *const kMultipartFormDataKey = @"multipart/form-data";
 static NSString *const kPlaceIdKey = @"place_id";
+static NSString *const kLatitudeKey = @"lat";
+static NSString *const kLongitudeKey = @"long";
 
-- (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
+- (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity location:(CLLocationCoordinate2D)location placeIdentity:(NSString *)placeIdentity; {
     NSParameterAssert(status);
     
     @weakify(self);
@@ -555,8 +560,6 @@ static NSString *const kPlaceIdKey = @"place_id";
         
         NSString *const kStatusKey = @"status";
         NSString *const kInReplyToStatusIdKey = @"in_reply_to_status_id";
-        NSString *const kLatitudeKey = @"lat";
-        NSString *const kLongitudeKey = @"long";
         NSString *const kMediaKey = @"media[]";
         NSString *const kPhotoSizeLimitKey = @"photo_size_limit";
         
@@ -583,10 +586,10 @@ static NSString *const kPlaceIdKey = @"place_id";
         
         if (replyIdentity > 0)
             [request addMultipartData:[@(replyIdentity).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kInReplyToStatusIdKey type:kMultipartFormDataKey filename:nil];
-        if (latitude != 0.0)
-            [request addMultipartData:[@(latitude).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kLatitudeKey type:kMultipartFormDataKey filename:nil];
-        if (longitude != 0.0)
-            [request addMultipartData:[@(longitude).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kLongitudeKey type:kMultipartFormDataKey filename:nil];
+        if (CLLocationCoordinate2DIsValid(location)) {
+            [request addMultipartData:[@(location.latitude).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kLatitudeKey type:kMultipartFormDataKey filename:nil];
+            [request addMultipartData:[@(location.longitude).stringValue dataUsingEncoding:NSUTF8StringEncoding] withName:kLongitudeKey type:kMultipartFormDataKey filename:nil];
+        }
         if (placeIdentity)
             [request addMultipartData:[placeIdentity dataUsingEncoding:NSUTF8StringEncoding] withName:kPlaceIdKey type:kMultipartFormDataKey filename:nil];
         
@@ -1275,7 +1278,72 @@ static NSString *const kUsersKey = @"users";
         return [self _importPlaceJSON:@[value]];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+
+static NSString *const kMaxResultsKey = @"max_results";
+static NSString *const kResultKey = @"result";
+static NSString *const kPlacesKey = @"places";
+
+- (RACSignal *)requestPlacesWithLocation:(CLLocationCoordinate2D)location accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count; {
+    NSParameterAssert(CLLocationCoordinate2DIsValid(location));
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kAccuracyKey = @"accuracy";
+        NSString *const kGranularityKey = @"granularity";
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        [parameters setObject:@(location.latitude) forKey:kLatitudeKey];
+        [parameters setObject:@(location.longitude) forKey:kLongitudeKey];
+        [parameters setObject:[self.class _geoGranularityEnumsToGranularityStrings][@(granularity)] forKey:kGranularityKey];
+        
+        if (accuracy != 0.0)
+            [parameters setObject:@(accuracy) forKey:kAccuracyKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kMaxResultsKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"geo/reverse_geocode.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(NSDictionary *value) {
+        @strongify(self);
+        
+        return [self _importPlaceJSON:value[kResultKey][kPlacesKey]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
+#pragma mark Class
++ (NSDictionary *)_geoGranularityEnumsToGranularityStrings; {
+    static NSDictionary *retval;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        retval = @{@(MERTwitterClientGeoGranularityAdmin): @"admin",
+                   @(MERTwitterClientGeoGranularityCity): @"city",
+                   @(MERTwitterClientGeoGranularityCountry): @"country",
+                   @(MERTwitterClientGeoGranularityNeighborhood): @"neighborhood",
+                   @(MERTwitterClientGeoGranularityPOI): @"poi"};
+    });
+    return retval;
+}
 #pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
     @weakify(self);
