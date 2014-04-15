@@ -32,6 +32,7 @@
 #import <MEFoundation/NSArray+MEExtensions.h>
 #import <libextobjc/EXTScope.h>
 #import <libextobjc/EXTKeyPathCoding.h>
+#import <ReactiveCocoa/RACDelegateProxy.h>
 
 #import <Social/Social.h>
 
@@ -539,6 +540,9 @@ static NSString *const kScreenNameKey = @"screen_name";
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
     return [self requestUpdateWithStatus:status media:nil replyIdentity:replyIdentity latitude:latitude longitude:longitude placeIdentity:placeIdentity];
 }
+
+static NSString *const kMultipartFormDataKey = @"multipart/form-data";
+
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity latitude:(CGFloat)latitude longitude:(CGFloat)longitude placeIdentity:(NSString *)placeIdentity; {
     NSParameterAssert(status);
     
@@ -549,7 +553,6 @@ static NSString *const kScreenNameKey = @"screen_name";
         
         NSString *const kStatusKey = @"status";
         NSString *const kInReplyToStatusIdKey = @"in_reply_to_status_id";
-        NSString *const kMultipartFormDataKey = @"multipart/form-data";
         NSString *const kLatitudeKey = @"lat";
         NSString *const kLongitudeKey = @"long";
         NSString *const kPlaceIdKey = @"place_id";
@@ -772,6 +775,80 @@ static NSString *const kStatusesKey = @"statuses";
         @strongify(self);
         
         return [self _importTweetJSON:value[kStatusesKey]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+#pragma mark Streaming
+- (RACSignal *)requestStreamForTweetsMatchingKeywords:(NSArray *)keywords userIdentities:(NSArray *)userIdentities locations:(NSArray *)locations; {
+    NSParameterAssert(keywords || userIdentities || locations);
+    
+    @weakify(self);
+    
+    return [[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSString *const kTrackKey = @"track";
+        NSString *const kFollowKey = @"follow";
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (keywords)
+            [parameters setObject:[keywords componentsJoinedByString:@","] forKey:kTrackKey];
+        if (userIdentities) {
+            [parameters setObject:[[userIdentities MER_map:^id(NSNumber *value) {
+                return value.stringValue;
+            }] componentsJoinedByString:@","] forKey:kFollowKey];
+        }
+        if (locations) {
+            // TODO: add support for locations parameter
+        }
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"https://stream.twitter.com/1.1/statuses/filter.json"] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        RACDelegateProxy *proxy = [[RACDelegateProxy alloc] initWithProtocol:@protocol(NSURLConnectionDataDelegate)];
+        
+        [[proxy signalForSelector:@selector(connection:didFailWithError:)]
+         subscribeNext:^(RACTuple *value) {
+             [subscriber sendError:value.second];
+         }];
+        
+        [[proxy signalForSelector:@selector(connectionDidFinishLoading:)]
+         subscribeNext:^(id x) {
+             [subscriber sendCompleted];
+         }];
+        
+        [[proxy signalForSelector:@selector(connection:didReceiveData:)]
+         subscribeNext:^(RACTuple *value) {
+             @strongify(self);
+             
+             NSData *data = value.second;
+             NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+             NSMutableArray *json = [[NSMutableArray alloc] init];
+             
+             for (NSString *chunk in [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]) {
+                 if (chunk.length == 0)
+                     continue;
+                 
+                 NSData *chunkData = [chunk dataUsingEncoding:NSUTF8StringEncoding];
+                 NSDictionary *chunkJson = [NSJSONSerialization JSONObjectWithData:chunkData options:0 error:NULL];
+                 
+                 if (chunkJson[kIdKey])
+                     [json addObject:chunkJson];
+             }
+             
+             if (json.count > 0)
+                 [[self _importTweetJSON:json] subscribe:subscriber];
+         }];
+        
+        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:[request preparedURLRequest] delegate:proxy startImmediately:NO];
+        
+        [connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+        [connection start];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [connection cancel];
+        }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark *** Private Methods ***

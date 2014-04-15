@@ -88,11 +88,15 @@
        ignore:nil]
         take:1]
       flattenMap:^RACStream *(ACAccount *value) {
-          return [RACSignal return:[[MERTwitterClient sharedClient] fetchTweetsMatchingSearch:@"#yolo" afterIdentity:0 beforeIdentity:0 count:100]];
+          return [[MERTwitterClient sharedClient] requestStreamForTweetsMatchingKeywords:@[@"#yolo"] userIdentities:nil locations:nil];
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         
-        [self.tableViewController setViewModels:value];
+        NSMutableArray *temp = [NSMutableArray arrayWithArray:self.tableViewController.viewModels];
+        
+        [temp insertObjects:value atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, value.count)]];
+        
+        [self.tableViewController setViewModels:temp];
     } error:^(NSError *error) {
         MELogObject(error);
     }];
