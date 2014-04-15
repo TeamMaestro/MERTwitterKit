@@ -67,6 +67,7 @@ static NSString *const kMERTwitterClientHelpConfigurationName = @"MERTwitterKit.
 @property (copy,nonatomic) NSDictionary *helpConfiguration;
 
 - (RACSignal *)_importTweetJSON:(NSArray *)json;
+- (RACSignal *)_importUserJSON:(NSArray *)json;
 - (RACSignal *)_importUserIds:(NSArray *)ids;
 
 - (TwitterKitTweet *)_tweetWithDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context;
@@ -239,6 +240,7 @@ static NSString *const kCountKey = @"count";
 }
 
 static NSString *const kScreenNameKey = @"screen_name";
+static NSString *const kUserIdKey = @"user_id";
 
 - (RACSignal *)requestUserTimelineTweetsForUserWithIdentity:(int64_t)userIdentity screenName:(NSString *)screenName afterTweetWithIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     NSParameterAssert(userIdentity > 0 || screenName);
@@ -247,8 +249,6 @@ static NSString *const kScreenNameKey = @"screen_name";
     
     return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
-        
-        NSString *const kUserIdKey = @"user_id";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
@@ -851,6 +851,47 @@ static NSString *const kStatusesKey = @"statuses";
         }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+#pragma mark Friends & Followers
+- (RACSignal *)requestFriendshipCreateForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName; {
+    NSParameterAssert(identity > 0 || screenName);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (identity > 0)
+            [parameters setObject:@(identity) forKey:kUserIdKey];
+        if (screenName)
+            [parameters setObject:screenName forKey:kScreenNameKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST URL:[NSURL URLWithString:@"friendships/create.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importUserJSON:@[value]];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 #pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
@@ -891,6 +932,45 @@ static NSString *const kStatusesKey = @"statuses";
         }];
         
         return nil;
+    }];
+}
+
+- (RACSignal *)_importUserJSON:(NSArray *)json; {
+    @weakify(self);
+    
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        
+        [context setUndoManager:nil];
+        [context setParentContext:self.managedObjectContext];
+        [context performBlock:^{
+            @strongify(self);
+            
+            NSMutableArray *objectIds = [[NSMutableArray alloc] init];
+            
+            for (NSDictionary *dict in json) {
+                TwitterKitUser *user = [self _userWithDictionary:dict context:context];
+                
+                [objectIds addObject:user.objectID];
+            }
+            
+            NSError *outError;
+            if ([context ME_saveRecursively:&outError]) {
+                [self.managedObjectContext performBlock:^{
+                    NSArray *objects = [[context.parentContext ME_objectsForObjectIDs:objectIds] MER_map:^id(id value) {
+                        return [MERTwitterKitUserViewModel viewModelWithUser:value];
+                    }];
+                    
+                    [subscriber sendNext:objects];
+                    [subscriber sendCompleted];
+                }];
+            }
+            else {
+                [subscriber sendError:outError];
+            }
+        }];
     }];
 }
 - (RACSignal *)_importUserIds:(NSArray *)ids; {
