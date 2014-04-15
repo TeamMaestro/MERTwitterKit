@@ -26,7 +26,7 @@
 #import <SDWebImage/SDWebImageManager.h>
 
 @interface MERTwitterKitTweetViewModel ()
-@property (strong,nonatomic) TwitterKitTweet *tweet;
+@property (readwrite,strong,nonatomic) TwitterKitTweet *tweet;
 
 @property (readwrite,strong,nonatomic) UIImage *mediaThumbnailImage;
 @property (strong,nonatomic) id<SDWebImageOperation> mediaThumbnailImageOperation;

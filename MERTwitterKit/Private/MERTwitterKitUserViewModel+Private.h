@@ -16,6 +16,8 @@
 
 @interface MERTwitterKitUserViewModel (Private)
 
+@property (readonly,strong,nonatomic) TwitterKitUser *user;
+
 + (instancetype)viewModelWithUser:(TwitterKitUser *)user;
 
 @end

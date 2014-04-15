@@ -19,7 +19,7 @@
 #import "MERTwitterClient.h"
 
 @interface MERTwitterKitUserViewModel ()
-@property (strong,nonatomic) TwitterKitUser *user;
+@property (readwrite,strong,nonatomic) TwitterKitUser *user;
 
 @property (readwrite,strong,nonatomic) UIImage *profileImage;
 

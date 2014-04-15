@@ -16,6 +16,8 @@
 
 @interface MERTwitterKitTweetViewModel (Private)
 
+@property (readonly,strong,nonatomic) TwitterKitTweet *tweet;
+
 + (instancetype)viewModelWithTweet:(TwitterKitTweet *)tweet;
 
 @end

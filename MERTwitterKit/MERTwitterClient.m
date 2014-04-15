@@ -1101,6 +1101,53 @@ static NSString *const kUsersKey = @"users";
         }];
     }];
 }
+#pragma mark Favorites
+- (RACSignal *)requestFavoritesForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSParameterAssert(identity > 0 || screenName);
+    
+    @weakify(self);
+    
+    return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        @strongify(self);
+        
+        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+        
+        if (identity > 0)
+            [parameters setObject:@(identity) forKey:kIdKey];
+        if (screenName)
+            [parameters setObject:screenName forKey:kScreenNameKey];
+        if (afterIdentity > 0)
+            [parameters setObject:@(afterIdentity) forKey:kSinceIdKey];
+        if (beforeIdentity > 0)
+            [parameters setObject:@(beforeIdentity) forKey:kMaxIdKey];
+        if (count > 0)
+            [parameters setObject:@(count) forKey:kCountKey];
+        
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"favorites/list.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        
+        [request setAccount:self.selectedAccount];
+        
+        NSURLSessionDataTask *task = [self.httpSessionManager dataTaskWithRequest:[request preparedURLRequest] completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+            if (error) {
+                [subscriber sendError:error];
+            }
+            else {
+                [subscriber sendNext:responseObject];
+                [subscriber sendCompleted];
+            }
+        }];
+        
+        [task resume];
+        
+        return [RACDisposable disposableWithBlock:^{
+            [task cancel];
+        }];
+    }] flattenMap:^RACStream *(id value) {
+        @strongify(self);
+        
+        return [self _importTweetJSON:value];
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 #pragma mark *** Private Methods ***
 #pragma mark Signals
 - (RACSignal *)_importTweetJSON:(NSArray *)json; {
