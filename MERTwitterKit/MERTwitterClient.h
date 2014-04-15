@@ -84,6 +84,8 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity location:(CLLocationCoordinate2D)location placeIdentity:(NSString *)placeIdentity;
 
 - (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity;
+#pragma mark Replies
+- (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity;
 #pragma mark Search
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 - (RACSignal *)requestTweetsMatchingSearch:(NSString *)search type:(MERTwitterClientSearchType)type afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;

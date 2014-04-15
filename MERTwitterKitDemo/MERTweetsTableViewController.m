@@ -17,6 +17,7 @@
 #import <MEKit/UITableViewCell+MEExtensions.h>
 #import <libextobjc/EXTScope.h>
 #import "MERTweetDetailViewController.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface MERTweetsTableViewController ()
 - (void)_configureCell:(MERTweetTableViewCell *)cell indexPath:(NSIndexPath *)indexPath;

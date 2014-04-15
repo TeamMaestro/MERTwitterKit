@@ -654,6 +654,51 @@ static NSString *const kLongitudeKey = @"long";
         }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
+#pragma mark Replies
+- (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [[[[self requestTweetWithIdentity:identity] map:^id(MERTwitterKitTweetViewModel *value) {
+        return value.tweet.replyIdentity;
+    }] flattenMap:^RACStream *(NSNumber *value) {
+        @strongify(self);
+        
+        if (value) {
+            return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+                @strongify(self);
+                
+                NSMutableArray *objects = [[NSMutableArray alloc] init];
+                __block NSNumber *replyIdentity = value;
+                
+                return [[RACScheduler scheduler] scheduleRecursiveBlock:^(void (^reschedule)(void)){
+                    @strongify(self);
+                    
+                    [[self requestTweetWithIdentity:replyIdentity.longLongValue]
+                     subscribeNext:^(MERTwitterKitTweetViewModel *value) {
+                         [objects addObject:value];
+                         
+                         if (value.tweet.replyIdentity) {
+                             replyIdentity = value.tweet.replyIdentity;
+                             
+                             reschedule();
+                         }
+                         else {
+                             [subscriber sendNext:objects];
+                             [subscriber sendCompleted];
+                         }
+                    } error:^(NSError *error) {
+                        [subscriber sendError:error];
+                    }];
+                }];
+            }];
+        }
+        else {
+            return [RACSignal return:nil];
+        }
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
 
 static NSString *const kCursorKey = @"cursor";
 static NSString *const kIdsKey = @"ids";
@@ -662,6 +707,8 @@ static NSString *const kPreviousCursorKey = @"previous_cursor";
 
 #pragma mark Search
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
+    NSParameterAssert(search);
+    
     NSMutableArray *predicates = [[NSMutableArray alloc] init];
     
     [predicates addObject:[NSPredicate predicateWithFormat:@"%K CONTAINS[cd] %@",TwitterKitTweetAttributes.text,search]];
@@ -1634,6 +1681,7 @@ static NSString *const kCoordinatesKey = @"coordinates";
     NSString *const kRetweetCountKey = @"retweet_count";
     NSString *const kFavoritedKey = @"favorited";
     NSString *const kFavoriteCountKey = @"favorite_count";
+    NSString *const kInReplyToStatusIdKey = @"in_reply_to_status_id";
     
     NSNumber *identity = dict[kIdKey];
     
@@ -1657,6 +1705,9 @@ static NSString *const kCoordinatesKey = @"coordinates";
         [retval setIdentity:identity];
         [retval setText:dict[kTextKey]];
         [retval setCreatedAt:[createdAtDateFormatter dateFromString:dict[kCreatedAtKey]]];
+        
+        if ([dict[kInReplyToStatusIdKey] isKindOfClass:[NSNumber class]])
+            [retval setReplyIdentity:dict[kInReplyToStatusIdKey]];
         
         if ([dict[kCoordinatesKey] isKindOfClass:[NSDictionary class]]) {
             [retval setCoordinates:[NSValue valueWithCGPoint:CGPointMake([dict[kCoordinatesKey][kCoordinatesKey][1] doubleValue], [dict[kCoordinatesKey][kCoordinatesKey][0] doubleValue])]];

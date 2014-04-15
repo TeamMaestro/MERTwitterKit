@@ -75,6 +75,7 @@
         <attribute name="favoriteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="favorited" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="identity" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="replyIdentity" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="retweetCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="retweeted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
@@ -82,6 +83,8 @@
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitMedia" inverseName="tweet" inverseEntity="TwitterKitMedia" syncable="YES"/>
         <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitMention" inverseName="tweet" inverseEntity="TwitterKitMention" syncable="YES"/>
         <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitPlace" inverseName="tweet" inverseEntity="TwitterKitPlace" syncable="YES"/>
+        <relationship name="replies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="reply" inverseEntity="TwitterKitTweet" syncable="YES"/>
+        <relationship name="reply" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="replies" inverseEntity="TwitterKitTweet" syncable="YES"/>
         <relationship name="retweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="retweets" inverseEntity="TwitterKitTweet" syncable="YES"/>
         <relationship name="retweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="retweet" inverseEntity="TwitterKitTweet" syncable="YES"/>
         <relationship name="symbols" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitSymbol" inverseName="tweet" inverseEntity="TwitterKitSymbol" syncable="YES"/>
@@ -116,7 +119,7 @@
         <element name="TwitterKitMention" positionX="-27" positionY="117" width="128" height="88"/>
         <element name="TwitterKitPlace" positionX="18" positionY="162" width="128" height="193"/>
         <element name="TwitterKitSymbol" positionX="9" positionY="144" width="128" height="88"/>
-        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="298"/>
+        <element name="TwitterKitTweet" positionX="-63" positionY="-18" width="128" height="343"/>
         <element name="TwitterKitUrl" positionX="-36" positionY="90" width="128" height="120"/>
         <element name="TwitterKitUser" positionX="-63" positionY="0" width="128" height="165"/>
     </elements>

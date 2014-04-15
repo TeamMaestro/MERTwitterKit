@@ -16,6 +16,7 @@
 #import <libextobjc/EXTScope.h>
 #import "MERTweetsTableViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface MERTweetDetailViewController ()
 @property (weak,nonatomic) IBOutlet UIImageView *imageView;

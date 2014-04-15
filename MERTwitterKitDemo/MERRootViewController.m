@@ -17,6 +17,7 @@
 #import <libextobjc/EXTScope.h>
 #import "MERTweetsTableViewController.h"
 #import "MERTweetUpdateViewController.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface MERRootViewController ()
 @property (strong,nonatomic) MERTweetsTableViewController *tableViewController;
@@ -88,7 +89,8 @@
        ignore:nil]
         take:1]
       flattenMap:^RACStream *(ACAccount *value) {
-          return [[MERTwitterClient sharedClient] requestStreamForTweetsMatchingKeywords:@[@"#yolo"] userIdentities:nil locations:nil];
+//          return [[MERTwitterClient sharedClient] requestHomeTimelineTweetsAfterTweetWithIdentity:0 beforeIdentity:0 count:100];
+          return [RACSignal return:[[MERTwitterClient sharedClient] fetchTweetsAfterIdentity:0 beforeIdentity:0 count:100]];
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         

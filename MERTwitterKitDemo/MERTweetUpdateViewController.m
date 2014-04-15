@@ -10,6 +10,7 @@
 #import <MERTwitterKit/MERTwitterKit.h>
 #import <libextobjc/EXTScope.h>
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -76,7 +77,7 @@
         return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
             @strongify(self);
             
-            [[[[[MERTwitterClient sharedClient] requestUpdateWithStatus:self.textView.text media:(self.image) ? @[self.image] : nil replyIdentity:0 latitude:0 longitude:0 placeIdentity:nil] initially:^{
+            [[[[[MERTwitterClient sharedClient] requestUpdateWithStatus:self.textView.text media:(self.image) ? @[self.image] : nil replyIdentity:0 location:kCLLocationCoordinate2DInvalid placeIdentity:nil] initially:^{
                 [SVProgressHUD show];
             }] finally:^{
                 [SVProgressHUD dismiss];

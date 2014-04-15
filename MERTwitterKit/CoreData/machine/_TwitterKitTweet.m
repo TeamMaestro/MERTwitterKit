@@ -9,6 +9,7 @@ const struct TwitterKitTweetAttributes TwitterKitTweetAttributes = {
 	.favoriteCount = @"favoriteCount",
 	.favorited = @"favorited",
 	.identity = @"identity",
+	.replyIdentity = @"replyIdentity",
 	.retweetCount = @"retweetCount",
 	.retweeted = @"retweeted",
 	.text = @"text",
@@ -19,6 +20,8 @@ const struct TwitterKitTweetRelationships TwitterKitTweetRelationships = {
 	.media = @"media",
 	.mentions = @"mentions",
 	.place = @"place",
+	.replies = @"replies",
+	.reply = @"reply",
 	.retweet = @"retweet",
 	.retweets = @"retweets",
 	.symbols = @"symbols",
@@ -67,6 +70,11 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 	}
 	if ([key isEqualToString:@"identityValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"identity"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"replyIdentityValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"replyIdentity"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -179,6 +187,32 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 
 
 
+@dynamic replyIdentity;
+
+
+
+- (int64_t)replyIdentityValue {
+	NSNumber *result = [self replyIdentity];
+	return [result longLongValue];
+}
+
+- (void)setReplyIdentityValue:(int64_t)value_ {
+	[self setReplyIdentity:[NSNumber numberWithLongLong:value_]];
+}
+
+- (int64_t)primitiveReplyIdentityValue {
+	NSNumber *result = [self primitiveReplyIdentity];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveReplyIdentityValue:(int64_t)value_ {
+	[self setPrimitiveReplyIdentity:[NSNumber numberWithLongLong:value_]];
+}
+
+
+
+
+
 @dynamic retweetCount;
 
 
@@ -278,6 +312,23 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 	
 
 @dynamic place;
+
+	
+
+@dynamic replies;
+
+	
+- (NSMutableSet*)repliesSet {
+	[self willAccessValueForKey:@"replies"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"replies"];
+  
+	[self didAccessValueForKey:@"replies"];
+	return result;
+}
+	
+
+@dynamic reply;
 
 	
 
