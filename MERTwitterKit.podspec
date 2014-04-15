@@ -18,9 +18,9 @@ Pod::Spec.new do |spec|
   spec.dependency "libextobjc/EXTKeyPathCoding", "~> 0.4.0"
   spec.dependency "SDWebImage", "~> 3.6.0"
   spec.requires_arc = true
-  spec.frameworks = "Accounts", "Social"
+  spec.frameworks = "Accounts", "CoreLocation", "Social"
   
-  spec.source_files = "MERTwitterKit", "MERTwitterKit/CoreData", "MERTwitterKit/CoreData/machine", "MEReactiveKit/Private"
+  spec.source_files = "MERTwitterKit", "MERTwitterKit/CoreData", "MERTwitterKit/CoreData/machine", "MERTwitterKit/Private"
   spec.private_header_files = "MERTwitterKit/CoreData", "MERTwitterKit/CoreData/machine", "MERTwitterKit/Private"
-  spec.resource_bundles = {"MERTwitterKitResources" => ["MERTwitterKitResources/*.plist", "MERTwitterKitResources/*.lproj", "MEReactiveKitResources/*.xcdatamodeld"]}
+  spec.resource_bundles = {"MERTwitterKitResources" => ["MERTwitterKitResources/*.plist", "MERTwitterKitResources/*.lproj", "MERTwitterKitResources/*.xcdatamodeld"]}
 end
