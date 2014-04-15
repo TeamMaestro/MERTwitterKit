@@ -1164,6 +1164,8 @@ static NSString *const kCoordinatesKey = @"coordinates";
     
     NSString *const kProfileImageUrlKey = @"profile_image_url_https";
     NSString *const kNameKey = @"name";
+    NSString *const kFollowersCountKey = @"followers_count";
+    NSString *const kFriendsCountKey = @"friends_count";
     
     NSNumber *identity = dict[@"id"];
     
@@ -1185,6 +1187,10 @@ static NSString *const kCoordinatesKey = @"coordinates";
         [retval setName:dict[kNameKey]];
     if (dict[kScreenNameKey])
         [retval setScreenName:dict[kScreenNameKey]];
+    if (dict[kFollowersCountKey])
+        [retval setFollowersCount:dict[kFollowersCountKey]];
+    if (dict[kFriendsCountKey])
+        [retval setFriendsCount:dict[kFriendsCountKey]];
     
     return retval;
 }

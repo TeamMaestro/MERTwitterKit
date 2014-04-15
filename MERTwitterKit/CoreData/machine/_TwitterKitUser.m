@@ -4,6 +4,8 @@
 #import "_TwitterKitUser.h"
 
 const struct TwitterKitUserAttributes TwitterKitUserAttributes = {
+	.followersCount = @"followersCount",
+	.friendsCount = @"friendsCount",
 	.identity = @"identity",
 	.name = @"name",
 	.profileImageUrl = @"profileImageUrl",
@@ -44,6 +46,16 @@ const struct TwitterKitUserFetchedProperties TwitterKitUserFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
+	if ([key isEqualToString:@"followersCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"followersCount"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"friendsCountValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"friendsCount"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"identityValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"identity"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -52,6 +64,58 @@ const struct TwitterKitUserFetchedProperties TwitterKitUserFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic followersCount;
+
+
+
+- (int32_t)followersCountValue {
+	NSNumber *result = [self followersCount];
+	return [result intValue];
+}
+
+- (void)setFollowersCountValue:(int32_t)value_ {
+	[self setFollowersCount:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveFollowersCountValue {
+	NSNumber *result = [self primitiveFollowersCount];
+	return [result intValue];
+}
+
+- (void)setPrimitiveFollowersCountValue:(int32_t)value_ {
+	[self setPrimitiveFollowersCount:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic friendsCount;
+
+
+
+- (int32_t)friendsCountValue {
+	NSNumber *result = [self friendsCount];
+	return [result intValue];
+}
+
+- (void)setFriendsCountValue:(int32_t)value_ {
+	[self setFriendsCount:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveFriendsCountValue {
+	NSNumber *result = [self primitiveFriendsCount];
+	return [result intValue];
+}
+
+- (void)setPrimitiveFriendsCountValue:(int32_t)value_ {
+	[self setPrimitiveFriendsCount:[NSNumber numberWithInt:value_]];
+}
+
 
 
 

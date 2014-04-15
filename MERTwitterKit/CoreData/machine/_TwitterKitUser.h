@@ -5,6 +5,8 @@
 
 
 extern const struct TwitterKitUserAttributes {
+	__unsafe_unretained NSString *followersCount;
+	__unsafe_unretained NSString *friendsCount;
 	__unsafe_unretained NSString *identity;
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *profileImageUrl;
@@ -27,6 +29,8 @@ extern const struct TwitterKitUserFetchedProperties {
 
 
 
+
+
 @interface TwitterKitUserID : NSManagedObjectID {}
 @end
 
@@ -35,6 +39,34 @@ extern const struct TwitterKitUserFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (TwitterKitUserID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* followersCount;
+
+
+
+@property int32_t followersCountValue;
+- (int32_t)followersCountValue;
+- (void)setFollowersCountValue:(int32_t)value_;
+
+//- (BOOL)validateFollowersCount:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* friendsCount;
+
+
+
+@property int32_t friendsCountValue;
+- (int32_t)friendsCountValue;
+- (void)setFriendsCountValue:(int32_t)value_;
+
+//- (BOOL)validateFriendsCount:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -116,6 +148,24 @@ extern const struct TwitterKitUserFetchedProperties {
 @end
 
 @interface _TwitterKitUser (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveFollowersCount;
+- (void)setPrimitiveFollowersCount:(NSNumber*)value;
+
+- (int32_t)primitiveFollowersCountValue;
+- (void)setPrimitiveFollowersCountValue:(int32_t)value_;
+
+
+
+
+- (NSNumber*)primitiveFriendsCount;
+- (void)setPrimitiveFriendsCount:(NSNumber*)value;
+
+- (int32_t)primitiveFriendsCountValue;
+- (void)setPrimitiveFriendsCountValue:(int32_t)value_;
+
+
 
 
 - (NSNumber*)primitiveIdentity;
