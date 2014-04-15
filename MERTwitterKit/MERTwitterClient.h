@@ -21,6 +21,14 @@ typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
     MERTwitterClientSearchTypePopular
 };
 
+typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
+    MERTwitterClientFriendshipStatusNone = 0,
+    MERTwitterClientFriendshipStatusFollowing = 1 << 0,
+    MERTwitterClientFriendshipStatusFollowingRequested = 1 << 1,
+    MERTwitterClientFriendshipStatusFollowedBy = 1 << 2,
+    MERTwitterClientFriendshipStatusBlocking = 1 << 3
+};
+
 extern int64_t const MERTwitterClientCursorInitial;
 
 extern NSString *const MERTwitterClientErrorDomain;
@@ -75,6 +83,8 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 #pragma mark Streaming
 - (RACSignal *)requestStreamForTweetsMatchingKeywords:(NSArray *)keywords userIdentities:(NSArray *)userIdentities locations:(NSArray *)locations;
 #pragma mark Friends & Followers
+- (RACSignal *)requestFriendshipStatusForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
+- (RACSignal *)requestFriendshipStatusForUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames;
 - (RACSignal *)requestFriendshipCreateForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
 - (RACSignal *)requestFriendshipDestroyForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
 
