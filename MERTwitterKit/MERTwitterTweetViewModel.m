@@ -25,6 +25,7 @@
 #import "TwitterKitMedia.h"
 #import <SDWebImage/SDWebImageManager.h>
 #import "TwitterKitMediaRange.h"
+#import "MERTwitterClient+Replies.h"
 
 @interface MERTwitterTweetViewModel ()
 @property (readwrite,strong,nonatomic) TwitterKitTweet *tweet;
@@ -150,6 +151,10 @@
 }
 - (NSUInteger)retweetCount {
     return self.tweet.retweetCount.unsignedIntegerValue;
+}
+
+- (NSArray *)threadTweets {
+    return [[MERTwitterClient sharedClient] fetchThreadForTweetWithIdentity:self.identity];
 }
 
 @end

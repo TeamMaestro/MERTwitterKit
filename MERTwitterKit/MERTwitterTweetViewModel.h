@@ -36,5 +36,6 @@
 @property (readonly,strong,nonatomic) UIImage *mediaThumbnailImage;
 
 @property (readonly,strong,nonatomic) MERTwitterUserViewModel *userViewModel;
+@property (readonly,nonatomic) NSArray *threadTweets;
 
 @end
