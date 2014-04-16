@@ -31,6 +31,15 @@
 		7964DB2F18FD11FF00331EAB /* MERTwitterPlaceViewModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB2918FCFC0500331EAB /* MERTwitterPlaceViewModel.h */; };
 		7964DB3218FDFCE100331EAB /* TwitterKitMediaRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB3118FDFCE100331EAB /* TwitterKitMediaRange.m */; };
 		7964DB3518FDFCE800331EAB /* _TwitterKitMediaRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 7964DB3418FDFCE800331EAB /* _TwitterKitMediaRange.m */; };
+		7964DB5118FE553A00331EAB /* MERTwitterClient+Favorites.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB4B18FE182E00331EAB /* MERTwitterClient+Favorites.h */; };
+		7964DB5218FE553A00331EAB /* MERTwitterClient+FriendsAndFollowers.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB4518FE17D100331EAB /* MERTwitterClient+FriendsAndFollowers.h */; };
+		7964DB5318FE553A00331EAB /* MERTwitterClient+PlacesAndGeo.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB4E18FE186000331EAB /* MERTwitterClient+PlacesAndGeo.h */; };
+		7964DB5418FE553A00331EAB /* MERTwitterClient+Replies.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB3F18FE176400331EAB /* MERTwitterClient+Replies.h */; };
+		7964DB5518FE553A00331EAB /* MERTwitterClient+Search.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB3C18FE172F00331EAB /* MERTwitterClient+Search.h */; };
+		7964DB5618FE553A00331EAB /* MERTwitterClient+Streaming.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB4218FE17A000331EAB /* MERTwitterClient+Streaming.h */; };
+		7964DB5718FE553A00331EAB /* MERTwitterClient+Timelines.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB3618FE16B400331EAB /* MERTwitterClient+Timelines.h */; };
+		7964DB5818FE553A00331EAB /* MERTwitterClient+Tweets.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB3918FE170100331EAB /* MERTwitterClient+Tweets.h */; };
+		7964DB5918FE553A00331EAB /* MERTwitterClient+Users.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7964DB4818FE17FF00331EAB /* MERTwitterClient+Users.h */; };
 		79D8A4F818E600D30024F0D5 /* _TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */; };
 		79D8A4F918E600D30024F0D5 /* _TwitterKitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F318E600D30024F0D5 /* _TwitterKitUser.m */; };
 		79D8A4FA18E600D30024F0D5 /* TwitterKitTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 79D8A4F518E600D30024F0D5 /* TwitterKitTweet.m */; };
@@ -99,6 +108,15 @@
 			files = (
 				79FCBF3D18E49EF10005959A /* MERTwitterKit.h in CopyFiles */,
 				79FCBF3E18E49EF30005959A /* MERTwitterClient.h in CopyFiles */,
+				7964DB5118FE553A00331EAB /* MERTwitterClient+Favorites.h in CopyFiles */,
+				7964DB5218FE553A00331EAB /* MERTwitterClient+FriendsAndFollowers.h in CopyFiles */,
+				7964DB5318FE553A00331EAB /* MERTwitterClient+PlacesAndGeo.h in CopyFiles */,
+				7964DB5418FE553A00331EAB /* MERTwitterClient+Replies.h in CopyFiles */,
+				7964DB5518FE553A00331EAB /* MERTwitterClient+Search.h in CopyFiles */,
+				7964DB5618FE553A00331EAB /* MERTwitterClient+Streaming.h in CopyFiles */,
+				7964DB5718FE553A00331EAB /* MERTwitterClient+Timelines.h in CopyFiles */,
+				7964DB5818FE553A00331EAB /* MERTwitterClient+Tweets.h in CopyFiles */,
+				7964DB5918FE553A00331EAB /* MERTwitterClient+Users.h in CopyFiles */,
 				79FCBFA518E4DA2E0005959A /* MERTwitterTweetViewModel.h in CopyFiles */,
 				79D8A51918EA1CD00024F0D5 /* MERTwitterUserViewModel.h in CopyFiles */,
 				7964DB2F18FD11FF00331EAB /* MERTwitterPlaceViewModel.h in CopyFiles */,

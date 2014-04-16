@@ -15,6 +15,15 @@
 #define _MER_TWITTER_KIT_
 
 #import <MERTwitterKit/MERTwitterClient.h>
+#import <MERTwitterKit/MERTwitterClient+Favorites.h>
+#import <MERTwitterKit/MERTwitterClient+FriendsAndFollowers.h>
+#import <MERTwitterKit/MERTwitterClient+PlacesAndGeo.h>
+#import <MERTwitterKit/MERTwitterClient+Replies.h>
+#import <MERTwitterKit/MERTwitterClient+Search.h>
+#import <MERTwitterKit/MERTwitterClient+Streaming.h>
+#import <MERTwitterKit/MERTwitterClient+Timelines.h>
+#import <MERTwitterKit/MERTwitterClient+Tweets.h>
+#import <MERTwitterKit/MERTwitterClient+Users.h>
 
 #import <MERTwitterKit/MERTwitterTweetViewModel.h>
 #import <MERTwitterKit/MERTwitterUserViewModel.h>
