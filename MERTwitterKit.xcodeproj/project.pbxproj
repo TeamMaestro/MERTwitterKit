@@ -154,6 +154,15 @@
 		7964DB3118FDFCE100331EAB /* TwitterKitMediaRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterKitMediaRange.m; sourceTree = "<group>"; };
 		7964DB3318FDFCE800331EAB /* _TwitterKitMediaRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitMediaRange.h; sourceTree = "<group>"; };
 		7964DB3418FDFCE800331EAB /* _TwitterKitMediaRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitMediaRange.m; sourceTree = "<group>"; };
+		7964DB3618FE16B400331EAB /* MERTwitterClient+Timelines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+Timelines.h"; sourceTree = "<group>"; };
+		7964DB3918FE170100331EAB /* MERTwitterClient+Tweets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+Tweets.h"; sourceTree = "<group>"; };
+		7964DB3C18FE172F00331EAB /* MERTwitterClient+Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+Search.h"; sourceTree = "<group>"; };
+		7964DB3F18FE176400331EAB /* MERTwitterClient+Replies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+Replies.h"; sourceTree = "<group>"; };
+		7964DB4218FE17A000331EAB /* MERTwitterClient+Streaming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+Streaming.h"; sourceTree = "<group>"; };
+		7964DB4518FE17D100331EAB /* MERTwitterClient+FriendsAndFollowers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+FriendsAndFollowers.h"; sourceTree = "<group>"; };
+		7964DB4818FE17FF00331EAB /* MERTwitterClient+Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+Users.h"; sourceTree = "<group>"; };
+		7964DB4B18FE182E00331EAB /* MERTwitterClient+Favorites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+Favorites.h"; sourceTree = "<group>"; };
+		7964DB4E18FE186000331EAB /* MERTwitterClient+PlacesAndGeo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MERTwitterClient+PlacesAndGeo.h"; sourceTree = "<group>"; };
 		79D8A4F018E600D30024F0D5 /* _TwitterKitTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitTweet.h; sourceTree = "<group>"; };
 		79D8A4F118E600D30024F0D5 /* _TwitterKitTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _TwitterKitTweet.m; sourceTree = "<group>"; };
 		79D8A4F218E600D30024F0D5 /* _TwitterKitUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _TwitterKitUser.h; sourceTree = "<group>"; };
@@ -387,6 +396,15 @@
 			children = (
 				79FCBF3918E49ED20005959A /* MERTwitterClient.h */,
 				79FCBF3A18E49ED20005959A /* MERTwitterClient.m */,
+				7964DB3618FE16B400331EAB /* MERTwitterClient+Timelines.h */,
+				7964DB3918FE170100331EAB /* MERTwitterClient+Tweets.h */,
+				7964DB3C18FE172F00331EAB /* MERTwitterClient+Search.h */,
+				7964DB3F18FE176400331EAB /* MERTwitterClient+Replies.h */,
+				7964DB4218FE17A000331EAB /* MERTwitterClient+Streaming.h */,
+				7964DB4518FE17D100331EAB /* MERTwitterClient+FriendsAndFollowers.h */,
+				7964DB4818FE17FF00331EAB /* MERTwitterClient+Users.h */,
+				7964DB4B18FE182E00331EAB /* MERTwitterClient+Favorites.h */,
+				7964DB4E18FE186000331EAB /* MERTwitterClient+PlacesAndGeo.h */,
 				79D8A4EE18E600D30024F0D5 /* CoreData */,
 				791F837A18F8FE0100C0BB80 /* Private */,
 				79FCBF9C18E4D26A0005959A /* View Models */,

@@ -36,6 +36,15 @@
 #import <ReactiveCocoa/RACDelegateProxy.h>
 #import "MERTwitterPlaceViewModel+Private.h"
 #import "TwitterKitMediaRange.h"
+#import "MERTwitterClient+Timelines.h"
+#import "MERTwitterClient+Tweets.h"
+#import "MERTwitterClient+Search.h"
+#import "MERTwitterClient+Replies.h"
+#import "MERTwitterClient+Streaming.h"
+#import "MERTwitterClient+FriendsAndFollowers.h"
+#import "MERTwitterClient+Users.h"
+#import "MERTwitterClient+Favorites.h"
+#import "MERTwitterClient+PlacesAndGeo.h"
 
 #import <Social/Social.h>
 
