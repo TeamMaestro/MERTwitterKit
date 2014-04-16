@@ -44,7 +44,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  
  @param identity The identity of the user to request friendship for
  @param screenName The screen name of the user to request friendship for
- @exception NSException Thrown if _identity_ and _screenName_ are nil
+ @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendshipDestroyForUserWithIdentity:screenName:
  */
 - (RACSignal *)requestFriendshipCreateForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
@@ -57,7 +57,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  
  @param identity The identity of the user to destroy friendship for
  @param screenName The screen name of the user to destroy friendship for
- @exception NSException Thrown if _identity_ and _screenName_ are nil
+ @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendshipCreateForUserWithIdentity:screenName:
  */
 - (RACSignal *)requestFriendshipDestroyForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
@@ -73,7 +73,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  @param screenName The screen name of the user for which to request friends
  @param count The maximum number of friends the request should return. The default is 20
  @param cursor The cursor value that determines which page of friends to return. The default value is MERTwitterClientCursorInitial, which means "return the first page"
- @exception NSException Thrown if _identity_ and _screenName_ are nil
+ @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFollowersForUserWithIdentity:screenName:count:cursor:
  */
 - (RACSignal *)requestFriendsForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor;
@@ -88,7 +88,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  @param screenName The screen name of the user for which to request followers
  @param count The maximum number of followers the request should return. The default is 20
  @param cursor The cursor value that determines which page of followers to return. The default value is MERTwitterClientCursorInitial, which means "return the first page"
- @exception NSException Thrown if _identity_ and _screenName_ are nil
+ @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendsForUserWithIdentity:screenName:count:cursor:
  */
 - (RACSignal *)requestFollowersForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName count:(NSUInteger)count cursor:(int64_t)cursor;
@@ -100,7 +100,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  
  @param identity The identity of the user for which to request friendship status
  @param screenName The screen name of the user for which to request friendship status
- @exception NSException Thrown if _identity_ and _screenName_ are nil
+ @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendshipStatusForUsersWithIdentities:screenNames:
  */
 - (RACSignal *)requestFriendshipStatusForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;
