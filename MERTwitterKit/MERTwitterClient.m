@@ -1028,6 +1028,8 @@ static NSString *const kUsersKey = @"users";
 }
 
 - (RACSignal *)requestFriendshipStatusForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName; {
+    NSParameterAssert(identity > 0 || screenName);
+    
     return [self requestFriendshipStatusForUsersWithIdentities:(identity > 0) ? @[@(identity)] : nil screenNames:(screenName) ? @[screenName] : nil];
 }
 - (RACSignal *)requestFriendshipStatusForUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames; {
