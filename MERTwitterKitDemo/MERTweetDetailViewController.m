@@ -35,26 +35,10 @@
 - (NSString *)title {
     return @"Detail";
 }
-- (UINavigationItem *)navigationItem {
-    UINavigationItem *retval = [super navigationItem];
-    
-    UIBarButtonItem *retweetItem = [[UIBarButtonItem alloc] initWithTitle:@"Retweet" style:UIBarButtonItemStylePlain target:nil action:NULL];
-    
-    [retweetItem setRac_command:[[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-            [subscriber sendCompleted];
-            
-            return nil;
-        }];
-    }]];
-    
-    [retval setRightBarButtonItems:@[retweetItem]];
-    
-    return retval;
-}
 
 - (NSArray *)toolbarItems {
     UIBarButtonItem *retweetsItem = [[UIBarButtonItem alloc] initWithTitle:@"RTs" style:UIBarButtonItemStylePlain target:nil action:NULL];
+    UIBarButtonItem *repliesItem = [[UIBarButtonItem alloc] initWithTitle:@"Reps" style:UIBarButtonItemStylePlain target:nil action:NULL];
     
     @weakify(self);
     
@@ -84,7 +68,39 @@
         }];
     }]];
     
-    return @[retweetsItem];
+    [repliesItem setRac_command:[[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            @strongify(self);
+            
+            void(^pushViewControllerBlock)(NSArray *viewModels) = ^(NSArray *viewModels) {
+                @strongify(self);
+                
+                MERTweetsTableViewController *viewController = [[MERTweetsTableViewController alloc] init];
+                
+                [viewController setTitle:@"Replies"];
+                [viewController setViewModels:viewModels];
+                
+                [self.navigationController pushViewController:viewController animated:YES];
+            };
+            
+            NSArray *viewModels = [[MERTwitterClient sharedClient] fetchRepliesForTweetWithIdentity:self.viewModel.identity];
+            
+            if (viewModels.count > 0) {
+                pushViewControllerBlock(viewModels);
+            }
+            else {
+                [[[MERTwitterClient sharedClient] requestRepliesForTweetWithIdentity:self.viewModel.identity] subscribeNext:^(NSArray *value) {
+                    pushViewControllerBlock(value);
+                } error:^(NSError *error) {
+                    [subscriber sendError:error];
+                }];
+            }
+            
+            return nil;
+        }];
+    }]];
+    
+    return @[retweetsItem,repliesItem];
 }
 
 - (void)viewDidLoad {

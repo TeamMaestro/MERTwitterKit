@@ -657,6 +657,20 @@ static NSString *const kLongitudeKey = @"long";
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Replies
+- (NSArray *)fetchRepliesForTweetWithIdentity:(int64_t)identity; {
+    TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
+    NSMutableArray *retval = [[NSMutableArray alloc] init];
+    
+    while (tweet.reply) {
+        [retval addObject:tweet.reply];
+        
+        tweet = tweet.reply;
+    }
+    
+    return [retval MER_map:^id(id value) {
+        return [MERTwitterTweetViewModel viewModelWithTweet:value];
+    }];
+}
 - (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity; {
     NSParameterAssert(identity > 0);
     
