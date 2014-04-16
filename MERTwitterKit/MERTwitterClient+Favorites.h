@@ -21,6 +21,8 @@
 /**
  Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` objects, then `completes`. If the request cannot be completed, sends `error`.
  
+ You must provide _identity_ or _screenName_.
+ 
  More information can be found at https://dev.twitter.com/docs/api/1.1/get/favorites/list
  
  @param identity The identity of the user for which to request favorites
