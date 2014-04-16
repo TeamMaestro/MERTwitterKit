@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
  More information can be found at https://dev.twitter.com/docs/api/1.1/get/geo/id/%3Aplace_id
  
  @param identity The identity of the place to request
- @exception NSException Thrown if _identity_ is nil
+ @exception NSException Thrown if _identity_ is <= 0
  */
 - (RACSignal *)requestPlaceWithIdentity:(NSString *)identity;
 /**
@@ -74,7 +74,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
  @param accuracy The radius in meters from which to search outwards from the provided search parameter
  @param granularity The granularity of the returned results. The default is `MERTwitterClientGeoGranularityDefault`
  @param count The maximum number of places the request should return. The default is 0, which means no limit
- @exception NSException Thrown if _latitude_, _longitude_, _ipAddress_, and _query_ are nil
+ @exception NSException Thrown if _latitude_ is 0, _longitude_ is 0, _ipAddress_, and _query_ are nil
  */
 - (RACSignal *)requestPlacesMatchingLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude ipAddress:(NSString *)ipAddress query:(NSString *)query containedWithinPlaceWithIdentity:(NSString *)placeIdentity accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
 /**
