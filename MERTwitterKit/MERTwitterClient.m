@@ -1079,8 +1079,6 @@ static NSString *const kUsersKey = @"users";
                         status |= MERTwitterClientFriendshipStatusFollowingRequested;
                     if ([connectionsSet containsObject:kBlockingKey])
                         status |= MERTwitterClientFriendshipStatusBlocking;
-                    if ([connectionsSet containsObject:kNoneKey])
-                        status |= MERTwitterClientFriendshipStatusNone;
                     
                     return @(status);
                 }]]] subscribe:subscriber];
