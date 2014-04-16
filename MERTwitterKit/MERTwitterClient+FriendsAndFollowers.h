@@ -13,6 +13,14 @@
 
 #import "MERTwitterClient.h"
 
+typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
+    MERTwitterClientFriendshipStatusNone = 0,
+    MERTwitterClientFriendshipStatusFollowing = 1 << 0,
+    MERTwitterClientFriendshipStatusFollowingRequested = 1 << 1,
+    MERTwitterClientFriendshipStatusFollowedBy = 1 << 2,
+    MERTwitterClientFriendshipStatusBlocking = 1 << 3
+};
+
 @interface MERTwitterClient (FriendsAndFollowers)
 
 - (RACSignal *)requestFriendshipCreateForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName;

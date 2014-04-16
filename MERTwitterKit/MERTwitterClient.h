@@ -15,28 +15,6 @@
 #import <Accounts/Accounts.h>
 #import <CoreLocation/CoreLocation.h>
 
-typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
-    MERTwitterClientSearchTypeMixed,
-    MERTwitterClientSearchTypeRecent,
-    MERTwitterClientSearchTypePopular
-};
-
-typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
-    MERTwitterClientFriendshipStatusNone = 0,
-    MERTwitterClientFriendshipStatusFollowing = 1 << 0,
-    MERTwitterClientFriendshipStatusFollowingRequested = 1 << 1,
-    MERTwitterClientFriendshipStatusFollowedBy = 1 << 2,
-    MERTwitterClientFriendshipStatusBlocking = 1 << 3
-};
-
-typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
-    MERTwitterClientGeoGranularityNeighborhood,
-    MERTwitterClientGeoGranularityPOI,
-    MERTwitterClientGeoGranularityCity,
-    MERTwitterClientGeoGranularityAdmin,
-    MERTwitterClientGeoGranularityCountry
-};
-
 extern int64_t const MERTwitterClientCursorInitial;
 
 extern NSString *const MERTwitterClientErrorDomain;

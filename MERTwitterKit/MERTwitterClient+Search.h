@@ -13,6 +13,12 @@
 
 #import "MERTwitterClient.h"
 
+typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
+    MERTwitterClientSearchTypeMixed,
+    MERTwitterClientSearchTypeRecent,
+    MERTwitterClientSearchTypePopular
+};
+
 @interface MERTwitterClient (Search)
 
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;

@@ -13,6 +13,14 @@
 
 #import "MERTwitterClient.h"
 
+typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
+    MERTwitterClientGeoGranularityNeighborhood,
+    MERTwitterClientGeoGranularityPOI,
+    MERTwitterClientGeoGranularityCity,
+    MERTwitterClientGeoGranularityAdmin,
+    MERTwitterClientGeoGranularityCountry
+};
+
 @interface MERTwitterClient (PlacesAndGeo)
 
 - (RACSignal *)requestPlaceWithIdentity:(NSString *)identity;
