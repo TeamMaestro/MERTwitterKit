@@ -668,6 +668,66 @@ static CFStringRef const kLegalURLCharactersToBeEscaped = CFSTR("&");
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Replies
+- (NSArray *)fetchThreadForTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
+    NSMutableArray *retval = [[NSMutableArray alloc] init];
+    
+    while (tweet.replied) {
+        [retval addObject:tweet.replied];
+        
+        tweet = tweet.replied;
+    }
+    
+    return [retval MER_map:^id(id value) {
+        return [MERTwitterTweetViewModel viewModelWithTweet:value];
+    }];
+}
+- (RACSignal *)requestThreadForTweetWithIdentity:(int64_t)identity; {
+    NSParameterAssert(identity > 0);
+    
+    @weakify(self);
+    
+    return [[[[self requestTweetWithIdentity:identity] map:^id(MERTwitterTweetViewModel *value) {
+        return value.tweet.replyIdentity;
+    }] flattenMap:^RACStream *(NSNumber *value) {
+        @strongify(self);
+        
+        if (value) {
+            return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+                @strongify(self);
+                
+                NSMutableArray *viewModels = [[NSMutableArray alloc] init];
+                __block NSNumber *replyIdentity = value;
+                
+                return [[RACScheduler scheduler] scheduleRecursiveBlock:^(void (^reschedule)(void)){
+                    @strongify(self);
+                    
+                    [[self requestTweetWithIdentity:replyIdentity.longLongValue] subscribeNext:^(MERTwitterTweetViewModel *value) {
+                        [viewModels addObject:value];
+                        
+                        if (value.tweet.replyIdentity) {
+                            replyIdentity = value.tweet.replyIdentity;
+                            
+                            reschedule();
+                        }
+                        else {
+                            [subscriber sendNext:viewModels];
+                            [subscriber sendCompleted];
+                        }
+                    } error:^(NSError *error) {
+                        [subscriber sendError:error];
+                    }];
+                }];
+            }];
+        }
+        else {
+            return [RACSignal return:@[]];
+        }
+    }] deliverOn:[RACScheduler mainThreadScheduler]];
+}
+
 - (NSArray *)fetchRepliesForTweetWithIdentity:(int64_t)identity; {
     TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
     
