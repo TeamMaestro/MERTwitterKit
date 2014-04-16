@@ -551,6 +551,8 @@ static NSString *const kMultipartFormDataKey = @"multipart/form-data";
 static NSString *const kPlaceIdKey = @"place_id";
 static NSString *const kLatitudeKey = @"lat";
 static NSString *const kLongitudeKey = @"long";
+static CFStringRef const kCharactersToLeaveUnescaped = CFSTR("!@#$%^*()-+/'\" ");
+static CFStringRef const kLegalURLCharactersToBeEscaped = CFSTR("&");
 
 - (RACSignal *)requestUpdateWithStatus:(NSString *)status media:(NSArray *)media replyIdentity:(int64_t)replyIdentity location:(CLLocationCoordinate2D)location placeIdentity:(NSString *)placeIdentity; {
     NSParameterAssert(status);
@@ -569,7 +571,7 @@ static NSString *const kLongitudeKey = @"long";
         
         [request setAccount:self.selectedAccount];
         
-        [request addMultipartData:[(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)status, CFSTR("!@#$%^*()-+/'\" "), CFSTR("&"), kCFStringEncodingUTF8) dataUsingEncoding:NSUTF8StringEncoding] withName:kStatusKey type:kMultipartFormDataKey filename:nil];
+        [request addMultipartData:[(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)status, kCharactersToLeaveUnescaped, kLegalURLCharactersToBeEscaped, kCFStringEncodingUTF8) dataUsingEncoding:NSUTF8StringEncoding] withName:kStatusKey type:kMultipartFormDataKey filename:nil];
         
         for (UIImage *image in media) {
             CGFloat compression = 1.0;
@@ -659,61 +661,21 @@ static NSString *const kLongitudeKey = @"long";
 #pragma mark Replies
 - (NSArray *)fetchRepliesForTweetWithIdentity:(int64_t)identity; {
     TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
-    NSMutableArray *retval = [[NSMutableArray alloc] init];
     
-    while (tweet.reply) {
-        [retval addObject:tweet.reply];
-        
-        tweet = tweet.reply;
-    }
-    
-    return [retval MER_map:^id(id value) {
+    return [[tweet.replies sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:TwitterKitTweetAttributes.identity ascending:NO]]] MER_map:^id(id value) {
         return [MERTwitterTweetViewModel viewModelWithTweet:value];
     }];
 }
-- (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity; {
+- (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count; {
     NSParameterAssert(identity > 0);
     
-    @weakify(self);
+    TwitterKitTweet *tweet = [self.managedObjectContext ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,@(identity)] sortDescriptors:nil error:NULL].firstObject;
     
-    return [[[[self requestTweetWithIdentity:identity] map:^id(MERTwitterTweetViewModel *value) {
-        return value.tweet.replyIdentity;
-    }] flattenMap:^RACStream *(NSNumber *value) {
-        @strongify(self);
-        
-        if (value) {
-            return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-                @strongify(self);
-                
-                NSMutableArray *objects = [[NSMutableArray alloc] init];
-                __block NSNumber *replyIdentity = value;
-                
-                return [[RACScheduler scheduler] scheduleRecursiveBlock:^(void (^reschedule)(void)){
-                    @strongify(self);
-                    
-                    [[self requestTweetWithIdentity:replyIdentity.longLongValue]
-                     subscribeNext:^(MERTwitterTweetViewModel *value) {
-                         [objects addObject:value];
-                         
-                         if (value.tweet.replyIdentity) {
-                             replyIdentity = value.tweet.replyIdentity;
-                             
-                             reschedule();
-                         }
-                         else {
-                             [subscriber sendNext:objects];
-                             [subscriber sendCompleted];
-                         }
-                    } error:^(NSError *error) {
-                        [subscriber sendError:error];
-                    }];
-                }];
-            }];
-        }
-        else {
-            return [RACSignal return:nil];
-        }
-    }] deliverOn:[RACScheduler mainThreadScheduler]];
+    return [[self requestTweetsMatchingSearch:[@"@" stringByAppendingString:tweet.user.screenName] type:MERTwitterClientSearchTypeRecent afterIdentity:afterIdentity beforeIdentity:beforeIdentity count:count] map:^id(NSArray *value) {
+        return [value MER_filter:^BOOL(MERTwitterTweetViewModel *value) {
+            return (value.tweet.replyIdentity.longLongValue == identity);
+        }];
+    }];
 }
 
 static NSString *const kCursorKey = @"cursor";
@@ -754,7 +716,7 @@ static NSString *const kStatusesKey = @"statuses";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
-        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)search, NULL, NULL, kCFStringEncodingUTF8) forKey:kQueryKey];
+        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)search, kCharactersToLeaveUnescaped, kLegalURLCharactersToBeEscaped, kCFStringEncodingUTF8) forKey:kQueryKey];
         
         switch (type) {
             case MERTwitterClientSearchTypeMixed:
@@ -1182,7 +1144,7 @@ static NSString *const kUsersKey = @"users";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
-        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)search, NULL, NULL, kCFStringEncodingUTF8) forKey:kQueryKey];
+        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)search, kCharactersToLeaveUnescaped, kLegalURLCharactersToBeEscaped, kCFStringEncodingUTF8) forKey:kQueryKey];
         
         if (page > 0)
             [parameters setObject:@(page) forKey:kPageKey];
@@ -1457,7 +1419,7 @@ static NSString *const kGranularityKey = @"granularity";
         if (longitude != 0.0)
             [parameters setObject:@(longitude) forKey:kLongitudeKey];
         if (query)
-            [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)query, NULL, NULL, kCFStringEncodingUTF8) forKey:kQueryKey];
+            [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)query, kCharactersToLeaveUnescaped, kLegalURLCharactersToBeEscaped, kCFStringEncodingUTF8) forKey:kQueryKey];
         if (ipAddress)
             [parameters setObject:ipAddress forKey:kIpKey];
         if (placeIdentity)
@@ -1502,7 +1464,7 @@ static NSString *const kGranularityKey = @"granularity";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
-        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)name, NULL, NULL, kCFStringEncodingUTF8) forKey:kNameKey];
+        [parameters setObject:(__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)name, kCharactersToLeaveUnescaped, kLegalURLCharactersToBeEscaped, kCFStringEncodingUTF8) forKey:kNameKey];
         [parameters setObject:@(location.latitude) forKey:kLatitudeKey];
         [parameters setObject:@(location.longitude) forKey:kLongitudeKey];
         
@@ -1722,8 +1684,10 @@ static NSString *const kCoordinatesKey = @"coordinates";
         [retval setText:dict[kTextKey]];
         [retval setCreatedAt:[createdAtDateFormatter dateFromString:dict[kCreatedAtKey]]];
         
-        if ([dict[kInReplyToStatusIdKey] isKindOfClass:[NSNumber class]])
+        if ([dict[kInReplyToStatusIdKey] isKindOfClass:[NSNumber class]]) {
             [retval setReplyIdentity:dict[kInReplyToStatusIdKey]];
+            [retval setReplied:[context ME_fetchEntityNamed:[TwitterKitTweet entityName] limit:1 predicate:[NSPredicate predicateWithFormat:@"%K == %@",TwitterKitTweetAttributes.identity,retval.replyIdentity] sortDescriptors:nil error:NULL].firstObject];
+        }
         
         if ([dict[kCoordinatesKey] isKindOfClass:[NSDictionary class]]) {
             [retval setCoordinates:[NSValue valueWithCGPoint:CGPointMake([dict[kCoordinatesKey][kCoordinatesKey][1] doubleValue], [dict[kCoordinatesKey][kCoordinatesKey][0] doubleValue])]];

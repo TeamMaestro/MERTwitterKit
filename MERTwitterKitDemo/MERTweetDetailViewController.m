@@ -89,7 +89,11 @@
                 pushViewControllerBlock(viewModels);
             }
             else {
-                [[[MERTwitterClient sharedClient] requestRepliesForTweetWithIdentity:self.viewModel.identity] subscribeNext:^(NSArray *value) {
+                [[[[[MERTwitterClient sharedClient] requestRepliesForTweetWithIdentity:self.viewModel.identity afterIdentity:0 beforeIdentity:0 count:100] initially:^{
+                    [SVProgressHUD show];
+                }] finally:^{
+                    [SVProgressHUD dismiss];
+                }] subscribeNext:^(NSArray *value) {
                     pushViewControllerBlock(value);
                 } error:^(NSError *error) {
                     [subscriber sendError:error];

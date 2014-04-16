@@ -87,8 +87,8 @@
         <relationship name="mediaRanges" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitMediaRange" inverseName="tweet" inverseEntity="TwitterKitMediaRange" syncable="YES"/>
         <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitMention" inverseName="tweet" inverseEntity="TwitterKitMention" syncable="YES"/>
         <relationship name="place" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitPlace" inverseName="tweet" inverseEntity="TwitterKitPlace" syncable="YES"/>
-        <relationship name="replies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="reply" inverseEntity="TwitterKitTweet" syncable="YES"/>
-        <relationship name="reply" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="replies" inverseEntity="TwitterKitTweet" syncable="YES"/>
+        <relationship name="replied" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="replies" inverseEntity="TwitterKitTweet" syncable="YES"/>
+        <relationship name="replies" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="replied" inverseEntity="TwitterKitTweet" syncable="YES"/>
         <relationship name="retweet" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="retweets" inverseEntity="TwitterKitTweet" syncable="YES"/>
         <relationship name="retweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TwitterKitTweet" inverseName="retweet" inverseEntity="TwitterKitTweet" syncable="YES"/>
         <relationship name="symbols" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TwitterKitSymbol" inverseName="tweet" inverseEntity="TwitterKitSymbol" syncable="YES"/>

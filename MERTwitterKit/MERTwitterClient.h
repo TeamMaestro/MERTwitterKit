@@ -86,7 +86,7 @@ extern NSBundle *MERTwitterKitResourcesBundle(void);
 - (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity;
 #pragma mark Replies
 - (NSArray *)fetchRepliesForTweetWithIdentity:(int64_t)identity;
-- (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity;
+- (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 #pragma mark Search
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 - (RACSignal *)requestTweetsMatchingSearch:(NSString *)search type:(MERTwitterClientSearchType)type afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;

@@ -20,8 +20,8 @@ const struct TwitterKitTweetRelationships TwitterKitTweetRelationships = {
 	.mediaRanges = @"mediaRanges",
 	.mentions = @"mentions",
 	.place = @"place",
+	.replied = @"replied",
 	.replies = @"replies",
-	.reply = @"reply",
 	.retweet = @"retweet",
 	.retweets = @"retweets",
 	.symbols = @"symbols",
@@ -315,6 +315,10 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 
 	
 
+@dynamic replied;
+
+	
+
 @dynamic replies;
 
 	
@@ -326,10 +330,6 @@ const struct TwitterKitTweetFetchedProperties TwitterKitTweetFetchedProperties =
 	[self didAccessValueForKey:@"replies"];
 	return result;
 }
-	
-
-@dynamic reply;
-
 	
 
 @dynamic retweet;

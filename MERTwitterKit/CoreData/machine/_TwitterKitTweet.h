@@ -21,8 +21,8 @@ extern const struct TwitterKitTweetRelationships {
 	__unsafe_unretained NSString *mediaRanges;
 	__unsafe_unretained NSString *mentions;
 	__unsafe_unretained NSString *place;
+	__unsafe_unretained NSString *replied;
 	__unsafe_unretained NSString *replies;
-	__unsafe_unretained NSString *reply;
 	__unsafe_unretained NSString *retweet;
 	__unsafe_unretained NSString *retweets;
 	__unsafe_unretained NSString *symbols;
@@ -210,16 +210,16 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
+@property (nonatomic, strong) TwitterKitTweet *replied;
+
+//- (BOOL)validateReplied:(id*)value_ error:(NSError**)error_;
+
+
+
+
 @property (nonatomic, strong) NSSet *replies;
 
 - (NSMutableSet*)repliesSet;
-
-
-
-
-@property (nonatomic, strong) TwitterKitTweet *reply;
-
-//- (BOOL)validateReply:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -397,13 +397,13 @@ extern const struct TwitterKitTweetFetchedProperties {
 
 
 
+- (TwitterKitTweet*)primitiveReplied;
+- (void)setPrimitiveReplied:(TwitterKitTweet*)value;
+
+
+
 - (NSMutableSet*)primitiveReplies;
 - (void)setPrimitiveReplies:(NSMutableSet*)value;
-
-
-
-- (TwitterKitTweet*)primitiveReply;
-- (void)setPrimitiveReply:(TwitterKitTweet*)value;
 
 
 
