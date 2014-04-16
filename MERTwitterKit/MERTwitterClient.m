@@ -1044,7 +1044,6 @@ static NSString *const kUsersKey = @"users";
         NSString *const kFollowingKey = @"following";
         NSString *const kFollowingRequestedKey = @"following_requested";
         NSString *const kFollowedBy = @"followed_by";
-        NSString *const kNoneKey = @"none";
         NSString *const kBlockingKey = @"blocking";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
