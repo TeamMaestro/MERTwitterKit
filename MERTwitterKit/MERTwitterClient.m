@@ -1431,7 +1431,7 @@ static NSString *const kGranularityKey = @"granularity";
         
         [parameters setObject:@(location.latitude) forKey:kLatitudeKey];
         [parameters setObject:@(location.longitude) forKey:kLongitudeKey];
-        [parameters setObject:[self.class _geoGranularityEnumsToGranularityStrings][@(granularity)] forKey:kGranularityKey];
+        [parameters setObject:([self.class _geoGranularityEnumsToGranularityStrings][@(granularity)]) ?: [self.class _geoGranularityEnumsToGranularityStrings][@(MERTwitterClientGeoGranularityDefault)] forKey:kGranularityKey];
         
         if (accuracy != 0.0)
             [parameters setObject:@(accuracy) forKey:kAccuracyKey];
@@ -1476,7 +1476,7 @@ static NSString *const kGranularityKey = @"granularity";
         
         NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
         
-        [parameters setObject:[self.class _geoGranularityEnumsToGranularityStrings][@(granularity)] forKey:kGranularityKey];
+        [parameters setObject:([self.class _geoGranularityEnumsToGranularityStrings][@(granularity)]) ?: [self.class _geoGranularityEnumsToGranularityStrings][@(MERTwitterClientGeoGranularityDefault)] forKey:kGranularityKey];
         
         if (latitude != 0.0)
             [parameters setObject:@(latitude) forKey:kLatitudeKey];
