@@ -38,6 +38,7 @@
 
 - (NSArray *)toolbarItems {
     UIBarButtonItem *retweetsItem = [[UIBarButtonItem alloc] initWithTitle:@"RTs" style:UIBarButtonItemStylePlain target:nil action:NULL];
+    UIBarButtonItem *threadItem = [[UIBarButtonItem alloc] initWithTitle:@"Thread" style:UIBarButtonItemStylePlain target:nil action:NULL];
     UIBarButtonItem *repliesItem = [[UIBarButtonItem alloc] initWithTitle:@"Reps" style:UIBarButtonItemStylePlain target:nil action:NULL];
     
     @weakify(self);
@@ -61,6 +62,44 @@
                  
                  [self.navigationController pushViewController:viewController animated:YES];
             }];
+            
+            [subscriber sendCompleted];
+            
+            return nil;
+        }];
+    }]];
+    
+    [threadItem setRac_command:[[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            @strongify(self);
+            
+            void(^pushViewControllerBlock)(NSArray *viewModels) = ^(NSArray *viewModels) {
+                @strongify(self);
+                
+                MERTweetsTableViewController *viewController = [[MERTweetsTableViewController alloc] init];
+                
+                [viewController setTitle:@"Thread"];
+                [viewController setViewModels:viewModels];
+                
+                [self.navigationController pushViewController:viewController animated:YES];
+            };
+            
+            NSArray *viewModels = [[MERTwitterClient sharedClient] fetchThreadForTweetWithIdentity:self.viewModel.identity];
+            
+            if (viewModels.count > 0) {
+                pushViewControllerBlock(viewModels);
+            }
+            else {
+                [[[[[MERTwitterClient sharedClient] requestThreadForTweetWithIdentity:self.viewModel.identity] initially:^{
+                    [SVProgressHUD show];
+                }] finally:^{
+                    [SVProgressHUD dismiss];
+                }] subscribeNext:^(NSArray *value) {
+                    pushViewControllerBlock(value);
+                } error:^(NSError *error) {
+                    [subscriber sendError:error];
+                }];
+            }
             
             [subscriber sendCompleted];
             
@@ -104,7 +143,7 @@
         }];
     }]];
     
-    return @[retweetsItem,repliesItem];
+    return @[retweetsItem,threadItem,repliesItem];
 }
 
 - (void)viewDidLoad {

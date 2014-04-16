@@ -471,11 +471,7 @@ static NSString *const kUserIdKey = @"user_id";
     return [[[RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         @strongify(self);
         
-        NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-        
-        [parameters setObject:@(identity) forKey:kIdKey];
-        
-        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:@"statuses/show.json" relativeToURL:self.httpSessionManager.baseURL] parameters:parameters];
+        SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodGET URL:[NSURL URLWithString:[NSString stringWithFormat:@"statuses/show/%@.json",@(identity)] relativeToURL:self.httpSessionManager.baseURL] parameters:nil];
         
         [request setAccount:self.selectedAccount];
         
@@ -497,7 +493,7 @@ static NSString *const kUserIdKey = @"user_id";
     }] flattenMap:^RACStream *(id value) {
         @strongify(self);
         
-        return [[self _importTweetJSON:value] map:^id(NSArray *value) {
+        return [[self _importTweetJSON:@[value]] map:^id(NSArray *value) {
             return value.firstObject;
         }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
@@ -699,16 +695,16 @@ static CFStringRef const kLegalURLCharactersToBeEscaped = CFSTR("&");
                 @strongify(self);
                 
                 NSMutableArray *viewModels = [[NSMutableArray alloc] init];
-                __block NSNumber *replyIdentity = value;
+                __block int64_t replyIdentity = value.longLongValue;
                 
                 return [[RACScheduler scheduler] scheduleRecursiveBlock:^(void (^reschedule)(void)){
                     @strongify(self);
                     
-                    [[self requestTweetWithIdentity:replyIdentity.longLongValue] subscribeNext:^(MERTwitterTweetViewModel *value) {
+                    [[self requestTweetWithIdentity:replyIdentity] subscribeNext:^(MERTwitterTweetViewModel *value) {
                         [viewModels addObject:value];
                         
-                        if (value.tweet.replyIdentity) {
-                            replyIdentity = value.tweet.replyIdentity;
+                        if (value.tweet.replyIdentity.longLongValue > 0) {
+                            replyIdentity = value.identity;
                             
                             reschedule();
                         }
