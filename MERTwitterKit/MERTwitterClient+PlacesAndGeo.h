@@ -13,7 +13,16 @@
 
 #import "MERTwitterClient.h"
 
-
+/**
+ Enum describing the granularity of a geo request.
+ 
+ - `MERTwitterClientGeoGranularityNone`, use the default granularity, which is `MERTwitterClientGeoGranularityDefault`
+ - `MERTwitterClientGeoGranularityPOI`, point of interest (e.g. Sbarro)
+ - `MERTwitterClientGeoGranularityNeighborhood`, neighborhood (e.g. Theater District)
+ - `MERTwitterClientGeoGranularityCity`, city (e.g. Kalamazoo)
+ - `MERTwitterClientGeoGranularityAdmin`, administrative area, (e.g. Michigan)
+ - `MERTwitterClientGeoGranularityCountry`, country (e.g. France)
+ */
 typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
     MERTwitterClientGeoGranularityNone,
     MERTwitterClientGeoGranularityPOI,
@@ -24,11 +33,62 @@ typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
     MERTwitterClientGeoGranularityDefault = MERTwitterClientGeoGranularityNeighborhood
 };
 
+/**
+ Methods to interact with the _geo_ resource family of the Twitter API.
+ */
 @interface MERTwitterClient (PlacesAndGeo)
 
+/**
+ Returns a signal that sends `next` with a `MERTwitterPlaceViewModel` instance, then `completes`. If the request cannot be completed, sends `error`.
+ 
+ More information can be found at https://dev.twitter.com/docs/api/1.1/get/geo/id/%3Aplace_id
+ 
+ @param identity The identity of the place to request
+ @exception NSException Thrown if _identity_ is nil
+ */
 - (RACSignal *)requestPlaceWithIdentity:(NSString *)identity;
+/**
+ Returns a signal that sends `next` with an array of `MERTwitterPlaceViewModel` instances, then `completes`. If the request cannot be completed, sends `error`.
+ 
+ More information can be found at https://dev.twitter.com/docs/api/1.1/get/geo/reverse_geocode
+ 
+ @param location The location (latitude/longitude) to search from
+ @param accuracy The radius in meters from which to search outwards from _location_
+ @param granularity The granularity of the returned results. The default is `MERTwitterClientGeoGranularityDefault`
+ @param count The maximum number of places the request should return. The default is 0, which means no limit
+ @exception NSException Thrown if _location_ is invalid, as determined by `CLLocationCoordinate2DIsValid(location)`
+ */
 - (RACSignal *)requestPlacesWithLocation:(CLLocationCoordinate2D)location accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
+/**
+ Returns a signal that sends `next` with an array of `MERTwitterPlaceViewModel` instances, then `completes`. If the request cannot be completed, sends `error`.
+ 
+ You must provide _latitude_, _longitude_, _ipAddress_, or _query_.
+ 
+ More information can be found at https://dev.twitter.com/docs/api/1.1/get/geo/search
+ 
+ @param latitude The latitude to search from
+ @param longitude The longitude to search from
+ @param ipAddress The ip address to search from
+ @param query The query to search from. This is generally used to match a place by name
+ @param placeIdentity The identity of the place by which to constrain the results. If non-nil, the results will all be contained within the place with the provided identity
+ @param accuracy The radius in meters from which to search outwards from the provided search parameter
+ @param granularity The granularity of the returned results. The default is `MERTwitterClientGeoGranularityDefault`
+ @param count The maximum number of places the request should return. The default is 0, which means no limit
+ @exception NSException Thrown if _latitude_, _longitude_, _ipAddress_, and _query_ are nil
+ */
 - (RACSignal *)requestPlacesMatchingLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude ipAddress:(NSString *)ipAddress query:(NSString *)query containedWithinPlaceWithIdentity:(NSString *)placeIdentity accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
+/**
+ Returns a signal that sends `next` with an array of `MERTwitterPlaceViewModel` instances, then `completes`. If the request cannot be completed, sends `error`.
+ 
+ You must provide _name_ and _location_.
+ 
+ More information can be found at https://dev.twitter.com/docs/api/1.1/get/geo/similar_places
+ 
+ @param name The name of the place for which to find similar places
+ @param location The location from which to search
+ @param placeIdentity The identity of the place by which to constrain the results. If non-nil, the results will all be contained within the place with the provided identity
+ @exception NSException Thrown if _name_ is nil or _location_ is invalid, as determined by `CLLocationCoordinate2DIsValid(location)`
+ */
 - (RACSignal *)requestPlacesSimilarToPlaceWithName:(NSString *)name location:(CLLocationCoordinate2D)location containedWithinPlaceWithIdentity:(NSString *)placeIdentity;
 
 @end
