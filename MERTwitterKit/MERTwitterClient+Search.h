@@ -48,6 +48,8 @@ typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
 /**
  Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances matching the provided _search_ parameter.
  
+ More information can be found at http://dev.twitter.com/docs/api/1.1/get/search/tweets
+ 
  @param search The search term for which to request tweets
  @param type The type of results to request
  @param afterIdentity The identity of the tweet for which to return tweets whose identity is greater than (i.e. newer) _afterIdentity_
