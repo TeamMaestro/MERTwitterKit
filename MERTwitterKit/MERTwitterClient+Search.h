@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
  @param search The search term for which to return tweets
  @param afterIdentity The identity of the tweet for which to return tweets whose identity is greater than (i.e. newer) _afterIdentity_
  @param beforeIdentity The identity of the tweet for which to return tweets whose identity is less than (i.e. older) _beforeIdentity_
- @param count The maximum number of favorites the request should return. The default is 0, which means no limit
+ @param count The maximum number of tweets the request should return. The default is 0, which means no limit
  @return The array of tweets matching _search_
  @exception NSException Thrown if _search_ is nil
  @see requestTweetsMatchingSearch:type:afterIdentity:beforeIdentity:count:
@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
  @param type The type of results to request
  @param afterIdentity The identity of the tweet for which to return tweets whose identity is greater than (i.e. newer) _afterIdentity_
  @param beforeIdentity The identity of the tweet for which to return tweets whose identity is less than (i.e. older) _beforeIdentity_
- @param count The maximum number of favorites the request should return. The default is 20
+ @param count The maximum number of tweets the request should return. The default is 20
  @return The signal
  @exception NSException Thrown if _search_ is nil
  @see fetchTweetsMatchingSearch:afterIdentity:beforeIdentity:count:

@@ -63,7 +63,7 @@
  @param identity The identity of the tweet for which to request replies
  @param afterIdentity The identity of the tweet for which to return favorites whose identity is greater than (i.e. newer) _afterIdentity_
  @param beforeIdentity The identity of the tweet for which to return favorites whose identity is less than (i.e. older) _beforeIdentity_
- @param count The maximum number of favorites the request should return. The default is 20
+ @param count The maximum number of tweets the request should return. The default is 20
  @exception NSException Thrown if _identity_ is <= 0
  */
 - (RACSignal *)requestRepliesForTweetWithIdentity:(int64_t)identity afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
