@@ -44,6 +44,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
  More information can be found at https://dev.twitter.com/docs/api/1.1/get/geo/id/%3Aplace_id
  
  @param identity The identity of the place to request
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0
  */
 - (RACSignal *)requestPlaceWithIdentity:(NSString *)identity;
@@ -56,6 +57,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
  @param accuracy The radius in meters from which to search outwards from _location_
  @param granularity The granularity of the returned results. The default is `MERTwitterClientGeoGranularityDefault`
  @param count The maximum number of places the request should return. The default is 0, which means no limit
+ @return The signal
  @exception NSException Thrown if _location_ is invalid, as determined by `CLLocationCoordinate2DIsValid(location)`
  */
 - (RACSignal *)requestPlacesWithLocation:(CLLocationCoordinate2D)location accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
@@ -74,6 +76,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
  @param accuracy The radius in meters from which to search outwards from the provided search parameter
  @param granularity The granularity of the returned results. The default is `MERTwitterClientGeoGranularityDefault`
  @param count The maximum number of places the request should return. The default is 0, which means no limit
+ @return The signal
  @exception NSException Thrown if _latitude_ is 0, _longitude_ is 0, _ipAddress_, and _query_ are nil
  */
 - (RACSignal *)requestPlacesMatchingLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude ipAddress:(NSString *)ipAddress query:(NSString *)query containedWithinPlaceWithIdentity:(NSString *)placeIdentity accuracy:(CLLocationDistance)accuracy granularity:(MERTwitterClientGeoGranularity)granularity count:(NSUInteger)count;
@@ -87,6 +90,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
  @param name The name of the place for which to find similar places
  @param location The location from which to search
  @param placeIdentity The identity of the place by which to constrain the results. If non-nil, the results will all be contained within the place with the provided identity
+ @return The signal
  @exception NSException Thrown if _name_ is nil or _location_ is invalid, as determined by `CLLocationCoordinate2DIsValid(location)`
  */
 - (RACSignal *)requestPlacesSimilarToPlaceWithName:(NSString *)name location:(CLLocationCoordinate2D)location containedWithinPlaceWithIdentity:(NSString *)placeIdentity;
