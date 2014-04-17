@@ -30,6 +30,7 @@
  @param afterIdentity The identity of the tweet for which to return favorites whose identity is greater than (i.e. newer) _afterIdentity_
  @param beforeIdentity The identity of the tweet for which to return favorites whose identity is less than (i.e. older) _beforeIdentity_
  @param count The maximum number of favorites the request should return. The default is 20
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  */
 - (RACSignal *)requestFavoritesForUserWithIdentity:(int64_t)identity screenName:(NSString *)screenName afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
@@ -40,6 +41,7 @@
  More information can be found at https://dev.twitter.com/docs/api/1.1/post/favorites/create
  
  @param identity The identity of the tweet to favorite
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0
  */
 - (RACSignal *)requestFavoriteCreateForTweetWithIdentity:(int64_t)identity;
@@ -49,6 +51,7 @@
  More information can be found at https://dev.twitter.com/docs/api/1.1/post/favorites/destroy
  
  @param identity The identity of the tweet to un-favorite
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0
  */
 - (RACSignal *)requestFavoriteDestroyForTweetWithIdentity:(int64_t)identity;
