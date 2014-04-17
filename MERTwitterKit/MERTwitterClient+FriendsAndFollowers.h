@@ -44,6 +44,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  
  @param identity The identity of the user to request friendship for
  @param screenName The screen name of the user to request friendship for
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendshipDestroyForUserWithIdentity:screenName:
  */
@@ -57,6 +58,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  
  @param identity The identity of the user to destroy friendship for
  @param screenName The screen name of the user to destroy friendship for
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendshipCreateForUserWithIdentity:screenName:
  */
@@ -73,6 +75,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  @param screenName The screen name of the user for which to request friends
  @param count The maximum number of friends the request should return. The default is 20
  @param cursor The cursor value that determines which page of friends to return. The default value is MERTwitterClientCursorInitial, which means "return the first page"
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFollowersForUserWithIdentity:screenName:count:cursor:
  */
@@ -88,6 +91,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  @param screenName The screen name of the user for which to request followers
  @param count The maximum number of followers the request should return. The default is 20
  @param cursor The cursor value that determines which page of followers to return. The default value is MERTwitterClientCursorInitial, which means "return the first page"
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendsForUserWithIdentity:screenName:count:cursor:
  */
@@ -100,6 +104,7 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  
  @param identity The identity of the user for which to request friendship status
  @param screenName The screen name of the user for which to request friendship status
+ @return The signal
  @exception NSException Thrown if _identity_ is <= 0 and _screenName_ is nil
  @see requestFriendshipStatusForUsersWithIdentities:screenNames:
  */
@@ -111,8 +116,9 @@ typedef NS_OPTIONS(NSInteger, MERTwitterClientFriendshipStatus) {
  
  More information can be found at https://dev.twitter.com/docs/api/1.1/get/friendships/lookup
  
- @param identities The array of identities for which to request friendship status. Must satisfy `0 < [identities count] <= 100`.
- @param screenNames The array of screen names for which to request friendship status. Must satisfy `0 < [screenNames count] <= 100`.
+ @param identities The array of identities for which to request friendship status
+ @param screenNames The array of screen names for which to request friendship status
+ @return The signal
  @exception NSException Thrown if _identities_ and _screenNames_ are nil
  */
 - (RACSignal *)requestFriendshipStatusForUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames;
