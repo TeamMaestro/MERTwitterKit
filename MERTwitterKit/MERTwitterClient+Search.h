@@ -13,15 +13,50 @@
 
 #import "MERTwitterClient.h"
 
+/**
+ Enum describing the type of search results to return.
+ 
+ - `MERTwitterClientSearchTypeMixed`, return both recent and popular results
+ - `MERTwitterClientSearchTypeRecent`, return recent results
+ - `MERTwitterClientSearchTypePopular`, return popular results
+ */
 typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
     MERTwitterClientSearchTypeMixed,
     MERTwitterClientSearchTypeRecent,
     MERTwitterClientSearchTypePopular
 };
 
+/**
+ Methods to interact with the _search_ resource family of the Twitter API.
+ */
 @interface MERTwitterClient (Search)
 
+/**
+ Returns local `MERTwitterTweetViewModel` instances whose `text` property contains the provided _search_ parameter.
+ 
+ The view models are sorted by their identity property, in descending order (i.e. largest identity first).
+ 
+ @param search The search term for which to return tweets
+ @param afterIdentity The identity of the tweet for which to return tweets whose identity is greater than (i.e. newer) _afterIdentity_
+ @param beforeIdentity The identity of the tweet for which to return tweets whose identity is less than (i.e. older) _beforeIdentity_
+ @param count The maximum number of favorites the request should return. The default is 0, which means no limit
+ @return The array of tweets matching _search_
+ @exception NSException Thrown if _search_ is nil
+ @see requestTweetsMatchingSearch:type:afterIdentity:beforeIdentity:count:
+ */
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
+/**
+ Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances matching the provided _search_ parameter.
+ 
+ @param search The search term for which to request tweets
+ @param type The type of results to request
+ @param afterIdentity The identity of the tweet for which to return tweets whose identity is greater than (i.e. newer) _afterIdentity_
+ @param beforeIdentity The identity of the tweet for which to return tweets whose identity is less than (i.e. older) _beforeIdentity_
+ @param count The maximum number of favorites the request should return. The default is 20
+ @return The signal
+ @exception NSException Thrown if _search_ is nil
+ @see fetchTweetsMatchingSearch:afterIdentity:beforeIdentity:count:
+ */
 - (RACSignal *)requestTweetsMatchingSearch:(NSString *)search type:(MERTwitterClientSearchType)type afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 
 @end
