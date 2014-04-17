@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, MERTwitterClientSearchType) {
  */
 - (NSArray *)fetchTweetsMatchingSearch:(NSString *)search afterIdentity:(int64_t)afterIdentity beforeIdentity:(int64_t)beforeIdentity count:(NSUInteger)count;
 /**
- Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances matching the provided _search_ parameter.
+ Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances matching the provided _search_ parameter, then `completes`. If the request cannot be completed, sends `error`.
  
  More information can be found at http://dev.twitter.com/docs/api/1.1/get/search/tweets
  
