@@ -33,7 +33,7 @@
  */
 - (NSArray *)fetchThreadForTweetWithIdentity:(int64_t)identity;
 /**
- Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances representing the tweets of a discussion thread rooted at the tweet with the provided _identity_. If the request cannot be completed, sends `error`.
+ Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances representing the tweets of a discussion thread rooted at the tweet with the provided _identity_, then `completes`. If the request cannot be completed, sends `error`.
  
  At a high level, this works by inspecting the `in_reply_to_status_id` key of the Tweet objects the Twitter API returns. If a Tweet object contains the `in_reply_to_status_id` object another request is made to fetch that object using `requestTweetWithIdentity:`. This process is repeated until a tweet is encountered whose `in_reply_to_status_id` key is nil. That object is the root of the discussion thread.
  
@@ -58,7 +58,7 @@
  */
 - (NSArray *)fetchRepliesForTweetWithIdentity:(int64_t)identity;
 /**
- Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances representing the replies to the tweet with the provided _identity_. If the request cannot be completed, sends `error`.
+ Returns a signal that sends `next` with an array of `MERTwitterTweetViewModel` instances representing the replies to the tweet with the provided _identity_, then `completes`. If the request cannot be completed, sends `error`.
  
  @param identity The identity of the tweet for which to request replies
  @param afterIdentity The identity of the tweet for which to return favorites whose identity is greater than (i.e. newer) _afterIdentity_
