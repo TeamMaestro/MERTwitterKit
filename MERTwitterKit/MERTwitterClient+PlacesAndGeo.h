@@ -17,18 +17,18 @@
  Enum describing the granularity of a geo request.
  
  - `MERTwitterClientGeoGranularityNone`, use the default granularity, which is `MERTwitterClientGeoGranularityDefault`
- - `MERTwitterClientGeoGranularityPOI`, point of interest (e.g. Sbarro)
+ - `MERTwitterClientGeoGranularityPointOfInterest`, point of interest (e.g. Sbarro)
  - `MERTwitterClientGeoGranularityNeighborhood`, neighborhood (e.g. Theater District)
  - `MERTwitterClientGeoGranularityCity`, city (e.g. Kalamazoo)
- - `MERTwitterClientGeoGranularityAdmin`, administrative area, (e.g. Michigan)
+ - `MERTwitterClientGeoGranularityAdministrativeArea`, administrative area, (e.g. Michigan)
  - `MERTwitterClientGeoGranularityCountry`, country (e.g. France)
  */
 typedef NS_ENUM(NSInteger, MERTwitterClientGeoGranularity) {
     MERTwitterClientGeoGranularityNone,
-    MERTwitterClientGeoGranularityPOI,
+    MERTwitterClientGeoGranularityPointOfInterest,
     MERTwitterClientGeoGranularityNeighborhood,
     MERTwitterClientGeoGranularityCity,
-    MERTwitterClientGeoGranularityAdmin,
+    MERTwitterClientGeoGranularityAdministrativeArea,
     MERTwitterClientGeoGranularityCountry,
     MERTwitterClientGeoGranularityDefault = MERTwitterClientGeoGranularityNeighborhood
 };
