@@ -14,12 +14,39 @@
 #import "RVMViewModel.h"
 #import <UIKit/UIImage.h>
 
+/**
+ `MERTwitterUserViewModel` is a `RVMViewModel` subclass that represents a User returned from the Twitter API.
+ 
+ More information can be found at https://dev.twitter.com/docs/platform-objects/users
+ */
 @interface MERTwitterUserViewModel : RVMViewModel
 
+/**
+ The identity of the User. This is unique.
+ 
+ The `id` of the User JSON object.
+ */
 @property (readonly,nonatomic) int64_t identity;
 
+/**
+ The name of the User (e.g. Peter Parker).
+ 
+ The `name` of the User JSON object.
+ */
 @property (readonly,nonatomic) NSString *name;
+/**
+ The screen name of the User (e.g. @peteparker).
+ 
+ The `screen_name` of the User JSON object.
+ */
 @property (readonly,nonatomic) NSString *screenName;
+/**
+ The profile image of the User.
+ 
+ The property is initially nil, and is fetched asynchronously once the receiver's `active` property is set to YES. You should bind to this property with ReactiveCocoa to be notified when the image is fetched.
+ 
+ See `MERTweetTableViewCell` within the MERTwitterKitDemo group for an example.
+ */
 @property (readonly,strong,nonatomic) UIImage *profileImage;
 
 @end
