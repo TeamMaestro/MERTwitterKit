@@ -89,10 +89,14 @@
        ignore:nil]
         take:1]
       flattenMap:^RACStream *(ACAccount *value) {
-//          return [[MERTwitterClient sharedClient] requestTweetsMatchingSearch:@"#yolo" type:MERTwitterClientSearchTypeRecent afterIdentity:0 beforeIdentity:0 count:100];
-//          return [[MERTwitterClient sharedClient] requestHomeTimelineTweetsAfterTweetWithIdentity:0 beforeIdentity:0 count:100];
-          return [RACSignal return:[[MERTwitterClient sharedClient] fetchTweetsAfterIdentity:0 beforeIdentity:0 count:100]];
-//          return [[MERTwitterClient sharedClient] requestStreamForTweetsMatchingKeywords:@[@"#yolo"] userIdentities:nil locations:nil];
+          NSArray *viewModels = [[MERTwitterClient sharedClient] fetchTweetsAfterIdentity:0 beforeIdentity:0 count:100];
+          
+          if (viewModels.count > 0) {
+              return [RACSignal return:viewModels];
+          }
+          else {
+              return [[MERTwitterClient sharedClient] requestHomeTimelineTweetsAfterTweetWithIdentity:0 beforeIdentity:0 count:100];
+          }
     }] subscribeNext:^(NSArray *value) {
         @strongify(self);
         
