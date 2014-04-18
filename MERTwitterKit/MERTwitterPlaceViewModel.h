@@ -13,14 +13,59 @@
 
 #import "RVMViewModel.h"
 
+extern const struct MERTwitterPlaceViewModelType {
+    __unsafe_unretained NSString *personOfInterest;
+    __unsafe_unretained NSString *neighborhood;
+    __unsafe_unretained NSString *city;
+    __unsafe_unretained NSString *administrativeArea;
+    __unsafe_unretained NSString *country;
+} MERTwitterPlaceViewModelType;
+
+/**
+ `MERTwitterPlaceViewModel` is a `RVMViewModel` subclass representing a Place by the Twitter API.
+ 
+ More information can be found at https://dev.twitter.com/docs/platform-objects/places
+ */
 @interface MERTwitterPlaceViewModel : RVMViewModel
 
+/**
+ The identity of the Place. This is unique.
+ 
+ The `id` of the Place JSON object.
+ */
 @property (readonly,nonatomic) NSString *identity;
 
+/**
+ The type of location represented by the Place.
+ 
+ The `place_type` of the Place JSON object.
+ 
+ @see MERTwitterPlaceViewModelType
+ */
 @property (readonly,nonatomic) NSString *type;
+/**
+ The name of the country containing the Place.
+ 
+ The `country` of the Place JSON object.
+ */
 @property (readonly,nonatomic) NSString *country;
+/**
+ The country code of the country containing the Place.
+ 
+ The `country_code` of the Place JSON object.
+ */
 @property (readonly,nonatomic) NSString *countryCode;
+/**
+ The name of the Place.
+ 
+ The `name` of the Place JSON object.
+ */
 @property (readonly,nonatomic) NSString *name;
+/**
+ The full name of the Place.
+ 
+ The `full_name` of the Place JSON object.
+ */
 @property (readonly,nonatomic) NSString *fullName;
 
 @end

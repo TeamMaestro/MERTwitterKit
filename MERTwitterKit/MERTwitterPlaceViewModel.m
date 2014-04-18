@@ -14,6 +14,14 @@
 #import "MERTwitterPlaceViewModel.h"
 #import "MERTwitterPlaceViewModel+Private.h"
 
+const struct MERTwitterPlaceViewModelType MERTwitterPlaceViewModelType = {
+    .personOfInterest = @"poi",
+    .neighborhood = @"neighborhood",
+    .city = @"city",
+    .administrativeArea = @"admin",
+    .country = @"country",
+};
+
 @interface MERTwitterPlaceViewModel ()
 @property (readwrite,strong,nonatomic) TwitterKitPlace *place;
 
