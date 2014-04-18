@@ -13,10 +13,36 @@
 
 #import "MERTwitterClient.h"
 
+/**
+ Methods to interact with the _users_ resource family of the Twitter API.
+ */
 @interface MERTwitterClient (Users)
 
+/**
+ Returns a signal that sends `next` with an array of `MERTwitterUserViewModel` instances, then `completes`. If the request cannot be completed, sends `error`.
+ 
+ You must provide _identities_ or _screenNames_.
+ 
+ More information can be found at https://dev.twitter.com/docs/api/1.1/get/users/lookup
+ 
+ @param identities The identities of the users to request
+ @param screenNames The screen names of the users to request
+ @return The signal
+ @exception NSException Thrown if _identities_ and _screenNames_ are nil
+ */
 - (RACSignal *)requestUsersWithIdentities:(NSArray *)identities screenNames:(NSArray *)screenNames;
 
+/**
+ Returns a signal that sends `next` with an `RACTuple` containing an array of `MERTwitterUserViewModel` instances and the _page_ that originally passed to the method, then `completes`. If the request cannot be completed, sends `error`.
+ 
+ More information can be found at https://dev.twitter.com/docs/api/1.1/get/users/search
+ 
+ @param search The search term to return results for
+ @param page The page of results to return
+ @param count The maximum number of results to return. The default and maximum are 20
+ @return The signal
+ @exception NSException Thrown if _search_ is nil
+ */
 - (RACSignal *)requestUsersMatchingSearch:(NSString *)search page:(NSUInteger)page count:(NSUInteger)count;
 
 @end

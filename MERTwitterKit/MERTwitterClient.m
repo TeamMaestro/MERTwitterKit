@@ -1237,7 +1237,9 @@ static NSString *const kUsersKey = @"users";
     }] flattenMap:^RACStream *(id value) {
         @strongify(self);
         
-        return [self _importUserJSON:value];
+        return [[self _importUserJSON:value] map:^id(id value) {
+            return RACTuplePack(value,@(page));
+        }];
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 #pragma mark Favorites
