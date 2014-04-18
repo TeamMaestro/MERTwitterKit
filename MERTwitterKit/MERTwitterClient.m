@@ -628,7 +628,7 @@ static CFStringRef const kLegalURLCharactersToBeEscaped = CFSTR("&");
     }] deliverOn:[RACScheduler mainThreadScheduler]];
 }
 
-- (RACSignal *)requestRetweetOfTweetWithIdentity:(int64_t)identity; {
+- (RACSignal *)requestUpdateWithRetweetOfTweetWithIdentity:(int64_t)identity; {
     NSParameterAssert(identity > 0);
     
     @weakify(self);
