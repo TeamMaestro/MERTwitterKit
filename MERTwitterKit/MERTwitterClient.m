@@ -1568,11 +1568,11 @@ static NSString *const kGranularityKey = @"granularity";
     static NSDictionary *retval;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        retval = @{@(MERTwitterClientGeoGranularityAdmin): @"admin",
-                   @(MERTwitterClientGeoGranularityCity): @"city",
-                   @(MERTwitterClientGeoGranularityCountry): @"country",
-                   @(MERTwitterClientGeoGranularityNeighborhood): @"neighborhood",
-                   @(MERTwitterClientGeoGranularityPOI): @"poi"};
+        retval = @{@(MERTwitterClientGeoGranularityAdministrativeArea): MERTwitterPlaceViewModelType.administrativeArea,
+                   @(MERTwitterClientGeoGranularityCity): MERTwitterPlaceViewModelType.city,
+                   @(MERTwitterClientGeoGranularityCountry): MERTwitterPlaceViewModelType.country,
+                   @(MERTwitterClientGeoGranularityNeighborhood): MERTwitterPlaceViewModelType.neighborhood,
+                   @(MERTwitterClientGeoGranularityPointOfInterest): MERTwitterPlaceViewModelType.personOfInterest};
     });
     return retval;
 }
