@@ -15,7 +15,7 @@
 #import <UIKit/UIImage.h>
 
 /**
- `MERTwitterUserViewModel` is a `RVMViewModel` subclass that represents a User returned from the Twitter API.
+ `MERTwitterUserViewModel` is a `RVMViewModel` subclass that represents a User returned by the Twitter API.
  
  More information can be found at https://dev.twitter.com/docs/platform-objects/users
  */
