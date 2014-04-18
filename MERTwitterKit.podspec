@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
   spec.license = {:type => "MIT", :file => "LICENSE.txt"}
   spec.homepage = "https://github.com/MaestroElearning/MERTwitterKit"
   spec.source = {:git => "https://github.com/MaestroElearning/MERTwitterKit.git", :tag => spec.version.to_s}
-  spec.summary = "A Twitter 1.1 API wrapper, built on top of ReactiveCocoa. Compatible with iOS, 7.0+"
+  spec.summary = "A Twitter 1.1 API wrapper, built on top of AFNetworking and ReactiveCocoa. Compatible with iOS, 7.0+"
   
   spec.platform = :ios, "7.0"
   

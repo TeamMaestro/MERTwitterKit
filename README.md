@@ -1,6 +1,6 @@
 ##MERTwitterKit
 
-Twitter 1.1 API wrapper, built on top of [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa). Compatible with iOS, 7.0+.
+Twitter 1.1 API wrapper, built on top of [AFNetworking](https://github.com/AFNetworking/AFNetworking) and [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa). Compatible with iOS, 7.0+.
 
 API coverage is not complete, but will continue to expand.
 
