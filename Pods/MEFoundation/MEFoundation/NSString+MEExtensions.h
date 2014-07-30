@@ -16,6 +16,20 @@
 @interface NSString (MEExtensions)
 
 /**
+ Returns whether the receiver's length == 0.
+ 
+ @return YES if the receiver is empty, NO otherwise
+ */
+- (BOOL)ME_isEmpty;
+
+/**
+ Returns whether the receiver's length, excluding whitespace and newlines characters, == 0.
+ 
+ @return YES if the receiver is empty, NO otherwise
+ */
+- (BOOL)ME_isWhitespaceAndNewline;
+
+/**
  Returns a copy of the receiver where newline characters are replaced with _replaceString_.
  
  @param replaceString The string with which to replace all newlines characters in the receiver with

@@ -59,4 +59,37 @@
  */
 - (UIImage *)ME_imageByTintingWithColor:(UIColor *)color;
 
+/**
+ Creates a new image by blurring _image_ using a box blur.
+ 
+ @param image The original image
+ @param radius A value between 0.0 and 1.0 describing how much to blur the image. The value will be clamped automatically
+ @return The blurred image
+ @exception NSException Thrown if _image_ is nil
+ */
++ (UIImage *)ME_imageByBlurringImage:(UIImage *)image radius:(CGFloat)radius;
+/**
+ Calls `[self.class ME_imageByBlurringImage:self radius:radius]`
+ 
+ @see ME_imageByBlurringImage:radius:
+ */
+- (UIImage *)ME_blurredImageWithRadius:(CGFloat)radius;
+
+/**
+ Creates a new image by pixellating _image_ using the `CIPixellate` CoreImage filter.
+ 
+ @param image The original image
+ @param center The center point of the image from which to start the pixellation. Pass `CGPointZero` to use the default, which is `CGPointMake(150.0, 150.0)`
+ @param scale The relative size of the pixellated blocks. Pass 0.0 to use the default, which is 8.0
+ @return The pixellated image
+ @exception NSException Thrown if _image_ is nil
+ */
++ (UIImage *)ME_imageByPixellatingImage:(UIImage *)image center:(CGPoint)center scale:(CGFloat)scale;
+/**
+ Calls `[self.class ME_imageByPixellatingImage:self center:center scale:scale]`
+ 
+ @see ME_imageByPixellatingImage:center:scale:
+ */
+- (UIImage *)ME_pixellatedImageWithCenter:(CGPoint)center scale:(CGFloat)scale;
+
 @end

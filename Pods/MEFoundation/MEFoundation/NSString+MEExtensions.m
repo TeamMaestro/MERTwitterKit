@@ -104,6 +104,14 @@ static inline uint8_t MEBinaryValueForCharacter(unichar character) {
 
 @implementation NSString (MEExtensions)
 
+- (BOOL)ME_isEmpty; {
+    return (self.length == 0);
+}
+
+- (BOOL)ME_isWhitespaceAndNewline; {
+    return ([self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0);
+}
+
 - (NSString *)ME_stringByReplacingNewlinesWithString:(NSString *)replaceString; {
     NSParameterAssert(replaceString);
     

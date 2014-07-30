@@ -83,14 +83,23 @@
     [self setFrame:CGRectMake(CGRectGetMinX(self.frame) + deltaX, CGRectGetMinY(self.frame) + deltaY, CGRectGetWidth(self.frame) + deltaWidth, CGRectGetHeight(self.frame) + deltaHeight)];
 }
 
-- (NSArray *)ME_flattenedSubviews; {
-    NSMutableSet *retval = [NSMutableSet setWithCapacity:0];
+- (NSArray *)ME_recursiveSubviews; {
+    NSMutableSet *retval = [[NSMutableSet alloc] init];
     
-    for (UIView *view in [self subviews]) {
+    for (UIView *view in self.subviews) {
         [retval addObject:view];
-        [retval addObjectsFromArray:[view ME_flattenedSubviews]];
+        [retval addObjectsFromArray:[view ME_recursiveSubviews]];
     }
     
     return [retval allObjects];
 }
+
+@end
+
+@implementation UIView (MEExtensionsDeprecated)
+
+- (NSArray *)ME_flattenedSubviews {
+    return [self ME_recursiveSubviews];
+}
+
 @end

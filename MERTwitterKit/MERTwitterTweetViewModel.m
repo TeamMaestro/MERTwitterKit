@@ -23,7 +23,7 @@
 #import "TwitterKitHashtag.h"
 #import "TwitterKitSymbol.h"
 #import "TwitterKitMedia.h"
-#import <SDWebImage/SDWebImageManager.h>
+#import <MERThumbnailKit/MERThumbnailKit.h>
 #import "TwitterKitMediaRange.h"
 #import "MERTwitterClient+Replies.h"
 
@@ -31,7 +31,6 @@
 @property (readwrite,strong,nonatomic) TwitterKitTweet *tweet;
 
 @property (readwrite,strong,nonatomic) UIImage *mediaThumbnailImage;
-@property (strong,nonatomic) id<SDWebImageOperation> mediaThumbnailImageOperation;
 
 @property (readwrite,strong,nonatomic) MERTwitterUserViewModel *userViewModel;
 @end
@@ -62,36 +61,16 @@
     [self setTweet:tweet];
     [self setUserViewModel:[MERTwitterUserViewModel viewModelWithUser:self.tweet.user]];
     
-    @weakify(self);
-    
     RAC(self,mediaThumbnailImage) = [[[[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:[[(TwitterKitMediaRange *)self.tweet.mediaRanges.anyObject media] mediaUrl]]] reduce:^id(id _, NSString *value){
         return value;
     }] filter:^BOOL(id value) {
         return (value != nil);
     }] flattenMap:^RACStream *(id value) {
-        @strongify(self);
-        
-        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-            @strongify(self);
-            
-            id<SDWebImageOperation> operation = [[SDWebImageManager sharedManager] downloadWithURL:[NSURL URLWithString:value] options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                [subscriber sendNext:image];
-                [subscriber sendCompleted];
-            }];
-            
-            [self setMediaThumbnailImageOperation:operation];
-            
-            return nil;
+        return [[[MERThumbnailManager sharedManager] downloadFileWithURL:[NSURL URLWithString:value] progress:nil] reduceEach:^id (NSURL *url, NSURL *fileURL, NSNumber *_){
+            return [UIImage imageWithContentsOfFile:fileURL.path];
         }];
+        
     }] deliverOn:[RACScheduler mainThreadScheduler]];
-    
-    [self.didBecomeInactiveSignal
-     subscribeNext:^(id _) {
-         @strongify(self);
-         
-         [self.mediaThumbnailImageOperation cancel];
-         [self setMediaThumbnailImageOperation:nil];
-    }];
     
     return self;
 }

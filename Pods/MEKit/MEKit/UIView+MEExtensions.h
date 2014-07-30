@@ -158,6 +158,12 @@
  @return An `NSArray` instance containing the subviews
  @warning *Note:* The recursion is depth first, but the subviews are collected in an `NSMutableSet` before being returned. The order of subviews in the returned `NSArray` should not be relied upon.
  */
-- (NSArray *)ME_flattenedSubviews;
+- (NSArray *)ME_recursiveSubviews;
+
+@end
+
+@interface UIView (MEExtensionsDeprecated)
+
+- (NSArray *)ME_flattenedSubviews __attribute__((deprecated("Use ME_recursiveSubviews instead")));
 
 @end

@@ -15,15 +15,13 @@
 #import "MERTwitterUserViewModel+Private.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <libextobjc/EXTScope.h>
-#import <SDWebImage/SDWebImageManager.h>
+#import <MERThumbnailKit/MERThumbnailKit.h>
 #import "MERTwitterClient.h"
 
 @interface MERTwitterUserViewModel ()
 @property (readwrite,strong,nonatomic) TwitterKitUser *user;
 
 @property (readwrite,strong,nonatomic) UIImage *profileImage;
-
-@property (strong,nonatomic) id<SDWebImageOperation> userProfileImageOperation;
 
 - (instancetype)initWithUser:(TwitterKitUser *)user;
 @end
@@ -63,34 +61,14 @@
     
     [self setUser:user];
     
-    @weakify(self);
-    
     RAC(self,profileImage) = [[[RACSignal combineLatest:@[self.didBecomeActiveSignal,[RACSignal return:self.user.profileImageUrl]] reduce:^id(id _, NSString *value) {
         return value;
     }] flattenMap:^RACStream *(id value) {
-        @strongify(self);
-        
-        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-            @strongify(self);
-            
-            id<SDWebImageOperation> operation = [[SDWebImageManager sharedManager] downloadWithURL:[NSURL URLWithString:value] options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                [subscriber sendNext:image];
-                [subscriber sendCompleted];
-            }];
-            
-            [self setUserProfileImageOperation:operation];
-            
-            return nil;
+        return [[[MERThumbnailManager sharedManager] downloadFileWithURL:[NSURL URLWithString:value] progress:nil] reduceEach:^id (NSURL *url, NSURL *fileURL, NSNumber *_){
+            return [UIImage imageWithContentsOfFile:fileURL.path];
         }];
+        
     }] deliverOn:[RACScheduler mainThreadScheduler]];
-    
-    [self.didBecomeInactiveSignal
-     subscribeNext:^(id _) {
-         @strongify(self);
-         
-         [self.userProfileImageOperation cancel];
-         [self setUserProfileImageOperation:nil];
-     }];
     
     return self;
 }
