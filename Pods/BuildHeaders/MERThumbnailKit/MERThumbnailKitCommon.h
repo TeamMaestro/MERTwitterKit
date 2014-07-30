@@ -1,0 +1,1 @@
+../../MERThumbnailKit/MERThumbnailKit/MERThumbnailKitCommon.h

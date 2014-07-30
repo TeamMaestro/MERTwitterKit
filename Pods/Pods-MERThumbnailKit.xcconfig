@@ -1,0 +1,1 @@
+PODS_MERTHUMBNAILKIT_OTHER_LDFLAGS = -framework AVFoundation -framework Accelerate -framework Foundation -framework MobileCoreServices -framework UIKit
